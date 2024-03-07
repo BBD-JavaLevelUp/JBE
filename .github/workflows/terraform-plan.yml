@@ -11,7 +11,7 @@ env:
 
 jobs:
   terraform:
-    if: github.repository != 'BBD-JavaLevelUp/JBE'
+    if: github.repository == 'BBD-JavaLevelUp/JBE'
     name: "Terraform Plan"
     runs-on: ubuntu-latest
     permissions:
