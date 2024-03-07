@@ -48,8 +48,9 @@ public class ViewSellOrders{
 
         private void printSellOrders(){
             for (int index = 0; index < sellOrders.size(); index++) {
-                SellOrder sellOrder = sellOrders.get(index); 
-                System.out.println(index+1 + ". " + sellOrder.getTotalAmount() + " R" + sellOrder.getSellingPrice() );
+                SellOrder sellOrder = sellOrders.get(index);
+                String beanName = RestApiHandler.getBean(sellOrder.getBeanId()).getName();
+                System.out.println(index+1 + ". " + beanName + " - " + sellOrder.getTotalAmount() + " - R" + sellOrder.getSellingPrice() );
             }
         }
 
@@ -58,7 +59,7 @@ public class ViewSellOrders{
                 MainMenu.display(currentInvestor);
             }
             SellOrder sellOrder = sellOrders.get(choice-1);
-                        System.out.println("Sell order accepted");
+            System.out.println("Sell order accepted");
             MainMenu.display(currentInvestor);
         }
     }
