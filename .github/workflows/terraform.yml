@@ -52,7 +52,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -var="my_ip=${{secrets.MY_IP}}" -var="db_username=${{secrets.DB_USERNAME}}" -var="db_password=${{secrets.DB_PASSWORD}}" -var="public_key=${{secrets.PUBLIC_KEY}}"
+        run: terraform plan -no-color
         if: github.event_name == 'pull_request'
         continue-on-error: true
 
