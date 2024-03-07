@@ -3,6 +3,7 @@ package com.jbe.client;
 import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.ViewInventory;
+import com.jbe.client.MenuOptions.ViewSellOrders;
 import com.jbe.client.Models.Investor;
 
 public class MainMenu {
@@ -69,9 +70,13 @@ public class MainMenu {
                     System.out.println("viewing transactions");
                 }
                 break;
+            case 6:
+                ViewSellOrders vso = new ViewSellOrders(currentInvestor, restApiHandler);
+                vso.display();
+                break;    
             case 11:
-            currentInvestor = null;
-            break;
+                currentInvestor = null;
+                break;
             default:
                 System.out.println("Invalid choice. Please try again.\n");
         }
