@@ -10,7 +10,7 @@ public class MainMenu {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void display(Investor currentInvestor,RestApiHandler restApiHandler) {
+    public static void display(Investor currentInvestor) {
     while (true) {
         System.out.println("\nMain Menu:");
         if (currentInvestor == null) {
@@ -51,7 +51,7 @@ public class MainMenu {
                 if (currentInvestor == null) {
                     System.out.println("signing up");
                 } else {
-                    ViewInventory vi = new ViewInventory(currentInvestor, restApiHandler);
+                    ViewInventory vi = new ViewInventory(currentInvestor);
                     vi.display();
                 }
                 break;
@@ -71,7 +71,7 @@ public class MainMenu {
                 }
                 break;
             case 6:
-                ViewSellOrders vso = new ViewSellOrders(currentInvestor, restApiHandler);
+                ViewSellOrders vso = new ViewSellOrders(currentInvestor);
                 vso.display();
                 break;    
             case 11:

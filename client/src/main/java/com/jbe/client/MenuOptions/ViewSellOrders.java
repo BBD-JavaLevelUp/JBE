@@ -4,20 +4,17 @@ import java.util.Date;
 import java.util.Scanner;
 
 import com.jbe.client.MainMenu;
-import com.jbe.client.RestApiHandler;
 import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
 
 public class ViewSellOrders{
     private static Scanner scanner = new Scanner(System.in);
     public Investor currentInvestor;
-    public RestApiHandler restApiHandler;
     public ArrayList<SellOrder> sellOrders = new ArrayList<>();
 
 
-    public ViewSellOrders(Investor currentInvestor,RestApiHandler restApiHandler){
+    public ViewSellOrders(Investor currentInvestor){
         this.currentInvestor = currentInvestor;
-        this.restApiHandler = restApiHandler;
         // Creating SellOrder instances
         SellOrder sellOrder1 = new SellOrder(1, 101, 201, 10.50, 50, 100, new Date(), true);
         SellOrder sellOrder2 = new SellOrder(2, 102, 202, 12.75, 30, 50, new Date(), true);
@@ -68,11 +65,11 @@ public class ViewSellOrders{
 
         private void handleChoice(int choice){
             if(choice == 0){
-                MainMenu.display(currentInvestor, restApiHandler);
+                MainMenu.display(currentInvestor);
             }
             SellOrder sellOrder = sellOrders.get(choice-1);
             System.out.println("Sell order accepted");
-            MainMenu.display(currentInvestor, restApiHandler);
+            MainMenu.display(currentInvestor);
         }
     }
 
