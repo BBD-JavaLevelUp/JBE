@@ -17,7 +17,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: .
+        working-directory: ./terraform
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
@@ -52,7 +52,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -var="my_ip=${{secrets.MY_IP}}" -var="db_username=${{secrets.DB_USERNAME}}" -var="db_password=${{secrets.DB_PASSWORD}}" -var="public_key=${{secrets.PUBLIC_KEY}}"
         if: github.event_name == 'pull_request'
         continue-on-error: true
 
