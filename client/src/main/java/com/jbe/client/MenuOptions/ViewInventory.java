@@ -2,18 +2,14 @@ package com.jbe.client.MenuOptions;
 import java.util.Scanner;
 
 import com.jbe.client.MainMenu;
-import com.jbe.client.RestApiHandler;
 import com.jbe.client.Models.Investor;
 
 public class ViewInventory {
     private static Scanner scanner = new Scanner(System.in);
     public Investor currentInvestor;
-    public RestApiHandler restApiHandler;
     
-    public ViewInventory(Investor currentInvestor,RestApiHandler restApiHandler){
+    public ViewInventory(Investor currentInvestor){
         this.currentInvestor = currentInvestor;
-
-        this.restApiHandler = restApiHandler;
     }
 
     public void display() {
@@ -43,7 +39,7 @@ public class ViewInventory {
     
             switch (choice) {
                 case 0:
-                    MainMenu.display(currentInvestor, restApiHandler);
+                    MainMenu.display(currentInvestor);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

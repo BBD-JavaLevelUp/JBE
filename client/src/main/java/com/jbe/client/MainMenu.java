@@ -3,13 +3,14 @@ package com.jbe.client;
 import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.ViewInventory;
+import com.jbe.client.MenuOptions.ViewSellOrders;
 import com.jbe.client.Models.Investor;
 
 public class MainMenu {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void display(Investor currentInvestor,RestApiHandler restApiHandler) {
+    public static void display(Investor currentInvestor) {
     while (true) {
         System.out.println("\nMain Menu:");
         if (currentInvestor == null) {
@@ -50,7 +51,7 @@ public class MainMenu {
                 if (currentInvestor == null) {
                     System.out.println("signing up");
                 } else {
-                    ViewInventory vi = new ViewInventory(currentInvestor, restApiHandler);
+                    ViewInventory vi = new ViewInventory(currentInvestor);
                     vi.display();
                 }
                 break;
@@ -69,9 +70,13 @@ public class MainMenu {
                     System.out.println("viewing transactions");
                 }
                 break;
+            case 6:
+                ViewSellOrders vso = new ViewSellOrders(currentInvestor);
+                vso.display();
+                break;    
             case 11:
-            currentInvestor = null;
-            break;
+                currentInvestor = null;
+                break;
             default:
                 System.out.println("Invalid choice. Please try again.\n");
         }
