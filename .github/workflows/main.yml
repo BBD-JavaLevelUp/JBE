@@ -99,8 +99,8 @@ jobs:
       - name: Store public DNS
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
         run: |
-          web_public_dns=$(terraform output web_public_dns)
-          echo "WEB_PUBLIC_DNS=$web_public_dns" >> $GITHUB_ENV
+          web_public_dns=$(terraform output -raw web_public_dns)
+          echo "WEB_PUBLIC_DNS=${web_public_dns}" >> $GITHUB_ENV
 
       - name: Create/Update Github Secret
         uses: actions/github-script@v7
