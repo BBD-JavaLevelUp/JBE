@@ -10,7 +10,7 @@ permissions:
       pull-requests: write # This is required for gh bot to comment PR
 env:
   TF_LOG: INFO
-  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_REGION: eu-west-1
 jobs:
   provision:
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: eu-west-1
           role-session-name: GitHub-OIDC-TERRAFORM
 
       - name: Setup Terraform
