@@ -18,9 +18,9 @@ public class RestApiHandler {
     }
     public static ArrayList<Bean> getAllBeans() {
         ArrayList<Bean> beans = new ArrayList<>();
-        beans.add(new Bean(1, "Coffee beans", 10.99));
-        beans.add(new Bean(2, "Baked beans", 8.99));
-        beans.add(new Bean(3, "More beans", 12.99));
+        beans.add(new Bean(1, "Coffee beans", new BigDecimal(10.99)));
+        beans.add(new Bean(2, "Baked beans", new BigDecimal(8.99)));
+        beans.add(new Bean(3, "More beans", new BigDecimal(12.99)));
         return beans;
     }
 

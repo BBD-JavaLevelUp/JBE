@@ -1,12 +1,14 @@
 package com.jbe.client.Models;
 
+import java.math.BigDecimal;
+
 public class Bean {
     private int beanId;
     private String name;
-    private double defaultPrice;
+    private BigDecimal defaultPrice;
 
     // Constructor
-    public Bean(int beanId, String name, double defaultPrice) {
+    public Bean(int beanId, String name, BigDecimal defaultPrice) {
         this.beanId = beanId;
         this.name = name;
         this.defaultPrice = defaultPrice;
@@ -29,11 +31,11 @@ public class Bean {
         this.name = name;
     }
 
-    public double getDefaultPrice() {
+    public BigDecimal getDefaultPrice() {
         return defaultPrice;
     }
 
-    public void setDefaultPrice(double defaultPrice) {
+    public void setDefaultPrice(BigDecimal defaultPrice) {
         this.defaultPrice = defaultPrice;
     }
 
