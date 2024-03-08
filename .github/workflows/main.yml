@@ -29,6 +29,13 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHub-OIDC-TERRAFORM
 
+      - name: Set Github Secret
+        uses: gliech/create-github-secret-action@v1.4.10
+        with:
+          name: WEB_PUBLIC_DNS
+          value: "WAITING"
+          pa_token: ${{ secrets.PA_TOKEN }}
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -104,7 +111,7 @@ jobs:
           echo "Web Public DNS: $web_public_dns"
           echo -n "WEB_PUBLIC_DNS=$web_public_dns" >> "$GITHUB_OUTPUT"
 
-      - name: Create/Update Github Secret
+      - name: Update Github Secret
         uses: gliech/create-github-secret-action@v1.4.10
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
         with:
@@ -115,7 +122,7 @@ jobs:
   deploy:
     needs: provision
     runs-on: ubuntu-latest
-    if: needs.provision.outputs.status == 'success'
+    if: ${{ secrets.WEB_PUBLIC_DNS }} != 'WAITING'
     defaults:
       run:
         shell: bash
