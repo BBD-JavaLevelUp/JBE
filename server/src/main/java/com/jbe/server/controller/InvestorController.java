@@ -1,4 +1,4 @@
-package com.jbe.controller;
+package com.jbe.server.controller;
 
 public class InvestorController {
 }

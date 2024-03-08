@@ -1,6 +1,6 @@
-package com.jbe.repository;
+package com.jbe.server.repository;
 
-import com.jbe.entity.Bean;
+import com.jbe.server.entity.Bean;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
