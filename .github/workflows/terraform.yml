@@ -12,7 +12,7 @@ env:
   TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
 jobs:
-  deploy:
+  provision:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -91,14 +91,19 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+    steps:
       - name: Terraform Apply
         id: apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -var="my_ip=${{secrets.MY_IP}}" -var="db_username=${{secrets.DB_USERNAME}}" -var="db_password=${{secrets.DB_PASSWORD}}" -var="public_key=${{secrets.PUBLIC_KEY}}"
 
       - name: Store public DNS
-        if: steps.apply.outcome != 'failure'
         run: |
           web_public_dns=$(terraform output web_public_dns)
           echo "WEB_PUBLIC_DNS=$web_public_dns" >> $GITHUB_ENV
@@ -106,8 +111,6 @@ jobs:
       - name: Create/Update Github Secret
         uses: actions/github-script@v6
         if: success()
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           script: |
             github.secrets.createOrUpdateSecret({
