@@ -127,7 +127,7 @@ jobs:
           cache: maven
 
       - name: Build Spring application
-        run: mvn package -D spring
+        run: mvn package
 
       # Deploy to EC2 instance
       - name: Deploy to EC2 (SCP)
