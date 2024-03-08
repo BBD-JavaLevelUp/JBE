@@ -115,8 +115,8 @@ resource "aws_security_group" "jbe_web_sg" {
 
   ingress {
     description = "Allow all traffic through HTTP"
-    from_port = "8080"
-    to_port = "8080"
+    from_port = "80"
+    to_port = "80"
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -126,7 +126,7 @@ resource "aws_security_group" "jbe_web_sg" {
     from_port = "22"
     to_port = "22"
     protocol = "tcp"
-    cidr_blocks = ["${var.my_ip}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -233,6 +233,10 @@ resource "aws_instance" "jbe_web" {
   subnet_id = aws_subnet.jbe_public_subnet[count.index].id
   key_name = aws_key_pair.jbe_kp.key_name
   vpc_security_group_ids = [aws_security_group.jbe_web_sg.id]
+
+  user_data = <<EOF
+  $(base64 < install-java.sh)
+  EOF
 
   tags = {
     Name = "jbe_web"

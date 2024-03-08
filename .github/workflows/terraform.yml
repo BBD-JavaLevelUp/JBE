@@ -1,4 +1,4 @@
-name: "Terraform action"
+name: "Terraform"
 on:
   push:
     branches:
@@ -33,11 +33,6 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.7.3
-
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check
-        continue-on-error: true
 
       - name: Terraform Init
         id: init
@@ -98,5 +93,25 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
+        id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -var="my_ip=${{secrets.MY_IP}}" -var="db_username=${{secrets.DB_USERNAME}}" -var="db_password=${{secrets.DB_PASSWORD}}" -var="public_key=${{secrets.PUBLIC_KEY}}"
+
+      - name: Store public DNS
+        if: steps.apply.outcome != 'failure'
+        run: |
+          web_public_dns=$(terraform output web_public_dns)
+          echo "WEB_PUBLIC_DNS=$web_public_dns" >> $GITHUB_ENV
+
+      - name: Create/Update Github Secret
+        uses: actions/github-script@v6
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          script: |
+            github.secrets.createOrUpdateSecret({
+              name: 'WEB_PUBLIC_DNS',
+              secret: process.env.WEB_PUBLIC_DNS,
+              visibility: 'public',
+            })
