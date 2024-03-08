@@ -1,4 +1,4 @@
-package com.jbe.entity;
+package com.jbe.server.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,14 +9,15 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 @Entity
-public class BuyOrder {
+public class SellOrder {
+
     @Id
     @GeneratedValue
-    private int buyOrderId;
-    private int buyingInvestorId;
+    private int sellOrderId;
+    private int sellingInvestorId;
     private int beanId;
 
-    private BigDecimal buyingPrice;
+    private BigDecimal sellingPrice;
 
     private long availableAmount;
 
@@ -24,51 +25,51 @@ public class BuyOrder {
     private OffsetDateTime orderDate;
     private boolean isActive;
 
-    public BuyOrder(int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
-        this.buyingInvestorId = buyingInvestorId;
+    public SellOrder(int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+        this.sellingInvestorId = sellingInvestorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.sellingPrice = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
         this.isActive = isActive;
     }
 
-    public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
-        this.buyingInvestorId = buyingInvestorId;
+    public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+        this.sellingInvestorId = sellingInvestorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.sellingPrice = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
         this.isActive = isActive;
     }
 
-    public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive, OffsetDateTime orderDate){
-        this.buyOrderId = buyOrderId;
-        this.buyingInvestorId = buyingInvestorId;
+    public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive, OffsetDateTime orderDate){
+        this.sellOrderId = sellOrderId;
+        this.sellingInvestorId = sellingInvestorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.sellingPrice = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
         this.isActive = isActive;
     }
 
-    public int getBuyOrderId() {
-        return buyOrderId;
+    public int getSellOrderId() {
+        return sellOrderId;
     }
 
-    public void setBuyOrderID(int buyOrderId) {
-        this.buyOrderId = buyOrderId;
+    public void setSellOrderId(int sellOrderId) {
+        this.sellOrderId = sellOrderId;
     }
 
-    public int getBuyingInvestorId() {
-        return buyingInvestorId;
+    public int getSellingInvestorId() {
+        return sellingInvestorId;
     }
 
-    public void setBuyingInvestorId(int buyingInvestorId) {
-        this.buyingInvestorId = buyingInvestorId;
+    public void setSellingInvestorId(int sellingInvestorId) {
+        this.sellingInvestorId = sellingInvestorId;
     }
 
     public int getBeanId() {
@@ -79,12 +80,12 @@ public class BuyOrder {
         this.beanId = beanId;
     }
 
-    public BigDecimal getBuyingPrice() {
-        return buyingPrice;
+    public BigDecimal getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setSellingPrice(BigDecimal buyingPrice) {
-        this.buyingPrice = buyingPrice;
+    public void setSellingPrice(BigDecimal sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public Long getAvailableAmount() {
