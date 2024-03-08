@@ -22,6 +22,9 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
 
+      - name: Install and Configure GitHub CLI
+        uses: actions/setup-gh@v4 
+
       - name: Configure AWS credentials from AWS account
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -58,7 +61,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             <details><summary>Validation Output</summary>
@@ -104,13 +106,45 @@ jobs:
           echo "WEB_PUBLIC_DNS=$web_public_dns" >> $GITHUB_ENV
 
       - name: Create/Update Github Secret
-        uses: actions/github-script@v6
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
+        run: |
+          web_public_dns=$(terraform output web_public_dns)
+    
+          if [[ -z "$web_public_dns" ]]; then
+            echo "Web_public_dns not available. Skipping secret creation."
+            exit 0
+          fi
+
+          echo "$web_public_dns" | gh secret set WEB_PUBLIC_DNS -f
+    
+          echo "WEB_PUBLIC_DNS secret creation successful"
+
+  deploy:
+    needs: provision
+    runs-on: ubuntu-latest
+    if: needs.provision.outputs == 'WEB_PUBLIC_DNS secret creation successful'
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./server
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      #Set up java
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
         with:
-          script: |
-            github.secrets.createOrUpdateSecret({
-              name: 'WEB_PUBLIC_DNS',
-              secret: process.env.WEB_PUBLIC_DNS,
-              visibility: 'public',
-            })
-      
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build Spring application
+        run: mvn package -D spring
+
+      # Deploy to EC2 instance
+      - name: Deploy to EC2 (SCP)
+        run: |
+          scp -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" "target/server.jar" ubuntu@${{ secrets.WEB_PUBLIC_DNS }}:jbe/
+          ssh -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" ubuntu@${{ secrets.WEB_PUBLIC_DNS }}
+          sudo kill -9 `sudo lsof -t -i:80` & sudo java -jar /jbe/server.jar &
