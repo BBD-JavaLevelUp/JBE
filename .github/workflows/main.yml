@@ -105,22 +105,12 @@ jobs:
           echo -n "WEB_PUBLIC_DNS=$web_public_dns" >> "$GITHUB_OUTPUT"
 
       - name: Create/Update Github Secret
-        uses: actions/github-script@v7
+        uses: gliech/create-github-secret-action@v1.4.10
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
         with:
-          script: |
-            let status;
-            try {
-              github.secrets.createOrUpdateSecret({
-                name: 'WEB_PUBLIC_DNS',
-                secret: ${{ steps.store.outputs.WEB_PUBLIC_DNS }},
-                visibility: 'public',
-              });
-              status = 'success';
-            } catch (error) {
-              status = 'failure';
-            }
-            core.setOutput('status', status);
+          name: WEB_PUBLIC_DNS
+          value: steps.store.WEB_PUBLIC_DNS
+          pa_token: ${{ secrets.PA_TOKEN }}
 
   deploy:
     needs: provision
