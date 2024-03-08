@@ -2,7 +2,7 @@ package com.jbe.service;
 
 import com.jbe.entity.Bean;
 import org.springframework.stereotype.Service;
-import com.jbe.repository.BeanRepository
+import com.jbe.repository.BeanRepository;
 
 import java.util.List;
 
