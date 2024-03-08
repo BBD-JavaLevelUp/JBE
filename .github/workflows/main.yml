@@ -1,4 +1,4 @@
-name: "Terraform"
+name: Terraform
 on:
   push:
     branches:
@@ -58,8 +58,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             <details><summary>Validation Output</summary>
 
@@ -91,30 +90,62 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-  deploy:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./terraform
-    steps:
+
       - name: Terraform Apply
         id: apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -var="my_ip=${{secrets.MY_IP}}" -var="db_username=${{secrets.DB_USERNAME}}" -var="db_password=${{secrets.DB_PASSWORD}}" -var="public_key=${{secrets.PUBLIC_KEY}}"
 
       - name: Store public DNS
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
         run: |
           web_public_dns=$(terraform output web_public_dns)
           echo "WEB_PUBLIC_DNS=$web_public_dns" >> $GITHUB_ENV
 
       - name: Create/Update Github Secret
-        uses: actions/github-script@v6
-        if: success()
+        uses: actions/github-script@v7
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
         with:
           script: |
-            github.secrets.createOrUpdateSecret({
-              name: 'WEB_PUBLIC_DNS',
-              secret: process.env.WEB_PUBLIC_DNS,
-              visibility: 'public',
-            })
+            let status;
+            try {
+              github.secrets.createOrUpdateSecret({
+                name: 'WEB_PUBLIC_DNS',
+                secret: process.env.WEB_PUBLIC_DNS,
+                visibility: 'public',
+              });
+              status = 'success';
+            } catch (error) {
+              status = 'failure';
+            }
+            core.setOutput('status', status);
+
+  deploy:
+    needs: provision
+    runs-on: ubuntu-latest
+    if: needs.provision.outputs.status == 'success'
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./server
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      #Set up java
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build Spring application
+        run: mvn package -D spring
+
+      # Deploy to EC2 instance
+      - name: Deploy to EC2 (SCP)
+        run: |
+          scp -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" "target/server.jar" ubuntu@${{ secrets.WEB_PUBLIC_DNS }}:jbe/
+          ssh -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" ubuntu@${{ secrets.WEB_PUBLIC_DNS }}
+          sudo kill -9 `sudo lsof -t -i:80` & sudo java -jar /jbe/server.jar &
