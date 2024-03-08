@@ -1,19 +1,20 @@
 package com.jbe.client.Models;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 public class SellOrder {
     private int sellOrderId;
     private int investorId;
     private int beanId;
-    private double sellingPrice;
-    private int availableAmount;
-    private int totalAmount;
-    private Date sellOrderDate;
+    private BigDecimal sellingPrice;
+    private long availableAmount;
+    private long totalAmount;
+    private OffsetDateTime sellOrderDate;
     private boolean isActive;
 
     // Constructor
-    public SellOrder(int sellOrderId, int investorId, int beanId, double sellingPrice, int availableAmount, int totalAmount, Date sellOrderDate, boolean isActive) {
+    public SellOrder(int sellOrderId, int investorId, int beanId, BigDecimal sellingPrice, int availableAmount, int totalAmount, OffsetDateTime sellOrderDate, boolean isActive) {
         this.sellOrderId = sellOrderId;
         this.investorId = investorId;
         this.beanId = beanId;
@@ -49,15 +50,15 @@ public class SellOrder {
         this.beanId = beanId;
     }
 
-    public double getSellingPrice() {
+    public BigDecimal getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) {
+    public void setSellingPrice(BigDecimal sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public int getAvailableAmount() {
+    public long getAvailableAmount() {
         return availableAmount;
     }
 
@@ -65,7 +66,7 @@ public class SellOrder {
         this.availableAmount = availableAmount;
     }
 
-    public int getTotalAmount() {
+    public long getTotalAmount() {
         return totalAmount;
     }
 
@@ -73,11 +74,11 @@ public class SellOrder {
         this.totalAmount = totalAmount;
     }
 
-    public Date getSellOrderDate() {
+    public OffsetDateTime getSellOrderDate() {
         return sellOrderDate;
     }
 
-    public void setSellOrderDate(Date sellOrderDate) {
+    public void setSellOrderDate(OffsetDateTime sellOrderDate) {
         this.sellOrderDate = sellOrderDate;
     }
 

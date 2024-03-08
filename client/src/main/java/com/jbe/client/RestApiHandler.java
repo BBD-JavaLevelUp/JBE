@@ -1,7 +1,8 @@
 package com.jbe.client;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.SellOrder;
@@ -10,10 +11,9 @@ public class RestApiHandler {
 
     public static ArrayList<SellOrder> getAllSellOrders() {
         ArrayList<SellOrder> sellOrders = new ArrayList<>();
-        sellOrders.add(new SellOrder(1, 101, 1, 1000.50, 50, 100, new Date(), true));
-        sellOrders.add(new SellOrder(2, 102, 2, 120.75, 30, 50, new Date(), true));
-        sellOrders.add(new SellOrder(3, 103, 3, 90.25, 40, 80, new Date(), true));
-        
+        sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("10.50"), 100, 200, OffsetDateTime.now(), true));
+        sellOrders.add(new SellOrder(2, 102, 2, new BigDecimal("12.75"), 150, 250, OffsetDateTime.now(), true));
+        sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("9.25"), 80, 180, OffsetDateTime.now(), true));
         return sellOrders;
     }
     public static ArrayList<Bean> getAllBeans() {
