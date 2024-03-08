@@ -4,6 +4,7 @@ import com.jbe.server.entity.Bean;
 import org.springframework.stereotype.Service;
 import com.jbe.server.repository.BeanRepository;
 
+
 import java.util.List;
 
 @Service
