@@ -1,8 +1,9 @@
-name: "Spring Deployment"
+name: Spring Deployment
 on: 
   workflow_run:
-    workflows: [ Terraform ]
-    types: [ completed ]
+    workflows: [ "Terraform" ]
+    types:
+      - completed
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -14,11 +15,13 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      # Configure Maven and build Spring application
-      - name: Set up Maven
-        uses: maven/maven-action@v3
+      #Set up java
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
         with:
-          maven: 3.9.x
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
       - name: Build Spring application
         run: mvn package -D spring
