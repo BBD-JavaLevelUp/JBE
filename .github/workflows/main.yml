@@ -22,9 +22,6 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      - name: Install and Configure GitHub CLI
-        uses: actions/setup-gh@v4 
-
       - name: Configure AWS credentials from AWS account
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -106,23 +103,27 @@ jobs:
           echo "WEB_PUBLIC_DNS=$web_public_dns" >> $GITHUB_ENV
 
       - name: Create/Update Github Secret
+        uses: actions/github-script@v7
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
-        run: |
-          web_public_dns=$(terraform output web_public_dns)
-    
-          if [[ -z "$web_public_dns" ]]; then
-            echo "Web_public_dns not available. Skipping secret creation."
-            exit 0
-          fi
-
-          echo "$web_public_dns" | gh secret set WEB_PUBLIC_DNS -f
-    
-          echo "WEB_PUBLIC_DNS secret creation successful"
+        with:
+          script: |
+            let status;
+            try {
+              github.secrets.createOrUpdateSecret({
+                name: 'WEB_PUBLIC_DNS',
+                secret: process.env.WEB_PUBLIC_DNS,
+                visibility: 'public',
+              });
+              status = 'success';
+            } catch (error) {
+              status = 'failure';
+            }
+            core.setOutput('status', status);
 
   deploy:
     needs: provision
     runs-on: ubuntu-latest
-    if: needs.provision.outputs == 'WEB_PUBLIC_DNS secret creation successful'
+    if: needs.provision.outputs.status == 'success'
     defaults:
       run:
         shell: bash
