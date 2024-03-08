@@ -14,6 +14,8 @@ env:
 jobs:
   provision:
     runs-on: ubuntu-latest
+    outputs:
+      web_public_dns: ${{ steps.store.outputs.web_public_dns }}
     defaults:
       run:
         shell: bash
@@ -28,13 +30,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHub-OIDC-TERRAFORM
-
-      - name: Set Github Secret
-        uses: gliech/create-github-secret-action@v1.4.10
-        with:
-          name: WEB_PUBLIC_DNS
-          value: "WAITING"
-          pa_token: ${{ secrets.PA_TOKEN }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -109,20 +104,12 @@ jobs:
         run: |
           web_public_dns="$(terraform output -raw web_public_dns)"
           echo "Web Public DNS: $web_public_dns"
-          echo -n "WEB_PUBLIC_DNS=$web_public_dns" >> "$GITHUB_OUTPUT"
-
-      - name: Update Github Secret
-        uses: gliech/create-github-secret-action@v1.4.10
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
-        with:
-          name: WEB_PUBLIC_DNS
-          value: steps.store.WEB_PUBLIC_DNS
-          pa_token: ${{ secrets.PA_TOKEN }}
+          echo -n "web_public_dns=$web_public_dns" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: provision
+    if: needs.provision.outputs.web_public_dns != ''
     runs-on: ubuntu-latest
-    if: ${{ secrets.WEB_PUBLIC_DNS }} != 'WAITING'
     defaults:
       run:
         shell: bash
@@ -145,6 +132,6 @@ jobs:
       # Deploy to EC2 instance
       - name: Deploy to EC2 (SCP)
         run: |
-          scp -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" "target/server.jar" ubuntu@${{ secrets.WEB_PUBLIC_DNS }}:jbe/
-          ssh -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" ubuntu@${{ secrets.WEB_PUBLIC_DNS }}
+          scp -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" "target/server.jar" ubuntu@${{ needs.provision.outputs.web_public_dns }}:jbe/
+          ssh -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" ubuntu@${{ needs.provision.outputs.web_public_dns }}
           sudo kill -9 `sudo lsof -t -i:80` & sudo java -jar /jbe/server.jar &
