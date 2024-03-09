@@ -10,11 +10,6 @@ public class ViewSellOrders{
     private static Scanner scanner = new Scanner(System.in);
     public ArrayList<SellOrder> sellOrders = RestApiHandler.getAllSellOrders();
 
-
-    public ViewSellOrders(){
-
-    }
-
     public void display() {
         System.out.println("\nAll sell orders");
         subMenu();
