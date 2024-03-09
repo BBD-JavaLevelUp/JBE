@@ -22,9 +22,9 @@ public class ViewSellOrders{
 
     public void subMenu(){
         while (true) {
-            System.out.println("\n0. Go back to Main Menu");
             printSellOrders();
-            System.out.print("Select sell order you want to accept: ");
+            System.out.println("0. Go back to Main Menu");
+            System.out.print("\nSelect sell order you want to accept: ");
             int choice = -1;
     
             try {

@@ -30,7 +30,7 @@ public class MainMenu {
             System.out.println("10. Buy from JBE");
             System.out.println("11. Logout");
         }
-        System.out.print("Enter your choice: ");
+        System.out.print("\nEnter your choice: ");
         int choice = -1; // Default to an invalid choice
 
         try {

@@ -21,9 +21,9 @@ public class ViewInventory {
 
     public void subMenu(){
         while (true) {
-            System.out.println("\n0. Go back to Main Menu");
             printInventory();
-            System.out.print("Enter your choice: ");
+            System.out.println("0. Go back to Main Menu");
+            System.out.print("\nEnter your choice: ");
             int choice = -1; // Default to an invalid choice
     
             try {
