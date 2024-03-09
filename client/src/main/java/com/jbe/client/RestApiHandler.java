@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 import com.jbe.client.Models.Bean;
+import com.jbe.client.Models.InventoryItem;
 import com.jbe.client.Models.SellOrder;
 
 public class RestApiHandler {
@@ -32,6 +33,14 @@ public class RestApiHandler {
             }
         }
         return null; // Bean with given beanId not found
+    }
+    public static ArrayList<InventoryItem> getInventory() {
+      // call api using current investor api
+      ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
+      inventoryItems.add(new InventoryItem(1, "Arabica Beans", 100));
+      inventoryItems.add(new InventoryItem(2, "Cool beans", 200));
+      inventoryItems.add(new InventoryItem(3, "Senzu beans", 150));
+      return inventoryItems;
     }
     
 }
