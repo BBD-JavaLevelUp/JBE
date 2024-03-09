@@ -70,10 +70,10 @@ public class ViewSellOrders{
             }
             SellOrder sellOrder = sellOrders.get(choice-1);
             if(viewingOwn){
-                System.out.println("Sell order deleted");
+                RestApiHandler.deleteSellOrder(sellOrder.getSellOrderId());
             }
             else{
-                System.out.println("Sell order accepted");
+                RestApiHandler.acceptSellOrder(sellOrder.getSellOrderId());
             }
             MainMenu.display();
         }

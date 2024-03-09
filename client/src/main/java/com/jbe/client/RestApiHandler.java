@@ -49,5 +49,11 @@ public class RestApiHandler {
         sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("587"), 78, 100, OffsetDateTime.now(), true));
         return sellOrders;
     }
+    public static void deleteSellOrder(int sellOrderId) {
+        System.out.println("Sell order deleted");
+    }
+    public static void acceptSellOrder(int sellOrderId) {
+        System.out.println("Sell order accepted");
+    }
     
 }
