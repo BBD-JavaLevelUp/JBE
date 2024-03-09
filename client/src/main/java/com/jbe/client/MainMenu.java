@@ -4,16 +4,16 @@ import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.ViewInventory;
 import com.jbe.client.MenuOptions.ViewSellOrders;
-import com.jbe.client.Models.Investor;
+
 
 public class MainMenu {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void display(Investor currentInvestor) {
+    public static void display() {
     while (true) {
         System.out.println("\nMain Menu:");
-        if (currentInvestor == null) {
+        if (!CurrentInvestor.signedIn) {
             System.out.println("1. Sign Up");
             System.out.println("2. Sign In");
             System.out.println("3. Exit");
@@ -30,7 +30,7 @@ public class MainMenu {
             System.out.println("10. Buy from JBE");
             System.out.println("11. Logout");
         }
-        System.out.print("Enter your choice: ");
+        System.out.print("\nEnter your choice: ");
         int choice = -1; // Default to an invalid choice
 
         try {
@@ -41,29 +41,29 @@ public class MainMenu {
             continue; // Skip to the next iteration of the loop immediately
         }
 
-        if (currentInvestor == null && (choice < 1 || choice > 3)) {
+        if (!CurrentInvestor.signedIn && (choice < 1 || choice > 3)) {
             System.out.println("Please sign in or sign up to access this feature.");
             continue; // Skip the rest of the loop and show the menu again
         }
 
         switch (choice) {
             case 1:
-                if (currentInvestor == null) {
-                    System.out.println("signing up");
+                if (!CurrentInvestor.signedIn) {
+                    CurrentInvestor.signUp();
                 } else {
-                    ViewInventory vi = new ViewInventory(currentInvestor);
+                    ViewInventory vi = new ViewInventory();
                     vi.display();
                 }
                 break;
             case 2:
-                if (currentInvestor == null) {
-                    currentInvestor = new Investor();
+                if (!CurrentInvestor.signedIn) {
+                    CurrentInvestor.signIn();
                 } else {
                     System.out.println("viewing profit/loss");
                 }
                 break;
             case 3:
-                if (currentInvestor == null) {
+                if (!CurrentInvestor.signedIn) {
                     System.out.println("Exiting...");
                     System.exit(0);
                 } else {
@@ -71,11 +71,11 @@ public class MainMenu {
                 }
                 break;
             case 6:
-                ViewSellOrders vso = new ViewSellOrders(currentInvestor);
+                ViewSellOrders vso = new ViewSellOrders();
                 vso.display();
                 break;    
             case 11:
-                currentInvestor = null;
+                CurrentInvestor.signOut();
                 break;
             default:
                 System.out.println("Invalid choice. Please try again.\n");

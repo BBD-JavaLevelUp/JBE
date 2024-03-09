@@ -4,18 +4,11 @@ import java.util.Scanner;
 
 import com.jbe.client.MainMenu;
 import com.jbe.client.RestApiHandler;
-import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
 
 public class ViewSellOrders{
     private static Scanner scanner = new Scanner(System.in);
-    public Investor currentInvestor;
     public ArrayList<SellOrder> sellOrders = RestApiHandler.getAllSellOrders();
-
-
-    public ViewSellOrders(Investor currentInvestor){
-        this.currentInvestor = currentInvestor;
-    }
 
     public void display() {
         System.out.println("\nAll sell orders");
@@ -24,9 +17,9 @@ public class ViewSellOrders{
 
     public void subMenu(){
         while (true) {
-            System.out.println("\n0. Go back to Main Menu");
             printSellOrders();
-            System.out.print("Select sell order you want to accept: ");
+            System.out.println("0. Go back to Main Menu");
+            System.out.print("\nSelect sell order you want to accept: ");
             int choice = -1;
     
             try {
@@ -56,11 +49,11 @@ public class ViewSellOrders{
 
         private void handleChoice(int choice){
             if(choice == 0){
-                MainMenu.display(currentInvestor);
+                MainMenu.display();
             }
             SellOrder sellOrder = sellOrders.get(choice-1);
             System.out.println("Sell order accepted");
-            MainMenu.display(currentInvestor);
+            MainMenu.display();
         }
     }
 
