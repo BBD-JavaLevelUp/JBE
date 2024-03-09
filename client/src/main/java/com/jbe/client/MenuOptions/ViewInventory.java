@@ -5,15 +5,13 @@ import java.util.Scanner;
 import com.jbe.client.MainMenu;
 import com.jbe.client.RestApiHandler;
 import com.jbe.client.Models.InventoryItem;
-import com.jbe.client.Models.Investor;
 
 public class ViewInventory {
     private static Scanner scanner = new Scanner(System.in);
-    public Investor currentInvestor;
     public ArrayList<InventoryItem>  inventoryItems = RestApiHandler.getInventory();
     
-    public ViewInventory(Investor currentInvestor){
-        this.currentInvestor = currentInvestor;
+    public ViewInventory(){
+    
     }
 
     public void display() {
@@ -37,7 +35,7 @@ public class ViewInventory {
             }
             switch (choice) {
                 case 0:
-                    MainMenu.display(currentInvestor);
+                    MainMenu.display();
                     break;
                 default:
                     System.out.println("Either you go back or just keep viewing your inventory");
