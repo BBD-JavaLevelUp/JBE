@@ -30,4 +30,4 @@ jobs:
       run: mvn package
       
     - name: Excute Jar file
-      run: sudo kill -9 `sudo lsof -t -i:8095` & sudo java -jar /home/ubuntu/actions-runner/_work/shipping-rates-middleware/shipping-rates-middleware/target/server.jar &
+      run: sudo kill -9 `sudo lsof -t -i:8095` & sudo java -jar /home/ubuntu/actions-runner/_work/JBE/JBE/target/server.jar &
