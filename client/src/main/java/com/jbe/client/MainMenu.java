@@ -70,6 +70,10 @@ public class MainMenu {
                     System.out.println("viewing transactions");
                 }
                 break;
+            case 4:
+                ViewSellOrders mySellOrders = new ViewSellOrders(CurrentInvestor.getId());
+                mySellOrders.display();
+                break;   
             case 6:
                 ViewSellOrders vso = new ViewSellOrders();
                 vso.display();

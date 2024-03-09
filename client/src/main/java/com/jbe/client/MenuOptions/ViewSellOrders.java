@@ -8,7 +8,18 @@ import com.jbe.client.Models.SellOrder;
 
 public class ViewSellOrders{
     private static Scanner scanner = new Scanner(System.in);
-    public ArrayList<SellOrder> sellOrders = RestApiHandler.getAllSellOrders();
+    public ArrayList<SellOrder> sellOrders;
+    public boolean viewingOwn = false;
+
+    public ViewSellOrders(int id) {
+        sellOrders = RestApiHandler.getInvestorSellOrders(id);
+        viewingOwn = true;
+    }
+
+    // if an investorID is not provided we get all of the sell orders
+    public ViewSellOrders() {
+        sellOrders = RestApiHandler.getAllSellOrders();
+    }
 
     public void display() {
         System.out.println("\nAll sell orders");
@@ -19,7 +30,13 @@ public class ViewSellOrders{
         while (true) {
             printSellOrders();
             System.out.println("0. Go back to Main Menu");
-            System.out.print("\nSelect sell order you want to accept: ");
+            if(viewingOwn){
+                System.out.print("\nSelect sell order you want to delete: ");
+            }
+            else{
+                System.out.print("\nSelect sell order you want to accept: ");
+            }
+            
             int choice = -1;
     
             try {
@@ -52,7 +69,12 @@ public class ViewSellOrders{
                 MainMenu.display();
             }
             SellOrder sellOrder = sellOrders.get(choice-1);
-            System.out.println("Sell order accepted");
+            if(viewingOwn){
+                RestApiHandler.deleteSellOrder(sellOrder.getSellOrderId());
+            }
+            else{
+                RestApiHandler.acceptSellOrder(sellOrder.getSellOrderId());
+            }
             MainMenu.display();
         }
     }
