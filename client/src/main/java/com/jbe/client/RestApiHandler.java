@@ -42,5 +42,12 @@ public class RestApiHandler {
       inventoryItems.add(new InventoryItem(3, "Senzu beans", 150));
       return inventoryItems;
     }
+    public static ArrayList<SellOrder> getInvestorSellOrders(int id) {
+        ArrayList<SellOrder> sellOrders = new ArrayList<>();
+        sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("109"), 140, 200, OffsetDateTime.now(), true));
+        sellOrders.add(new SellOrder(2, 102, 2, new BigDecimal("75"), 10, 50, OffsetDateTime.now(), true));
+        sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("587"), 78, 100, OffsetDateTime.now(), true));
+        return sellOrders;
+    }
     
 }
