@@ -1,4 +1,4 @@
-name: Terraform
+name: Deploy
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ env:
   TF_LOG: INFO
   AWS_REGION: eu-west-1
 jobs:
-  provision:
+  terraform:
     runs-on: ubuntu-latest
     outputs:
       web_public_dns: ${{ steps.store.outputs.web_public_dns }}
@@ -106,10 +106,38 @@ jobs:
           echo "Web Public DNS: $web_public_dns"
           echo -n "web_public_dns=$web_public_dns" >> "$GITHUB_OUTPUT"
 
-  deploy:
-    needs: provision
-    if: needs.provision.outputs.web_public_dns != ''
+  spring-build:
+    needs: terraform
     runs-on: ubuntu-latest
+    env:
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./server
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      #Set up java
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build Spring application
+        run: mvn package
+
+  spring-deploy:
+    needs: [ terraform, spring-build ]
+    if: needs.terraform.outputs.web_public_dns != ''
+    runs-on: ubuntu-latest
+    env:
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     defaults:
       run:
         shell: bash
@@ -132,6 +160,6 @@ jobs:
       # Deploy to EC2 instance
       - name: Deploy to EC2 (SCP)
         run: |
-          scp -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" "target/server.jar" ubuntu@${{ needs.provision.outputs.web_public_dns }}:jbe/
-          ssh -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" ubuntu@${{ needs.provision.outputs.web_public_dns }}
+          scp -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" "target/server.jar" ubuntu@${{ needs.terraform.outputs.web_public_dns }}:jbe/
+          ssh -o StrictHostKeyChecking=no -i "${{ secrets.PRIVATE_KEY }}" ubuntu@${{ needs.terraform.outputs.web_public_dns }}
           sudo kill -9 `sudo lsof -t -i:80` & sudo java -jar /jbe/server.jar &
