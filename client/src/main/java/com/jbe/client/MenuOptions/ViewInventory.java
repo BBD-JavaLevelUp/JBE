@@ -38,11 +38,11 @@ public class ViewInventory {
             }
         }
         }
-        private void printInventory(){
-            for (int index = 0; index < inventoryItems.size(); index++) {
-                InventoryItem inventoryItem = inventoryItems.get(index);
-                System.out.println(index+1 + ". " + inventoryItem.getName() + " - " + inventoryItem.getAmount()) ;
-            }
+    public void printInventory(){
+        for (int index = 0; index < inventoryItems.size(); index++) {
+            InventoryItem inventoryItem = inventoryItems.get(index);
+            System.out.println(index+1 + ". " + inventoryItem.getName() + " - " + inventoryItem.getAmount()) ;
         }
+    }
     }
 

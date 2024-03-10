@@ -2,6 +2,7 @@ package com.jbe.client;
 
 import java.util.Scanner;
 
+import com.jbe.client.MenuOptions.CreateSellOrder;
 import com.jbe.client.MenuOptions.ViewInventory;
 import com.jbe.client.MenuOptions.ViewSellOrders;
 
@@ -25,8 +26,8 @@ public class MainMenu {
             System.out.println("5. View My Buy Orders"); 
             System.out.println("6. View All Sell Orders"); 
             System.out.println("7. View All Buy Orders");
-            System.out.println("8. Make a Sell Order");
-            System.out.println("9. Make a Buy Order");
+            System.out.println("8. Create a Sell Order");
+            System.out.println("9. Create a Buy Order");
             System.out.println("10. Buy from JBE");
             System.out.println("11. Logout");
         }
@@ -77,7 +78,11 @@ public class MainMenu {
             case 6:
                 ViewSellOrders vso = new ViewSellOrders();
                 vso.display();
-                break;    
+                break;
+            case 8:
+                CreateSellOrder cso = new CreateSellOrder();
+                cso.display();
+                break;      
             case 11:
                 CurrentInvestor.signOut();
                 break;
