@@ -55,5 +55,8 @@ public class RestApiHandler {
     public static void acceptSellOrder(int sellOrderId) {
         System.out.println("Sell order accepted");
     }
+    public static void CreateSellOrder(SellOrder newSellOrder) {
+        System.out.println("Sell order created!");
+    }
     
 }
