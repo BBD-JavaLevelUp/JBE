@@ -8,6 +8,7 @@ import com.jbe.client.MenuOptions.CreateSellOrder;
 import com.jbe.client.MenuOptions.ViewBuyOrders;
 import com.jbe.client.MenuOptions.ViewInventory;
 import com.jbe.client.MenuOptions.ViewSellOrders;
+import com.jbe.client.MenuOptions.ViewTransactions;
 
 
 public class MainMenu {
@@ -71,7 +72,8 @@ public class MainMenu {
                     System.out.println("Exiting...");
                     System.exit(0);
                 } else {
-                    System.out.println("viewing transactions");
+                    ViewTransactions vt = new ViewTransactions(CurrentInvestor.getId());
+                    vt.display();
                 }
                 break;
             case 4:

@@ -8,6 +8,7 @@ import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.BuyOrder;
 import com.jbe.client.Models.InventoryItem;
 import com.jbe.client.Models.SellOrder;
+import com.jbe.client.Models.TransactionItem;
 
 public class RestApiHandler {
 
@@ -93,6 +94,24 @@ public class RestApiHandler {
     }
     public static void CreateBuyOrder(BuyOrder newBuyOrder) {
         System.out.println("buy order created!");
+    }
+    public static ArrayList<TransactionItem> getTransactions(int id) {
+        ArrayList<TransactionItem> transactions = new ArrayList<>();
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Coffee Beans", 100, new BigDecimal("5.00"), "Tebogo", "Alice"));
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Tea Leaves", 50, new BigDecimal("3.50"), "Tebogo", "Eve"));
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Cocoa Beans", 80, new BigDecimal("7.20"), "Tebogo", "Mallory"));
+        return transactions;
+
+    }
+    public static ArrayList<TransactionItem> getAllTransactions() {
+        ArrayList<TransactionItem> transactions = new ArrayList<>();
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Coffee Beans", 100, new BigDecimal("5.00"), "John", "Alice"));
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Tea Leaves", 50, new BigDecimal("3.50"), "Bob", "Eve"));
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Cocoa Beans", 80, new BigDecimal("7.20"), "Charlie", "JBE"));
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Vanilla Beans", 120, new BigDecimal("8.50"), "David", "Frank"));
+        transactions.add(new TransactionItem(OffsetDateTime.now(), "Cherry Beans", 70, new BigDecimal("6.75"), "Emily", "JBE"));
+        return transactions;
+
     }
     
 }
