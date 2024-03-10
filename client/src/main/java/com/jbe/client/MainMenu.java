@@ -3,9 +3,12 @@ package com.jbe.client;
 import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.BuyBeansFromJBE;
+import com.jbe.client.MenuOptions.CreateBuyOrder;
 import com.jbe.client.MenuOptions.CreateSellOrder;
+import com.jbe.client.MenuOptions.ViewBuyOrders;
 import com.jbe.client.MenuOptions.ViewInventory;
 import com.jbe.client.MenuOptions.ViewSellOrders;
+import com.jbe.client.MenuOptions.ViewTransactions;
 
 
 public class MainMenu {
@@ -69,21 +72,34 @@ public class MainMenu {
                     System.out.println("Exiting...");
                     System.exit(0);
                 } else {
-                    System.out.println("viewing transactions");
+                    ViewTransactions vt = new ViewTransactions(CurrentInvestor.getId());
+                    vt.display();
                 }
                 break;
             case 4:
                 ViewSellOrders mySellOrders = new ViewSellOrders(CurrentInvestor.getId());
                 mySellOrders.display();
-                break;   
+                break;
+            case 5:
+                ViewBuyOrders myBuyOrders = new ViewBuyOrders(CurrentInvestor.getId());
+                myBuyOrders.display();
+                break;    
             case 6:
                 ViewSellOrders vso = new ViewSellOrders();
                 vso.display();
+                break;
+            case 7:
+                ViewBuyOrders vbo = new ViewBuyOrders();
+                vbo.display();
                 break;
             case 8:
                 CreateSellOrder cso = new CreateSellOrder();
                 cso.display();
                 break;
+            case 9:
+                CreateBuyOrder cbo = new CreateBuyOrder();
+                cbo.display();
+            break;            
             case 10:
                 BuyBeansFromJBE buyBeans = new BuyBeansFromJBE();
                 buyBeans.display();

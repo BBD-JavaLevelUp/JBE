@@ -8,13 +8,13 @@ import com.jbe.client.CurrentInvestor;
 import com.jbe.client.MainMenu;
 import com.jbe.client.RestApiHandler;
 import com.jbe.client.Models.InventoryItem;
-import com.jbe.client.Models.SellOrder;
+import com.jbe.client.Models.BuyOrder;
 
-public class CreateSellOrder{
+public class CreateBuyOrder{
     private static Scanner scanner = new Scanner(System.in);
     private ViewInventory vi;
 
-    public CreateSellOrder() {
+    public CreateBuyOrder() {
         vi = new ViewInventory();
     }
 
@@ -27,7 +27,7 @@ public class CreateSellOrder{
         while (true) {
             vi.printInventory();
             System.out.println("0. Go back to Main Menu");
-            System.out.print("\nSelect bean you want to create sell order on: ");
+            System.out.print("\nSelect bean you want to create buy order on: ");
             
             
             int choice = -1;
@@ -55,35 +55,31 @@ public class CreateSellOrder{
             }
             InventoryItem inventoryItem = vi.inventoryItems.get(choice-1);
 
-            // Ask for selling price
-            BigDecimal sellingPrice = null;
-            while (sellingPrice == null) {
+            // Ask for buying price
+            BigDecimal buyingPrice = null;
+            while (buyingPrice == null) {
                 try {
-                    System.out.print("Enter selling price: ");
-                    sellingPrice = scanner.nextBigDecimal();
+                    System.out.print("Enter buying price: ");
+                    buyingPrice = scanner.nextBigDecimal();
                 } catch (InputMismatchException e) {
                     System.out.println("Invalid input. Please enter a valid decimal.");
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
 
-            // Ask for amount of beans to sell
+            // Ask for amount of beans to buy
             int amount = -1;
             while (amount == -1) {
                 try {
                     System.out.print("Enter amount: ");
                     amount = scanner.nextInt();
-                    if (amount > inventoryItem.getAmount()) {
-                        System.out.println("Amount exceeds available inventory!");
-                        amount = -1; // Reset amount to trigger retry
-                    }
                 } catch (InputMismatchException e) {
                     System.out.println("Invalid input. Please enter a valid integer.");
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
-            SellOrder newSellOrder = new SellOrder(CurrentInvestor.getId(), inventoryItem.getBeanId(), sellingPrice, amount, amount, OffsetDateTime.now(), true);
-            RestApiHandler.CreateSellOrder(newSellOrder);
+            BuyOrder newBuyOrder = new BuyOrder(CurrentInvestor.getId(), inventoryItem.getBeanId(), buyingPrice, amount, amount, OffsetDateTime.now(), true);
+            RestApiHandler.CreateBuyOrder(newBuyOrder);
             MainMenu.display();
         }
     }
