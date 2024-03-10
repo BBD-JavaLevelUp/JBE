@@ -1,20 +1,16 @@
 package com.jbe.server.controller;
 
-import com.jbe.server.entity.SellOrder;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.jbe.server.service.SellOrderService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/sell-orders")
+@RequestMapping("/api/sellOrder")
 public class SellOrderController {
+    private final SellOrderService sellOrderService;
 
-    @GetMapping
-    public List<SellOrder> sellOrders()
-    {
-        return List.of(new SellOrder(0,0,0, BigDecimal.ZERO, 0L, 0L, true));
+    public SellOrderController(SellOrderService sellOrderService) {
+        this.sellOrderService = sellOrderService;
     }
+
 }
