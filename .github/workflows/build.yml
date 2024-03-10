@@ -19,14 +19,6 @@ jobs:
       - name: Move build folder
         run: mv $GITHUB_WORKSPACE/_build /home/ubuntu/actions-runner/
 
-      #Set up java
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-
       - name: Build Spring application
-        working-directory: /home/ubuntu/actions-runner/_build/server
         run: mvn package
+        working-directory: /home/ubuntu/actions-runner/_build/server
