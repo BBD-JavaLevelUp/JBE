@@ -1,10 +1,11 @@
 package com.jbe.server.repository;
 
 import com.jbe.server.entity.Bean;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface BeanRepository extends JpaRepository<Bean, Integer> {
 
-public interface BeanRepository extends CrudRepository<Bean, Long> {
-    List<Bean> findBeanByName(String beanName);
+//    List<Bean> findBeanByName(String beanName);
 }

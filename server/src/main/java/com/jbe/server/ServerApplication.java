@@ -10,4 +10,10 @@ public class ServerApplication {
 		SpringApplication.run(ServerApplication.class, args);
 	}
 
+//	private void insertBean(BeanRepository repository) {
+//		repository.save(new Bean("bean1", 5.01F));
+//		repository.save(new Bean("bean1", 6F));
+//		repository.save(new Bean("bean1", 7F));
+//	}
+
 }

@@ -1,61 +1,52 @@
 package com.jbe.server.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 
 @Entity
+@Table
 public class Bean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int beanId;
+    private int id;
     private String name;
-    private BigDecimal defaultPrice;
+    private Float defaultPrice;
 
     public Bean() {
     }
 
-    public Bean(int beanId, String name, BigDecimal defaultPrice) {
-        this.beanId = beanId;
+    public Bean(String name, Float defaultPrice) {
         this.name = name;
         this.defaultPrice = defaultPrice;
     }
 
-    public Bean(String name, BigDecimal defaultPrice) {
-        this.name = name;
-        this.defaultPrice = defaultPrice;
-    }
-
-    public int getBeanId() {
-        return beanId;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public BigDecimal getDefaultPrice() {
+    public Float getDefaultPrice() {
         return defaultPrice;
     }
 
-    public void setBeanId(int beanId) {
-        this.beanId = beanId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setDefaultPrice(BigDecimal defaultPrice) {
+    public void setDefaultPrice(Float defaultPrice) {
         this.defaultPrice = defaultPrice;
     }
 
     @Override
     public String toString() {
         return "Bean{" +
-                "id=" + beanId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", defaultPrice=" + defaultPrice +
                 '}';

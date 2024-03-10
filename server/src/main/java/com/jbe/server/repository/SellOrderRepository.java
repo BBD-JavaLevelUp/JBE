@@ -1,8 +1,10 @@
 package com.jbe.server.repository;
 
 import com.jbe.server.entity.SellOrder;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface SellOrderRepository extends CrudRepository<SellOrder, Long> {
+@Repository
+public interface SellOrderRepository extends JpaRepository<SellOrder, Integer> {
 
 }
