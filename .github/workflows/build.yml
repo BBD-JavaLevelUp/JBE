@@ -10,15 +10,14 @@ jobs:
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       DB_ENDPOINT: ${{ secrets.DB_ENDPOINT }}
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./server
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
         with:
           path: _build
+          
+      - name: Move build folder
+        run: mv $GITHUB_WORKSPACE/_build /home/ubuntu/actions-runner/
 
       #Set up java
       - name: Set up JDK 21
@@ -29,4 +28,5 @@ jobs:
           cache: maven
 
       - name: Build Spring application
+        working-directory: /home/ubuntu/actions-runner/_build/server
         run: mvn package
