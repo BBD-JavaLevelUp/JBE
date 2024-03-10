@@ -1,14 +1,18 @@
 package com.jbe.client.Models;
 
+import java.math.BigDecimal;
+
 public class InventoryItem {
     private int beanId;
     private String name;
     private long amount;
+    private BigDecimal defaultPrice;
 
-    public InventoryItem(int beanId, String name, long amount) {
+    public InventoryItem(int beanId, String name, long amount, BigDecimal defaultPrice) {
         this.beanId = beanId;
         this.name = name;
         this.amount = amount;
+        this.defaultPrice = defaultPrice;
     }
 
     public int getBeanId() {
@@ -33,5 +37,11 @@ public class InventoryItem {
 
     public void setAmount(long amount) {
         this.amount = amount;
+    }
+    public BigDecimal getDefaultPrice() {
+        return defaultPrice;
+    }
+    public void setDefaultPrice(BigDecimal defaultPrice) {
+        this.defaultPrice = defaultPrice;
     }
 }

@@ -2,6 +2,7 @@ package com.jbe.client;
 
 import java.util.Scanner;
 
+import com.jbe.client.MenuOptions.BuyBeansFromJBE;
 import com.jbe.client.MenuOptions.CreateSellOrder;
 import com.jbe.client.MenuOptions.ViewInventory;
 import com.jbe.client.MenuOptions.ViewSellOrders;
@@ -82,7 +83,11 @@ public class MainMenu {
             case 8:
                 CreateSellOrder cso = new CreateSellOrder();
                 cso.display();
-                break;      
+                break;
+            case 10:
+                BuyBeansFromJBE buyBeans = new BuyBeansFromJBE();
+                buyBeans.display();
+                break;              
             case 11:
                 CurrentInvestor.signOut();
                 break;
