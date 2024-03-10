@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.BuyBeansFromJBE;
 import com.jbe.client.MenuOptions.CreateSellOrder;
+import com.jbe.client.MenuOptions.ViewBuyOrders;
 import com.jbe.client.MenuOptions.ViewInventory;
 import com.jbe.client.MenuOptions.ViewSellOrders;
 
@@ -75,7 +76,11 @@ public class MainMenu {
             case 4:
                 ViewSellOrders mySellOrders = new ViewSellOrders(CurrentInvestor.getId());
                 mySellOrders.display();
-                break;   
+                break;
+            case 5:
+                ViewBuyOrders myBuyOrders = new ViewBuyOrders(CurrentInvestor.getId());
+                myBuyOrders.display();
+                break;    
             case 6:
                 ViewSellOrders vso = new ViewSellOrders();
                 vso.display();
