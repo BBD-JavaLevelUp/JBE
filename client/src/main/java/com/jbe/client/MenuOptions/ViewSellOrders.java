@@ -4,17 +4,21 @@ import java.util.Scanner;
 
 import com.jbe.client.MainMenu;
 import com.jbe.client.RestApiHandler;
-import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
 
 public class ViewSellOrders{
     private static Scanner scanner = new Scanner(System.in);
-    public Investor currentInvestor;
-    public ArrayList<SellOrder> sellOrders = RestApiHandler.getAllSellOrders();
+    public ArrayList<SellOrder> sellOrders;
+    public boolean viewingOwn = false;
 
+    public ViewSellOrders(int id) {
+        sellOrders = RestApiHandler.getInvestorSellOrders(id);
+        viewingOwn = true;
+    }
 
-    public ViewSellOrders(Investor currentInvestor){
-        this.currentInvestor = currentInvestor;
+    // if an investorID is not provided we get all of the sell orders
+    public ViewSellOrders() {
+        sellOrders = RestApiHandler.getAllSellOrders();
     }
 
     public void display() {
@@ -24,9 +28,15 @@ public class ViewSellOrders{
 
     public void subMenu(){
         while (true) {
-            System.out.println("\n0. Go back to Main Menu");
             printSellOrders();
-            System.out.print("Select sell order you want to accept: ");
+            System.out.println("0. Go back to Main Menu");
+            if(viewingOwn){
+                System.out.print("\nSelect sell order you want to delete: ");
+            }
+            else{
+                System.out.print("\nSelect sell order you want to accept: ");
+            }
+            
             int choice = -1;
     
             try {
@@ -56,11 +66,16 @@ public class ViewSellOrders{
 
         private void handleChoice(int choice){
             if(choice == 0){
-                MainMenu.display(currentInvestor);
+                MainMenu.display();
             }
             SellOrder sellOrder = sellOrders.get(choice-1);
-            System.out.println("Sell order accepted");
-            MainMenu.display(currentInvestor);
+            if(viewingOwn){
+                RestApiHandler.deleteSellOrder(sellOrder.getSellOrderId());
+            }
+            else{
+                RestApiHandler.acceptSellOrder(sellOrder.getSellOrderId());
+            }
+            MainMenu.display();
         }
     }
 
