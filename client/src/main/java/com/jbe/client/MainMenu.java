@@ -86,6 +86,10 @@ public class MainMenu {
                 ViewSellOrders vso = new ViewSellOrders();
                 vso.display();
                 break;
+            case 7:
+                ViewBuyOrders vbo = new ViewBuyOrders();
+                vbo.display();
+                break;
             case 8:
                 CreateSellOrder cso = new CreateSellOrder();
                 cso.display();
