@@ -21,6 +21,7 @@ public class RestApiHandler {
     }
     public static ArrayList<Bean> getAllBeans() {
         ArrayList<Bean> beans = new ArrayList<>();
+        APICall.makeCall("http://ec2-34-242-39-68.eu-west-1.compute.amazonaws.com:8080/api/beans/beans", null);
         beans.add(new Bean(1, "Coffee beans", new BigDecimal(10.99)));
         beans.add(new Bean(2, "Baked beans", new BigDecimal(8.99)));
         beans.add(new Bean(3, "More beans", new BigDecimal(12.99)));
@@ -39,6 +40,7 @@ public class RestApiHandler {
     public static ArrayList<InventoryItem> getInventory() {
       // call api using current investor api
       ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
+      APICall.makeCall("http://ec2-34-242-39-68.eu-west-1.compute.amazonaws.com:8080/api/beans/beans", null);
       inventoryItems.add(new InventoryItem(1, "Arabica Beans", 100,new BigDecimal("109")));
       inventoryItems.add(new InventoryItem(2, "Cool beans", 200,new BigDecimal("79")));
       inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
