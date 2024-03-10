@@ -24,6 +24,6 @@ public class BuyOrderController {
     @PostMapping("/buyOrder")
     public int saveBean(@RequestBody BuyOrder buyOrder){
         buyOrderService.saveOrUpdate(buyOrder);
-        return buyOrder.getId();
+        return buyOrder.getBeanId();
     }
 }
