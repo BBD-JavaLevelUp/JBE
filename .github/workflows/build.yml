@@ -22,3 +22,6 @@ jobs:
       - name: Build Spring application
         run: mvn package
         working-directory: /home/ubuntu/actions-runner/_build/server
+
+      - name: Remove build folder
+        run: rm -rf _build
