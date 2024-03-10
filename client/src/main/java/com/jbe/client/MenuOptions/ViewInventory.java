@@ -41,7 +41,7 @@ public class ViewInventory {
     public void printInventory(){
         for (int index = 0; index < inventoryItems.size(); index++) {
             InventoryItem inventoryItem = inventoryItems.get(index);
-            System.out.println(index+1 + ". " + inventoryItem.getName() + " - " + inventoryItem.getAmount()) ;
+            System.out.println(index+1 + ". " + inventoryItem.getName() + " - " + inventoryItem.getAmount()+ " - R" + inventoryItem.getDefaultPrice() + " each.") ;
         }
     }
     }
