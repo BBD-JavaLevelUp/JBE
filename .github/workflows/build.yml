@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
+        with:
+          path: _build
 
       #Set up java
       - name: Set up JDK 21
