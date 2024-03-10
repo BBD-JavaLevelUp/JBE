@@ -1,16 +1,64 @@
 package com.jbe.server.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
+@Table
 public class Investor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int investorId;
+
     private String name;
-    private String SAId;
+
+    private String saId;
+
     private String email;
+
+    public Investor(String name, String saId, String email){
+        this.name = name;
+        this.saId = saId;
+        this.email = email;
+    }
+
+    public Investor(int investorId, String name, String saId, String email){
+        this.investorId = investorId;
+        this.name = name;
+        this.saId = saId;
+        this.email = email;
+    }
+
+    public int getInvestorId() {
+        return investorId;
+    }
+
+    public void setInvestorId(int investorId) {
+        this.investorId = investorId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSaId() {
+        return saId;
+    }
+
+    public void setSaID(String saId) {
+        this.saId = saId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
