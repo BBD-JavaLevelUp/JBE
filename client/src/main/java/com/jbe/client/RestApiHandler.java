@@ -58,5 +58,17 @@ public class RestApiHandler {
     public static void CreateSellOrder(SellOrder newSellOrder) {
         System.out.println("Sell order created!");
     }
+    public static void BuyBeansFromJBE(int beanId, int amount) {
+        System.out.println("Beans bought!");
+    }
+    public static ArrayList<InventoryItem> getJBEInventory() {
+      ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
+      inventoryItems.add(new InventoryItem(1, "Arabica Beans", 100,new BigDecimal("109")));
+      inventoryItems.add(new InventoryItem(2, "Cool beans", 200,new BigDecimal("79")));
+      inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
+      inventoryItems.add(new InventoryItem(4, "Roasted beans", 10,new BigDecimal("302")));
+      inventoryItems.add(new InventoryItem(6, "Energy beans", 3,new BigDecimal("1001")));
+      return inventoryItems;
+    }
     
 }

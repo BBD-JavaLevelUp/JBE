@@ -8,7 +8,15 @@ import com.jbe.client.Models.InventoryItem;
 
 public class ViewInventory {
     private static Scanner scanner = new Scanner(System.in);
-    public ArrayList<InventoryItem>  inventoryItems = RestApiHandler.getInventory();
+    public ArrayList<InventoryItem>  inventoryItems;
+
+    public ViewInventory(String string) {
+        inventoryItems = RestApiHandler.getJBEInventory();
+    }
+
+    public ViewInventory() {
+        inventoryItems = RestApiHandler.getInventory();
+    }
 
     public void display() {
         System.out.println("\nInventory:");
