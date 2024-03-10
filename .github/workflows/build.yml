@@ -25,3 +25,4 @@ jobs:
 
       - name: Remove build folder
         run: rm -rf _build
+        working-directory: /home/ubuntu/actions-runner
