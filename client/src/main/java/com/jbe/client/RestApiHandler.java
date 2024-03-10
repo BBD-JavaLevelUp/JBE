@@ -91,5 +91,8 @@ public class RestApiHandler {
         buyOrders.add(new BuyOrder(3, 103, 3, new BigDecimal("587"), 78, 100, OffsetDateTime.now(), true));
         return buyOrders;
     }
+    public static void CreateBuyOrder(BuyOrder newBuyOrder) {
+        System.out.println("buy order created!");
+    }
     
 }

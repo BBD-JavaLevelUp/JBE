@@ -25,6 +25,16 @@ public class SellOrder {
         this.isActive = isActive;
     }
 
+    public SellOrder(int investorId, int beanId, BigDecimal sellingPrice, int availableAmount, int totalAmount, OffsetDateTime sellOrderDate, boolean isActive) {
+        this.investorId = investorId;
+        this.beanId = beanId;
+        this.sellingPrice = sellingPrice;
+        this.availableAmount = availableAmount;
+        this.totalAmount = totalAmount;
+        this.sellOrderDate = sellOrderDate;
+        this.isActive = isActive;
+    }
+
     // Getters and Setters
     public int getSellOrderId() {
         return sellOrderId;
