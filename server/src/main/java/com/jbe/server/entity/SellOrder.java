@@ -34,6 +34,7 @@ public class SellOrder {
     }
 
     public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+        this.sellOrderId = sellOrderId;
         this.sellingInvestorId = sellingInvestorId;
         this.beanId = beanId;
         this.sellingPrice = sellingPrice;

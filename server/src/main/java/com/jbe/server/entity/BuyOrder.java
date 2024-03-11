@@ -58,7 +58,7 @@ public class BuyOrder {
         return buyOrderId;
     }
 
-    public void setBuyOrderID(int buyOrderId) {
+    public void setBuyOrderId(int buyOrderId) {
         this.buyOrderId = buyOrderId;
     }
 
@@ -86,19 +86,19 @@ public class BuyOrder {
         this.buyingPrice = buyingPrice;
     }
 
-    public Long getAvailableAmount() {
+    public long getAvailableAmount() {
         return availableAmount;
     }
 
-    public void setAvailableAmount(Long availableAmount) {
+    public void setAvailableAmount(long availableAmount) {
         this.availableAmount = availableAmount;
     }
 
-    public Long getTotalAmount() {
+    public long getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Long totalAmount) {
+    public void setTotalAmount(long totalAmount) {
         this.totalAmount = totalAmount;
     }
 
