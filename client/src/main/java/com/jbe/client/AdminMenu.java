@@ -2,6 +2,8 @@ package com.jbe.client;
 
 import java.util.Scanner;
 
+import com.jbe.client.MenuOptions.ViewBeans;
+
 public class AdminMenu {
 
     private static Scanner scanner = new Scanner(System.in);
@@ -26,6 +28,10 @@ public class AdminMenu {
             continue;
         }
         switch (choice) {            
+            case 1:
+                ViewBeans vb = new ViewBeans();
+                vb.display();
+                break;
             case 5:
                 CurrentInvestor.signOut();
                 MainMenu.display();

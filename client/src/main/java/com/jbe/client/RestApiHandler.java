@@ -115,5 +115,8 @@ public class RestApiHandler {
         return transactions;
 
     }
+    public static void editBean(int beanId, String newName, long newAmount, BigDecimal newPrice) {
+        System.out.println("Bean edited!");
+    }
     
 }
