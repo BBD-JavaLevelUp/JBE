@@ -1,6 +1,7 @@
 package com.jbe.server.controller;
 
 import com.jbe.server.service.InventoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InventoryController {
     private final InventoryService inventoryService;
 
+    @Autowired
     public InventoryController(InventoryService inventoryService) {
         this.inventoryService = inventoryService;
     }

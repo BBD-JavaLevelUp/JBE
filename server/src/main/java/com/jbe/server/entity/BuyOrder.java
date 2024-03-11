@@ -33,6 +33,7 @@ public class BuyOrder {
     }
 
     public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+        this.buyOrderId = buyOrderId;
         this.buyingInvestorId = buyingInvestorId;
         this.beanId = beanId;
         this.buyingPrice = buyingPrice;
@@ -81,7 +82,7 @@ public class BuyOrder {
         return buyingPrice;
     }
 
-    public void setSellingPrice(BigDecimal buyingPrice) {
+    public void setBuyingPrice(BigDecimal buyingPrice) {
         this.buyingPrice = buyingPrice;
     }
 
