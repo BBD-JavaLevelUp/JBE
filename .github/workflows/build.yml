@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -13,16 +13,14 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
         with:
-          path: _build
-          
-      - name: Move build folder
-        run: mv $GITHUB_WORKSPACE/_build /home/ubuntu/actions-runner/
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
       - name: Build Spring application
         run: mvn package
-        working-directory: /home/ubuntu/actions-runner/_build/server
-
-      - name: Remove build folder
-        run: rm -rf _build
-        working-directory: /home/ubuntu/actions-runner
+        working-directory: ./server
