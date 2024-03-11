@@ -2,6 +2,7 @@ package com.jbe.server.controller;
 
 import com.jbe.server.entity.SellOrder;
 import com.jbe.server.service.SellOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 public class SellOrderController {
     private final SellOrderService sellOrderService;
 
+    @Autowired
     public SellOrderController(SellOrderService sellOrderService) {
         this.sellOrderService = sellOrderService;
     }
@@ -22,54 +24,54 @@ public class SellOrderController {
     @GetMapping
     public List<SellOrder> sellOrders()
     {
-        return List.of(new SellOrder(0,0,0, BigDecimal.ZERO, 0L, 0L, true));
+        return sellOrderService.getAllSellOrders();
     }
 
     @GetMapping("/investor/{id}")
     public List<SellOrder> sellOrdersByInvestor(@PathVariable int id)
     {
-        return List.of(new SellOrder(0,id,0, BigDecimal.ZERO, 0L, 0L, true));
+        return sellOrderService.getSellOrdersByInvestor(id);
     }
 
     @GetMapping("/beans/{id}")
     public List<SellOrder> sellOrdersByBean(@PathVariable int id)
     {
-        return List.of(new SellOrder(0,0,id, BigDecimal.ZERO, 0L, 0L, true));
+        return sellOrderService.getSellOrdersByBean(id);
     }
 
     @GetMapping("/active")
     public List<SellOrder> activeSellOrders()
     {
-        return List.of(new SellOrder(0,0,0, BigDecimal.ZERO, 0L, 0L, true));
+        return sellOrderService.getAllActiveSellOrders();
     }
 
-    @GetMapping("/sell-orders/active/investor/{id}")
+    @GetMapping("/active/investor/{id}")
     public List<SellOrder> activeSellOrdersByInvestor(@PathVariable int id)
     {
-        return List.of(new SellOrder(0,id,0, BigDecimal.ZERO, 0L, 0L, true));
+        return sellOrderService.getAllActiveSellOrdersByInvestor(id);
     }
 
     @GetMapping("/active/beans/{id}")
     public List<SellOrder> activeSellOrdersByBean(@PathVariable int id)
     {
-        return List.of(new SellOrder(0,0,id, BigDecimal.ZERO, 0L, 0L, true));
+        return sellOrderService.getAllActiveSellOrdersByBean(id);
     }
 
     @GetMapping("/inactive")
     public List<SellOrder> inactiveSellOrders()
     {
-        return List.of(new SellOrder(0,0,0, BigDecimal.ZERO, 0L, 0L, false));
+        return sellOrderService.getAllInactiveSellOrders();
     }
 
     @GetMapping("/inactive/investor/{id}")
     public List<SellOrder> inactiveSellOrdersByInvestor(@PathVariable int id)
     {
-        return List.of(new SellOrder(0,id,0, BigDecimal.ZERO, 0L, 0L, false));
+        return sellOrderService.getAllInactiveSellOrdersByInvestor(id);
     }
 
     @GetMapping("/inactive/beans/{id}")
     public List<SellOrder> inactiveSellOrdersByBean(@PathVariable int id)
     {
-        return List.of(new SellOrder(0,0,id, BigDecimal.ZERO, 0L, 0L, false));
+        return sellOrderService.getAllInactiveSellOrdersByBean(id);
     }
 }
