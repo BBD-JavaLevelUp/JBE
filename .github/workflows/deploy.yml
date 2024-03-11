@@ -18,9 +18,12 @@ jobs:
     steps:
     - name: Git checkout
       uses: actions/checkout@v3
+
+    - name: Stop current execution
+      run: sudo kill -9 `sudo lsof -t -i:8080`
         
     - name: Build with Maven
       run: mvn package
       
-    - name: Excute Jar file
-      run: sudo kill -9 `sudo lsof -t -i:8080` & sudo java -jar /home/ubuntu/actions-runner/_work/JBE/JBE/server/target/server.jar &
+    - name: Execute Jar file
+      run: sudo java -jar /home/ubuntu/actions-runner/_work/JBE/JBE/server/target/server.jar &
