@@ -17,6 +17,10 @@ public class Investor {
 
     private String email;
 
+    public Investor(){
+
+    }
+
     public Investor(String name, String saId, String email){
         this.name = name;
         this.saId = saId;

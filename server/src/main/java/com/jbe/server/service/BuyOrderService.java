@@ -19,19 +19,19 @@ public class BuyOrderService {
         return buyOrderRepository.findAll();
     }
 
-    public List<BuyOrder> getBuyOrdersByInvestor(int id){return buyOrderRepository.findByBuyingInvestorId(id);}
+    public List<BuyOrder> getBuyOrdersByInvestor(int id){return buyOrderRepository.findByInvestorId(id);}
 
     public List<BuyOrder> getBuyOrdersByBean(int id){return buyOrderRepository.findByBeanId(id);}
 
     public List<BuyOrder> getAllActiveBuyOrders() {return buyOrderRepository.findByIsActive(true);}
 
-    public List<BuyOrder> getAllActiveBuyOrdersByInvestor(int id) {return buyOrderRepository.findByIsActiveAndBuyingInvestorId(true, id);}
+    public List<BuyOrder> getAllActiveBuyOrdersByInvestor(int id) {return buyOrderRepository.findByIsActiveAndInvestorId(true, id);}
 
     public List<BuyOrder> getAllActiveBuyOrdersByBean(int id) {return buyOrderRepository.findByIsActiveAndBeanId(true, id);}
 
     public List<BuyOrder> getAllInactiveBuyOrders() {return buyOrderRepository.findByIsActive(false);}
 
-    public List<BuyOrder> getAllInactiveBuyOrdersByInvestor(int id) {return buyOrderRepository.findByIsActiveAndBuyingInvestorId(false, id);}
+    public List<BuyOrder> getAllInactiveBuyOrdersByInvestor(int id) {return buyOrderRepository.findByIsActiveAndInvestorId(false, id);}
 
     public List<BuyOrder> getAllInactiveBuyOrdersByBean(int id) {return buyOrderRepository.findByIsActiveAndBeanId(false, id);}
 

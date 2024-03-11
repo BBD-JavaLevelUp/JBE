@@ -12,10 +12,10 @@ public class SellOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sellOrderId;
-    private int sellingInvestorId;
+    private int investorId;
     private int beanId;
 
-    private BigDecimal sellingPrice;
+    private BigDecimal price;
 
     private long availableAmount;
 
@@ -23,10 +23,13 @@ public class SellOrder {
     private OffsetDateTime orderDate;
     private boolean isActive;
 
+    public SellOrder(){
+
+    }
     public SellOrder(int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
-        this.sellingInvestorId = sellingInvestorId;
+        this.investorId = sellingInvestorId;
         this.beanId = beanId;
-        this.sellingPrice = sellingPrice;
+        this.price = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
@@ -35,9 +38,9 @@ public class SellOrder {
 
     public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
         this.sellOrderId = sellOrderId;
-        this.sellingInvestorId = sellingInvestorId;
+        this.investorId = sellingInvestorId;
         this.beanId = beanId;
-        this.sellingPrice = sellingPrice;
+        this.price = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
@@ -46,9 +49,9 @@ public class SellOrder {
 
     public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive, OffsetDateTime orderDate){
         this.sellOrderId = sellOrderId;
-        this.sellingInvestorId = sellingInvestorId;
+        this.investorId = sellingInvestorId;
         this.beanId = beanId;
-        this.sellingPrice = sellingPrice;
+        this.price = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
@@ -63,12 +66,12 @@ public class SellOrder {
         this.sellOrderId = sellOrderId;
     }
 
-    public int getSellingInvestorId() {
-        return sellingInvestorId;
+    public int getInvestorId() {
+        return investorId;
     }
 
-    public void setSellingInvestorId(int sellingInvestorId) {
-        this.sellingInvestorId = sellingInvestorId;
+    public void setInvestorId(int sellingInvestorId) {
+        this.investorId = sellingInvestorId;
     }
 
     public int getBeanId() {
@@ -79,12 +82,12 @@ public class SellOrder {
         this.beanId = beanId;
     }
 
-    public BigDecimal getSellingPrice() {
-        return sellingPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setSellingPrice(BigDecimal sellingPrice) {
-        this.sellingPrice = sellingPrice;
+    public void setPrice(BigDecimal sellingPrice) {
+        this.price = sellingPrice;
     }
 
     public Long getAvailableAmount() {

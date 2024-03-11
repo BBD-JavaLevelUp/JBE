@@ -17,6 +17,10 @@ public class Transaction {
     private OffsetDateTime transactionDate;
     private Long amount;
 
+    public Transaction(){
+
+    }
+
     public Transaction(int buyOrderId, int sellOrderId, Long amount){
         this.buyOrderId = buyOrderId;
         this.sellOrderId = sellOrderId;

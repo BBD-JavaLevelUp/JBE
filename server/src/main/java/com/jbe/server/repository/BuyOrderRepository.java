@@ -9,13 +9,13 @@ import java.util.List;
 @Repository
 public interface BuyOrderRepository extends JpaRepository<BuyOrder, Integer> {
 
-    public List<BuyOrder> findByBuyingInvestorId(int id);
+    public List<BuyOrder> findByInvestorId(int id);
 
     public List<BuyOrder> findByBeanId(int id);
 
     public List<BuyOrder> findByIsActive(boolean isActive);
 
-    public List<BuyOrder> findByIsActiveAndBuyingInvestorId(boolean isActive, int id);
+    public List<BuyOrder> findByIsActiveAndInvestorId(boolean isActive, int id);
 
     public List<BuyOrder> findByIsActiveAndBeanId(boolean isActive, int id);
 
