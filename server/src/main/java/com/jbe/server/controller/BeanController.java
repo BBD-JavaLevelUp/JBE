@@ -32,7 +32,7 @@ public class BeanController {
     @PostMapping("/bean")
     public int saveBean(@RequestBody Bean bean){
         beanService.saveOrUpdate(bean);
-        return bean.getId();
+        return bean.getBeanId();
     }
 
 }
