@@ -34,5 +34,4 @@ public class SellOrderService {
 
     public List<SellOrder> getAllInactiveSellOrdersByBean(int id) {return sellOrderRepository.findByIsActiveAndBeanId(false, id);}
 
-
 }
