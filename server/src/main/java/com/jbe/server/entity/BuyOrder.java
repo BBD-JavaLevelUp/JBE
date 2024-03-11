@@ -11,10 +11,10 @@ public class BuyOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int buyOrderId;
-    private int buyingInvestorId;
+    private int investorId;
     private int beanId;
 
-    private BigDecimal buyingPrice;
+    private BigDecimal price;
 
     private long availableAmount;
 
@@ -22,10 +22,14 @@ public class BuyOrder {
     private OffsetDateTime orderDate;
     private boolean isActive;
 
+    public BuyOrder(){
+
+    }
+
     public BuyOrder(int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
-        this.buyingInvestorId = buyingInvestorId;
+        this.investorId = buyingInvestorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.price = buyingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
@@ -34,9 +38,9 @@ public class BuyOrder {
 
     public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
         this.buyOrderId = buyOrderId;
-        this.buyingInvestorId = buyingInvestorId;
+        this.investorId = buyingInvestorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.price = buyingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
@@ -45,9 +49,9 @@ public class BuyOrder {
 
     public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive, OffsetDateTime orderDate){
         this.buyOrderId = buyOrderId;
-        this.buyingInvestorId = buyingInvestorId;
+        this.investorId = buyingInvestorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.price = buyingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
@@ -62,12 +66,12 @@ public class BuyOrder {
         this.buyOrderId = buyOrderId;
     }
 
-    public int getBuyingInvestorId() {
-        return buyingInvestorId;
+    public int getInvestorId() {
+        return investorId;
     }
 
-    public void setBuyingInvestorId(int buyingInvestorId) {
-        this.buyingInvestorId = buyingInvestorId;
+    public void setInvestorId(int buyingInvestorId) {
+        this.investorId = buyingInvestorId;
     }
 
     public int getBeanId() {
@@ -78,12 +82,12 @@ public class BuyOrder {
         this.beanId = beanId;
     }
 
-    public BigDecimal getBuyingPrice() {
-        return buyingPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setBuyingPrice(BigDecimal buyingPrice) {
-        this.buyingPrice = buyingPrice;
+    public void setPrice(BigDecimal buyingPrice) {
+        this.price = buyingPrice;
     }
 
     public long getAvailableAmount() {

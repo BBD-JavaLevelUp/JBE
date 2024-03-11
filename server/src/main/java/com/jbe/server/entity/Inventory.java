@@ -13,6 +13,10 @@ public class Inventory {
     private int beanId;
     private Long amount;
 
+    public Inventory(){
+
+    }
+
     public Inventory(int investorId, int beanId, Long amount){
         this.investorId = investorId;
         this.beanId = beanId;

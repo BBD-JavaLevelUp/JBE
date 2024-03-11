@@ -74,4 +74,14 @@ public class SellOrderController {
     {
         return sellOrderService.getAllInactiveSellOrdersByBean(id);
     }
+
+    @GetMapping("/bean-prices/{id}")
+    public List<BigDecimal> getPrices(@PathVariable int id)
+    {
+        List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(id);
+        BigDecimal total = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal jbePrice = total.divide(BigDecimal.valueOf(sellOrders.size()));
+        BigDecimal marketPrice = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(99999999999999999L), BigDecimal::min);
+        return List.of(jbePrice, marketPrice);
+    }
 }
