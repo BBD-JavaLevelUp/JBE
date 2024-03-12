@@ -19,6 +19,10 @@ public class BuyOrderService {
         return buyOrderRepository.findAll();
     }
 
+    public BuyOrder getBuyOrdersById(int buyOrderId) {
+        return buyOrderRepository.findById(buyOrderId).get();
+    }
+
     public List<BuyOrder> getBuyOrdersByInvestor(int id){return buyOrderRepository.findByInvestorId(id);}
 
     public List<BuyOrder> getBuyOrdersByBean(int id){return buyOrderRepository.findByBeanId(id);}

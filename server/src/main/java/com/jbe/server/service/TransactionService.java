@@ -24,14 +24,6 @@ public class TransactionService {
         return transactionRepository.findById(transactionId).get();
     }
 
-    public List<Transaction> getTransactionByBean(int beanId) {
-        return transactionRepository.findAllByBeanId(beanId);
-    }
-
-    public List<Transaction> getTransactionsByInvestor(int investorId) {
-        return transactionRepository.findAllByInvestorId(investorId);
-    }
-
     public void saveOrUpdate(Transaction transaction){
         transactionRepository.save(transaction);
     }

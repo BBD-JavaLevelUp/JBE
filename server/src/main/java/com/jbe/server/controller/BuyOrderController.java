@@ -22,6 +22,12 @@ public class BuyOrderController {
         return buyOrderService.getAllBuyOrders();
     }
 
+    @GetMapping("/{buyOrderId}")
+    public BuyOrder buyOrdersById(@PathVariable("buyOrderId") int buyOrderId)
+    {
+        return buyOrderService.getBuyOrdersById(buyOrderId);
+    }
+
     @GetMapping("/investor/{id}")
     public List<BuyOrder> buyOrdersByInvestor(@PathVariable int id)
     {

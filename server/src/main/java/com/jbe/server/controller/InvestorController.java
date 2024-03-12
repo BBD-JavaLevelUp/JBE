@@ -18,23 +18,23 @@ public class InvestorController {
         this.investorService = investorService;
     }
 
-    @GetMapping("/investors")
+    @GetMapping
     public List<Investor> getAllInvestors() {
         return investorService.getAllInvestors();
     }
 
-    @GetMapping("/investors/{investorId}")
+    @GetMapping("/{investorId}")
     public Investor getInvestors(@PathVariable("investorId") int investorId) {
         return investorService.getInvestorById(investorId);
     }
 
-    @PostMapping("/investors")
+    @PostMapping
     public int saveInvestor(@RequestBody Investor investor){
         investorService.saveOrUpdate(investor);
-        return investor.getId();
+        return investor.getInvestorId();
     }
 
-    @PutMapping("/investors")
+    @PutMapping
     public Investor updateInvestor(@RequestBody Investor investor){
         investorService.saveOrUpdate(investor);
         return investor;

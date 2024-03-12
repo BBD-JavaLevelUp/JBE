@@ -24,7 +24,7 @@ public class BeanController {
         this.sellOrderService = sellOrderService;
     }
 
-    @GetMapping("/beans")
+    @GetMapping
     public List<Bean> getAllBeans() {
         return beanService.getAllBeans().stream().map(b ->
         {
@@ -41,7 +41,7 @@ public class BeanController {
         }).toList();
     }
 
-    @GetMapping("/beans/{beanId}")
+    @GetMapping("/{beanId}")
     public Bean getBeans(@PathVariable("beanId") int beanId) {
         Bean bean = beanService.getBeanById(beanId);
         List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(beanId);
@@ -55,13 +55,13 @@ public class BeanController {
         return bean;
     }
 
-    @PostMapping("/beans")
+    @PostMapping
     public int saveBean(@RequestBody Bean bean){
         beanService.saveOrUpdate(bean);
         return bean.getBeanId();
     }
 
-    @PutMapping("/beans")
+    @PutMapping
     public Bean updateBean(@RequestBody Bean bean){
         beanService.saveOrUpdate(bean);
         return bean;

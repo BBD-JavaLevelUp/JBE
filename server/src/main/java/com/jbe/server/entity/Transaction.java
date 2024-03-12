@@ -44,6 +44,14 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
+    public Transaction(Transaction transaction) {
+        this.transactionId = transaction.getTransactionId();
+        this.buyOrderId = transaction.getBuyOrderId();
+        this.sellOrderId = transaction.getSellOrderId();
+        this.amount = transaction.getAmount();
+        this.transactionDate = transaction.getTransactionDate();
+    }
+
     public int getTransactionId() {
         return transactionId;
     }
