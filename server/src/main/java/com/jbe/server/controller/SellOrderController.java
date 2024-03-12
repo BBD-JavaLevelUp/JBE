@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sell-order")
+@RequestMapping("/api/sell-orders")
 public class SellOrderController {
     private final SellOrderService sellOrderService;
 
@@ -79,8 +80,7 @@ public class SellOrderController {
     public List<BigDecimal> getPrices(@PathVariable int id)
     {
         List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(id);
-        BigDecimal total = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal jbePrice = total.divide(BigDecimal.valueOf(sellOrders.size()));
+        BigDecimal jbePrice = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size()));
         BigDecimal marketPrice = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(99999999999999999L), BigDecimal::min);
         return List.of(jbePrice, marketPrice);
     }
