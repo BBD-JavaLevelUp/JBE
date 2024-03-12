@@ -1,5 +1,6 @@
 package com.jbe.server.service;
 
+import com.jbe.server.entity.Bean;
 import com.jbe.server.entity.BuyOrder;
 import com.jbe.server.entity.SellOrder;
 import com.jbe.server.repository.SellOrderRepository;
@@ -37,4 +38,7 @@ public class SellOrderService {
 
     public List<SellOrder> getAllSellOrdersByInvestorForBean(int investorId, int beanId){return sellOrderRepository.findByInvestorIdAndBeanId(investorId, beanId);}
 
+    public void saveOrUpdate(SellOrder sellOrder){
+        sellOrderRepository.save(sellOrder);
+    }
 }
