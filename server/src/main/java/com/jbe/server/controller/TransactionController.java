@@ -1,8 +1,10 @@
 package com.jbe.server.controller;
 
+import com.jbe.server.entity.Bean;
 import com.jbe.server.entity.BuyOrder;
 import com.jbe.server.entity.Investor;
 import com.jbe.server.entity.Transaction;
+import com.jbe.server.service.BeanService;
 import com.jbe.server.service.BuyOrderService;
 import com.jbe.server.service.InvestorService;
 import com.jbe.server.service.TransactionService;
@@ -17,21 +19,34 @@ import java.util.stream.Collectors;
 public class TransactionController {
     private final TransactionService transactionService;
     private final BuyOrderService buyOrderService;
+    private final BeanService beanService;
 
     @Autowired
-    public TransactionController(TransactionService transactionService, BuyOrderService buyOrderService) {
+    public TransactionController(TransactionService transactionService, BuyOrderService buyOrderService, BeanService beanService) {
         this.transactionService = transactionService;
         this.buyOrderService = buyOrderService;
+        this.beanService = beanService;
     }
 
     @GetMapping
     public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions();
+        return transactionService.getAllTransactions().stream().map(t ->
+        {
+            Transaction n = new Transaction(t);
+            BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
+            Bean bean = beanService.getBeanById(buyOrder.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/{transactionId}")
     public Transaction getTransactions(@PathVariable("transactionId") int transactionId) {
-        return transactionService.getTransactionById(transactionId);
+        Transaction n = transactionService.getTransactionById(transactionId);
+        BuyOrder buyOrder = buyOrderService.getBuyOrdersById(n.getBuyOrderId());
+        Bean bean = beanService.getBeanById(buyOrder.getBeanId());
+        n.setBeanName(bean.getName());
+        return n;
     }
 
     @GetMapping("/beans/{beanId}")
@@ -41,7 +56,14 @@ public class TransactionController {
                     BuyOrder currentBuyOrder = buyOrderService.getBuyOrdersById(transaction.getBuyOrderId());
                     return currentBuyOrder.getBeanId() == beanId;
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()).stream().map(t ->
+                {
+                    Transaction n = new Transaction(t);
+                    BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
+                    Bean bean = beanService.getBeanById(buyOrder.getBeanId());
+                    n.setBeanName(bean.getName());
+                    return n;
+                }).toList();
     }
 
     @GetMapping("/investor/{investorId}")
@@ -51,7 +73,14 @@ public class TransactionController {
                     BuyOrder currentBuyOrder = buyOrderService.getBuyOrdersById(transaction.getBuyOrderId());
                     return currentBuyOrder.getInvestorId() == investorId;
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()).stream().map(t ->
+                {
+                    Transaction n = new Transaction(t);
+                    BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
+                    Bean bean = beanService.getBeanById(buyOrder.getBeanId());
+                    n.setBeanName(bean.getName());
+                    return n;
+                }).toList();
     }
 
     @PostMapping
