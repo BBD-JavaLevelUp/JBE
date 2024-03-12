@@ -81,4 +81,10 @@ public class BuyOrderController {
         buyOrderService.saveOrUpdate(buyOrder);
         return buyOrder.getBeanId();
     }
+
+    @PutMapping
+    public int updateBean(@RequestBody BuyOrder buyOrder){
+        buyOrderService.saveOrUpdate(buyOrder);
+        return buyOrder.getBeanId();
+    }
 }
