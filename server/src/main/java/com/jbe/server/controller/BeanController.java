@@ -19,20 +19,26 @@ public class BeanController {
         this.beanService = beanService;
     }
 
-    @GetMapping
+    @GetMapping("/beans")
     public List<Bean> getAllBeans() {
         return beanService.getAllBeans();
     }
 
-    @GetMapping("/{beanId}")
+    @GetMapping("/beans/{beanId}")
     public Bean getBeans(@PathVariable("beanId") int beanId) {
         return beanService.getBeanById(beanId);
     }
 
-    @PostMapping
+    @PostMapping("/beans")
     public int saveBean(@RequestBody Bean bean){
         beanService.saveOrUpdate(bean);
-        return bean.getBeanId();
+        return bean.getId();
+    }
+
+    @PutMapping("/beans")
+    public Bean updateBean(@RequestBody Bean bean){
+        beanService.saveOrUpdate(bean);
+        return bean;
     }
 
 }

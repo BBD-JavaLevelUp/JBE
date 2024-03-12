@@ -28,9 +28,4 @@ public class BeanService {
         beanRepository.save(bean);
     }
 
-
-
-
-
-
 }

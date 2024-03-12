@@ -1,34 +1,28 @@
 package com.jbe.server.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 
+import java.math.BigDecimal;
 
 @Entity
 @Table
 public class Bean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int beanId;
+    private int id;
     private String name;
     private BigDecimal defaultPrice;
 
     public Bean() {
     }
 
-    public Bean(int beanId, String name, BigDecimal defaultPrice) {
-        this.beanId = beanId;
-    }
-
-
     public Bean(String name, BigDecimal defaultPrice) {
         this.name = name;
         this.defaultPrice = defaultPrice;
     }
 
-
-    public int getBeanId() {
-        return beanId;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -39,8 +33,8 @@ public class Bean {
         return defaultPrice;
     }
 
-    public void setBeanId(int beanId) {
-        this.beanId = beanId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -54,7 +48,7 @@ public class Bean {
     @Override
     public String toString() {
         return "Bean{" +
-                "id=" + beanId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", defaultPrice=" + defaultPrice +
                 '}';

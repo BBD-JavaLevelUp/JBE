@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BeanRepository extends JpaRepository<Bean, Integer> {
 
-//    List<Bean> findBeanByName(String beanName);
 }
