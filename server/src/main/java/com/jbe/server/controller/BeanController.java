@@ -45,7 +45,7 @@ public class BeanController {
     public Bean getBeans(@PathVariable("beanId") int beanId) {
         Bean bean = beanService.getBeanById(beanId);
         List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(beanId);
-        if (sellOrders.size()>0) {
+        if (!sellOrders.isEmpty()) {
             bean.setJbePrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size())));
             bean.setMarketPrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(99999999999999999L), BigDecimal::min));
         } else {
