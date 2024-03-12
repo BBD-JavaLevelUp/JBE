@@ -2,6 +2,7 @@ package com.jbe.client;
 
 import java.util.Scanner;
 
+import com.jbe.client.MenuOptions.CreateBean;
 import com.jbe.client.MenuOptions.ViewBeans;
 
 public class AdminMenu {
@@ -31,6 +32,10 @@ public class AdminMenu {
             case 1:
                 ViewBeans vb = new ViewBeans();
                 vb.display();
+                break;
+            case 2:
+                CreateBean cb = new CreateBean();
+                cb.display();
                 break;
             case 5:
                 CurrentInvestor.signOut();
