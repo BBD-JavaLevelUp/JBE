@@ -30,6 +30,10 @@ public class Bean {
 
     public Bean(int beanId, String name, BigDecimal defaultPrice) {
         this.beanId = beanId;
+        this.name = name;
+        this.defaultPrice = defaultPrice;
+        jbePrice = BigDecimal.ZERO;
+        marketPrice = BigDecimal.ZERO;
     }
 
 
