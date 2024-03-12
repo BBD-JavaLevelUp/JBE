@@ -11,13 +11,13 @@ VALUES
   (2, 'Jane Smith', '9934567690123', 'jane@hotmail.com'),
   (3, 'Michael Johnson', '0034567490123', 'michael@gmail.com');
 
-INSERT INTO buy_order (buy_order_id, investor_id, bean_id, buying_price, available_amount, total_amount, buy_order_date, is_active)
+INSERT INTO buy_order (buy_order_id, investor_id, bean_id, price, available_amount, total_amount, order_date, is_active)
 VALUES
   (1, 1, 1, 10.75, 100, 1000, '2024-03-08 10:00:00', true),
   (2, 2, 2, 8.00, 150, 1500, '2024-03-08 11:00:00', true),
   (3, 3, 3, 11.50, 200, 2000, '2024-03-08 12:00:00', true);
 
-INSERT INTO sell_order (sell_order_id, investor_id, bean_id, selling_price, available_amount, total_amount, sell_order_date, is_active)
+INSERT INTO sell_order (sell_order_id, investor_id, bean_id, price, available_amount, total_amount, order_date, is_active)
 VALUES
   (1, 1, 1, 12.00, 75, 750, '2024-03-08 10:30:00', true),
   (2, 2, 2, 9.50, 100, 1000, '2024-03-08 11:30:00', true),
