@@ -19,6 +19,6 @@ public interface BuyOrderRepository extends JpaRepository<BuyOrder, Integer> {
 
     public List<BuyOrder> findByIsActiveAndBeanId(boolean isActive, int id);
 
-    public List<BuyOrder> findByIsActiveAndInvestorIdAndBeanId(boolean isActive, int investorId, int beanId);
+    public List<BuyOrder> findByInvestorIdAndBeanId(int investorId, int beanId);
 
 }

@@ -1,5 +1,6 @@
 package com.jbe.server.service;
 
+import com.jbe.server.entity.BuyOrder;
 import com.jbe.server.entity.SellOrder;
 import com.jbe.server.repository.SellOrderRepository;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,7 @@ public class SellOrderService {
     public List<SellOrder> getAllInactiveSellOrdersByInvestor(int id) {return sellOrderRepository.findByIsActiveAndInvestorId(false, id);}
 
     public List<SellOrder> getAllInactiveSellOrdersByBean(int id) {return sellOrderRepository.findByIsActiveAndBeanId(false, id);}
+
+    public List<SellOrder> getAllSellOrdersByInvestorForBean(int investorId, int beanId){return sellOrderRepository.findByInvestorIdAndBeanId(investorId, beanId);}
 
 }
