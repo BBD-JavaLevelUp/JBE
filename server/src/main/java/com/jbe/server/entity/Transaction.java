@@ -16,6 +16,8 @@ public class Transaction {
     private int sellOrderId;
     private OffsetDateTime transactionDate;
     private Long amount;
+    @Transient
+    private String beanName;
 
     public Transaction(){
 
@@ -90,5 +92,13 @@ public class Transaction {
 
     public void setTransactionDate(OffsetDateTime transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
     }
 }

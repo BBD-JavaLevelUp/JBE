@@ -3,10 +3,7 @@ package com.jbe.server.controller;
 import com.jbe.server.entity.SellOrder;
 import com.jbe.server.service.SellOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -83,5 +80,17 @@ public class SellOrderController {
         BigDecimal jbePrice = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size()));
         BigDecimal marketPrice = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(99999999999999999L), BigDecimal::min);
         return List.of(jbePrice, marketPrice);
+    }
+
+    @PostMapping
+    public int saveSellOrder(@RequestBody SellOrder sellOrder){
+        sellOrderService.saveOrUpdate(sellOrder);
+        return sellOrder.getSellOrderId();
+    }
+
+    @PutMapping
+    public int updateSellOrder(@RequestBody SellOrder sellOrder){
+        sellOrderService.saveOrUpdate(sellOrder);
+        return sellOrder.getSellOrderId();
     }
 }
