@@ -61,4 +61,10 @@ public class BeanController {
         return bean.getBeanId();
     }
 
+    @PutMapping
+    public Bean updateBean(@RequestBody Bean bean){
+        beanService.saveOrUpdate(bean);
+        return bean;
+    }
+
 }
