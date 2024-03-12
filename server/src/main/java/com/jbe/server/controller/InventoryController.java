@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/inventory")
+@RequestMapping("/api/inventories")
 public class InventoryController {
     private final InventoryService inventoryService;
 
@@ -22,7 +22,7 @@ public class InventoryController {
     }
 
     @GetMapping
-    public List<Inventory> Inventories()
+    public List<Inventory> inventories()
     {
         return inventoryService.getAllInventories();
     }
