@@ -1,4 +1,4 @@
-package com.jbe.server;
+package com.jbe.server.Controller;
 
 import java.math.BigDecimal;
 
@@ -18,7 +18,6 @@ import static org.hamcrest.CoreMatchers.is;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbe.server.controller.BeanController;
 import com.jbe.server.entity.Bean;
-import com.jbe.server.repository.BeanRepository;
 import com.jbe.server.service.BeanService;
 import com.jbe.server.service.SellOrderService;
 
