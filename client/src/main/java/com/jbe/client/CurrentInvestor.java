@@ -3,13 +3,22 @@ package com.jbe.client;
 public class CurrentInvestor {
     private static int id;
     private static String name;
+    private String sAId;
+    private String email;
     public static boolean signedIn = false;
     public static boolean isAdmin = false;
+
     public static int getId() {
         return id;
     }
     public static String getName() {
         return name;
+    }
+    public String getsAId() {
+        return sAId;
+    }
+    public String getEmail() {
+        return email;
     }
     public static void signOut() {
         signedIn = false;

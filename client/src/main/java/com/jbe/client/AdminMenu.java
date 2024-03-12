@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.CreateBean;
 import com.jbe.client.MenuOptions.ViewBeans;
+import com.jbe.client.MenuOptions.ViewInvestorInventory;
+import com.jbe.client.MenuOptions.ViewInvestors;
+
 
 public class AdminMenu {
 
@@ -36,6 +39,14 @@ public class AdminMenu {
             case 2:
                 CreateBean cb = new CreateBean();
                 cb.display();
+                break;
+            case 3:
+                ViewInvestors vi = new ViewInvestors();
+                vi.display();
+                break;
+            case 4:
+                ViewInvestorInventory vii = new ViewInvestorInventory();
+                vii.display();
                 break;
             case 5:
                 CurrentInvestor.signOut();
