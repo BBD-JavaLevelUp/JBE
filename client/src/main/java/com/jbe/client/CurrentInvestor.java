@@ -4,6 +4,7 @@ public class CurrentInvestor {
     private static int id;
     private static String name;
     public static boolean signedIn = false;
+    public static boolean isAdmin = false;
     public static int getId() {
         return id;
     }
@@ -12,12 +13,15 @@ public class CurrentInvestor {
     }
     public static void signOut() {
         signedIn = false;
+        isAdmin = false;
     }
     public static void signIn() {
         signedIn = true;
         id = 1;
     }
     public static void signUp() {
-        System.out.println("signing up");
+        // for now signing up gets you logged in as admin, change this after auth is completed
+        signedIn = true;
+        isAdmin = true;
     }
 }
