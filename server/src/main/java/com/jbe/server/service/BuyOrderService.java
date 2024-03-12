@@ -35,6 +35,8 @@ public class BuyOrderService {
 
     public List<BuyOrder> getAllInactiveBuyOrdersByBean(int id) {return buyOrderRepository.findByIsActiveAndBeanId(false, id);}
 
+    public List<BuyOrder> getAllBuyOrdersByInvestorForBean(int investorId, int beanId){return buyOrderRepository.findByInvestorIdAndBeanId(investorId, beanId);}
+
     public void saveOrUpdate(BuyOrder buyOrder){
         buyOrderRepository.save(buyOrder);
     }

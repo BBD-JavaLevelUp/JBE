@@ -12,8 +12,20 @@ public class Bean {
     private int beanId;
     private String name;
     private BigDecimal defaultPrice;
+    @Transient
+    private BigDecimal jbePrice;
+    @Transient
+    private BigDecimal marketPrice;
 
     public Bean() {
+    }
+
+    public Bean(Bean bean){
+        this.beanId = bean.getBeanId();
+        this.name = bean.getName();
+        this.defaultPrice = bean.getDefaultPrice();
+        jbePrice = BigDecimal.ZERO;
+        marketPrice = BigDecimal.ZERO;
     }
 
     public Bean(int beanId, String name, BigDecimal defaultPrice) {
@@ -49,6 +61,22 @@ public class Bean {
 
     public void setDefaultPrice(BigDecimal defaultPrice) {
         this.defaultPrice = defaultPrice;
+    }
+
+    public BigDecimal getJbePrice() {
+        return jbePrice;
+    }
+
+    public void setJbePrice(BigDecimal jbePrice) {
+        this.jbePrice = jbePrice;
+    }
+
+    public BigDecimal getMarketPrice() {
+        return marketPrice;
+    }
+
+    public void setMarketPrice(BigDecimal marketPrice) {
+        this.marketPrice = marketPrice;
     }
 
     @Override

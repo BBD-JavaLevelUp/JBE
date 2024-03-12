@@ -1,5 +1,6 @@
 package com.jbe.server.repository;
 
+import com.jbe.server.entity.BuyOrder;
 import com.jbe.server.entity.SellOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,7 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Integer> {
     public List<SellOrder> findByIsActiveAndInvestorId(boolean isActive, int id);
 
     public List<SellOrder> findByIsActiveAndBeanId(boolean isActive, int id);
+
+    public List<SellOrder> findByInvestorIdAndBeanId(int investorId, int beanId);
 
 }

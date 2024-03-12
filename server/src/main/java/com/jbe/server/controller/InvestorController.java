@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/investor")
+@RequestMapping("/api/investors")
 public class InvestorController {
     private final InvestorService investorService;
 
