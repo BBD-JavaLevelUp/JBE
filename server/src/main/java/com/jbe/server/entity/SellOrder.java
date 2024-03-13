@@ -23,9 +23,22 @@ public class SellOrder {
     private long totalAmount;
     private OffsetDateTime orderDate;
     private boolean isActive;
+    @Transient
+    private String beanName;
 
     public SellOrder(){
 
+    }
+
+    public SellOrder(SellOrder sellOrder){
+        this.sellOrderId = sellOrder.getSellOrderId();
+        this.investorId = sellOrder.getInvestorId();
+        this.beanId = sellOrder.getBeanId();
+        this.price = sellOrder.getPrice();
+        this.availableAmount = sellOrder.getAvailableAmount();
+        this.totalAmount = sellOrder.getTotalAmount();
+        this.orderDate = sellOrder.getOrderDate();
+        this.isActive = sellOrder.isActive();
     }
     public SellOrder(int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
         this.investorId = sellingInvestorId;
@@ -121,5 +134,13 @@ public class SellOrder {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
     }
 }
