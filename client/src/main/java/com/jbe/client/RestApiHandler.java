@@ -21,6 +21,8 @@ public class RestApiHandler {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_MAGENTA = "\u001B[35m";
 
     //View Available Beans
     public static void getAllBeans()
@@ -28,17 +30,17 @@ public class RestApiHandler {
         String response = APICall.get("/api/beans", null);
         JSONArray jsonResponse = new JSONArray(response);
 
-        System.out.println("\n\033[1mBeans listed on the JBE: \033[0m");
+        System.out.println(ANSI_BLUE + "\nBeans listed on the JBE:" + ANSI_RESET);
         for(Object json : jsonResponse)
         {
             JSONObject bean = (JSONObject) json;
-            BigDecimal jbePrice = (BigDecimal) bean.get("jbePrice");
-            BigDecimal marketPrice = !bean.get("marketPrice").equals(null) ? (BigDecimal) bean.get("marketPrice") : BigDecimal.valueOf(0);
-            BigDecimal lowestPrice = marketPrice.equals(BigDecimal.valueOf(0)) ? jbePrice : jbePrice.min(marketPrice);
+            //BigDecimal jbePrice = (BigDecimal) bean.get("jbePrice");
+            //BigDecimal marketPrice = !bean.get("marketPrice").equals(null) ? (BigDecimal) bean.get("marketPrice") : BigDecimal.valueOf(0);
+            //BigDecimal lowestPrice = marketPrice.equals(BigDecimal.valueOf(0)) ? jbePrice : jbePrice.min(marketPrice);
             System.out.println(
                 " " +
                 bean.get("name") + " - R" +
-                lowestPrice + " per bean."
+                bean.get("marketPrice") + " per bean"
             );
         }
         System.out.print("\nPress any key to continue...");
@@ -48,29 +50,40 @@ public class RestApiHandler {
     //View Inventory
     public static void getInventory(int investorId)
     {
-        String response = APICall.get("/api/inventories/" + investorId, null);
+        String response = APICall.get("/api/inventories/investor/" + investorId, null);
         JSONArray jsonResponse = new JSONArray(response);
         BigDecimal netProfit = BigDecimal.valueOf(0);
 
-        System.out.println("\n\033[1mYour Beans: \033[0m");
+        System.out.println(ANSI_BLUE + "\nYour Beans:" + ANSI_RESET);
         for(Object json : jsonResponse)
         {
             JSONObject inventory = (JSONObject) json;
             BigDecimal profit = (BigDecimal) inventory.get("profit");
-            String profitLoss = profit.compareTo(BigDecimal.valueOf(0)) != -1 ? " profit" : " loss";
+            String profitLoss = profit.compareTo(BigDecimal.valueOf(0)) >= 0 ? ANSI_GREEN + "R" + inventory.get("profit") : ANSI_RED + "R" + inventory.get("profit");
             System.out.println(
                 " " +
                 inventory.get("beanName") + " - " +
-                inventory.get("amount") + " beans - R" +
-                inventory.get("profit") + profitLoss
+                inventory.get("amount") + " beans - " +
+                profitLoss + ANSI_RESET
             );
 
             netProfit = netProfit.add(profit);
         }
 
-        System.out.println(
-            "\n\033[1mNet Profit/Loss: \033[0mR" + netProfit
-        );
+        if(netProfit.compareTo(BigDecimal.valueOf(0)) >= 0)
+        {
+            System.out.println(
+                ANSI_MAGENTA + "\nNet Profit/Loss: " + ANSI_RESET + ANSI_GREEN + "R" + netProfit + ANSI_RESET
+            );
+        }
+        else
+        {
+            System.out.println(
+                ANSI_MAGENTA + "\nNet Profit/Loss: " + ANSI_RESET + ANSI_RED + "R" + netProfit + ANSI_RESET
+            );
+        }
+
+        
 
         System.out.print("\nPress any key to continue...");
         scanner.nextLine().trim();
@@ -79,38 +92,65 @@ public class RestApiHandler {
     //View transactions
     public static void getTransactions(int investorId)
     {
-        String response = APICall.get("/api/transactions/investor/" + investorId, null);
+        //Sold
+        String response = APICall.get("/api/transactions/selling-investor/" + investorId, null);
         JSONArray jsonResponse = new JSONArray(response);
 
-        System.out.println("\n\033[1mYour Transactions: \033[0m");
+        System.out.println(ANSI_BLUE + "\nBeans Sold:" + ANSI_RESET);
         for(Object json : jsonResponse)
         {
             JSONObject transactions = (JSONObject) json;
+            String date = (String) transactions.get("transactionDate");
+            date = date.substring(0, 10);
+
             System.out.println(
                 " " +
                 transactions.get("beanName") + " - " +
-                transactions.get("amount") + " beans - R" +
-                transactions.get("profit") + " profit"
+                transactions.get("amount") + " beans sold @ R" +
+                transactions.get("price") + " - " +
+                date
             );
         }
+
+        //Bought
+        response = APICall.get("/api/transactions/buying-investor/" + investorId, null);
+        jsonResponse = new JSONArray(response);
+
+        System.out.println(ANSI_BLUE + "\nBeans Bought:" + ANSI_RESET);
+        for(Object json : jsonResponse)
+        {
+            JSONObject transactions = (JSONObject) json;
+            String date = (String) transactions.get("transactionDate");
+            date = date.substring(0, 10);
+
+            System.out.println(
+                " " +
+                transactions.get("beanName") + " - " +
+                transactions.get("amount") + " beans bought @ R" +
+                transactions.get("price") + " - " +
+                date
+            );
+        }
+
         System.out.print("\nPress any key to continue...");
         scanner.nextLine().trim();
     }
 
     //View Sell Orders
-    public static void getInvestorSellOrders(int investorId) {
+    public static void getInvestorSellOrders(int investorId)
+    {
         String response = APICall.get("/api/sell-orders/investor/" + investorId, null);
         JSONArray jsonResponse = new JSONArray(response);
 
-        System.out.println("\n\033[1mYour Sell Orders: \033[0m");
+        System.out.println(ANSI_BLUE + "\nYour Sell Orders:" + ANSI_RESET);
         for(Object json : jsonResponse)
         {
-            JSONObject transactions = (JSONObject) json;
-            int sold = (int) transactions.get("totalAmount") - (int) transactions.get("availableAmount");
+            JSONObject sellOrders = (JSONObject) json;
+            int sold = (int) sellOrders.get("totalAmount") - (int) sellOrders.get("availableAmount");
             String active = "Inactive";
             String color = ANSI_RED;
             
-            if(transactions.get("active").equals(true))
+            if(sellOrders.get("active").equals(true))
             {
                 active = "Active";
                 color = ANSI_GREEN;
@@ -118,8 +158,8 @@ public class RestApiHandler {
 
             System.out.println(
                 " " +
-                transactions.get("beanId") + " - " +
-                sold + "/" + transactions.get("totalAmount") + " sold @ R" + transactions.get("price") + " each - " +
+                sellOrders.get("beanName") + " - " +
+                sold + "/" + sellOrders.get("totalAmount") + " sold @ R" + sellOrders.get("price") + " each - " +
                 "Status: " + color + active + ANSI_RESET
             );
         }
@@ -128,19 +168,20 @@ public class RestApiHandler {
     }
 
     //View Buy Orders
-    public static void getInvestorBuyOrders(int investorId) {
+    public static void getInvestorBuyOrders(int investorId)
+    {
         String response = APICall.get("/api/buy-orders/investor/" + investorId, null);
         JSONArray jsonResponse = new JSONArray(response);
 
-        System.out.println("\n\033[1mYour Buy Orders: \033[0m");
+        System.out.println(ANSI_BLUE + "\nYour Buy Orders:" + ANSI_RESET);
         for(Object json : jsonResponse)
         {
-            JSONObject transactions = (JSONObject) json;
-            int bought = (int) transactions.get("totalAmount") - (int) transactions.get("availableAmount");
+            JSONObject buyOrders = (JSONObject) json;
+            int bought = (int) buyOrders.get("totalAmount") - (int) buyOrders.get("availableAmount");
             String active = "Inactive";
             String color = ANSI_RED;
             
-            if(transactions.get("active").equals(true))
+            if(buyOrders.get("active").equals(true))
             {
                 active = "Active";
                 color = ANSI_GREEN;
@@ -148,14 +189,39 @@ public class RestApiHandler {
 
             System.out.println(
                 " " +
-                transactions.get("beanId") + " - " +
-                bought + "/" + transactions.get("totalAmount") + " bought @ R" + transactions.get("price") + " each - " +
+                buyOrders.get("beanName") + " - " +
+                bought + "/" + buyOrders.get("totalAmount") + " bought @ R" + buyOrders.get("price") + " each - " +
                 "Status: " + color + active + ANSI_RESET
             );
         }
         System.out.print("\nPress any key to continue...");
         scanner.nextLine().trim();
     }
+
+    //View All Sell Orders
+    public static void getSellOrders()
+    {
+        String response = APICall.get("/api/sell-orders/active", null);
+        JSONArray jsonResponse = new JSONArray(response);
+
+        System.out.println(ANSI_BLUE + "\nCurrent Listings:" + ANSI_RESET);
+        for(Object json : jsonResponse)
+        {
+            JSONObject sellOrders = (JSONObject) json;
+            
+            System.out.println(
+                " " +
+                sellOrders.get("beanName") + " - " +
+                sellOrders.get("availableAmount") + " available @ R" + sellOrders.get("price") + " each"
+            );
+        }
+        System.out.print("\nPress any key to continue...");
+        scanner.nextLine().trim();
+    }
+
+    //Create Sell Order
+
+    //Create Buy Order
 
     public static ArrayList<SellOrder> getAllSellOrders() {
         ArrayList<SellOrder> sellOrders = new ArrayList<>();
