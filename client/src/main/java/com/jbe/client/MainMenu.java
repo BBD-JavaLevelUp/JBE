@@ -30,9 +30,10 @@ public class MainMenu
                 System.out.println("4. View My Sell Orders");
                 System.out.println("5. View My Buy Orders"); 
                 System.out.println("6. View Available Sell Orders"); 
-                System.out.println("7. Create a Sell Order");
-                System.out.println("8. Create a Buy Order");
-                System.out.println("9. Logout");
+                System.out.println("7. View Available Buy Orders"); 
+                System.out.println("8. Create a Sell Order");
+                System.out.println("9. Create a Buy Order");
+                System.out.println("10. Logout");
             }
             System.out.print("\nEnter your choice: ");
             int choice = -1; // Default to an invalid choice
@@ -102,14 +103,17 @@ public class MainMenu
                     RestApiHandler.getSellOrders();
                     break;
                 case 7:
+                    RestApiHandler.getBuyOrders();
+                    break;
+                case 8:
                     CreateSellOrder cso = new CreateSellOrder();
                     cso.display();
                     break;
-                case 8:
+                case 9:
                     CreateBuyOrder cbo = new CreateBuyOrder();
                     cbo.display();
                     break;                  
-                case 9:
+                case 10:
                     CurrentInvestor.signOut();
                     break;
                 default:

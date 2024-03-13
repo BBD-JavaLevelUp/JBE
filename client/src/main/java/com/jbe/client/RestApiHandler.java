@@ -43,7 +43,7 @@ public class RestApiHandler {
                 bean.get("marketPrice") + " per bean"
             );
         }
-        System.out.print("\nPress any key to continue...");
+        System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
     }
 
@@ -83,9 +83,7 @@ public class RestApiHandler {
             );
         }
 
-        
-
-        System.out.print("\nPress any key to continue...");
+        System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
     }
 
@@ -132,7 +130,7 @@ public class RestApiHandler {
             );
         }
 
-        System.out.print("\nPress any key to continue...");
+        System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
     }
 
@@ -163,7 +161,7 @@ public class RestApiHandler {
                 "Status: " + color + active + ANSI_RESET
             );
         }
-        System.out.print("\nPress any key to continue...");
+        System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
     }
 
@@ -194,15 +192,46 @@ public class RestApiHandler {
                 "Status: " + color + active + ANSI_RESET
             );
         }
-        System.out.print("\nPress any key to continue...");
+        System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
     }
 
     //View All Sell Orders
     public static void getSellOrders()
     {
-        String response = APICall.get("/api/sell-orders/active", null);
+        System.out.println("\nChoose a bean: ");
+        System.out.println("0. All Beans");
+
+        //Get list of beans
+        String response = APICall.get("/api/beans", null);
         JSONArray jsonResponse = new JSONArray(response);
+        ArrayList<Bean> beans = new ArrayList<>();
+        int i = 1;
+        for(Object json : jsonResponse)
+        {
+            JSONObject bean = (JSONObject) json;
+            beans.add(new Bean((int) bean.get("beanId"), (String) bean.get("name"), (BigDecimal) bean.get("defaultPrice")));
+            System.out.println(i++ + ". " + bean.get("name"));
+        }
+        
+        String input = scanner.nextLine().trim();
+        int choice = Integer.parseInt(input);
+
+        if(choice == 0)
+        {
+            response = APICall.get("/api/sell-orders/active", null);
+        }
+        else if(choice-1 < beans.size())
+        {
+            response = APICall.get("/api/sell-orders/active/beans/" + beans.get(choice-1).getBeanId(), null);
+        }
+        else
+        {
+            System.out.println("Invalid input");
+            return;
+        }
+
+        jsonResponse = new JSONArray(response);
 
         System.out.println(ANSI_BLUE + "\nCurrent Listings:" + ANSI_RESET);
         for(Object json : jsonResponse)
@@ -215,7 +244,59 @@ public class RestApiHandler {
                 sellOrders.get("availableAmount") + " available @ R" + sellOrders.get("price") + " each"
             );
         }
-        System.out.print("\nPress any key to continue...");
+        System.out.print("\nPress enter to continue...");
+        scanner.nextLine().trim();
+    }
+
+    //View All Buy Orders
+    public static void getBuyOrders()
+    {
+        System.out.println("\nChoose a bean: ");
+        System.out.println("0. All Beans");
+
+        //Get list of beans
+        String response = APICall.get("/api/beans", null);
+        JSONArray jsonResponse = new JSONArray(response);
+        ArrayList<Bean> beans = new ArrayList<>();
+        int i = 1;
+        for(Object json : jsonResponse)
+        {
+            JSONObject bean = (JSONObject) json;
+            beans.add(new Bean((int) bean.get("beanId"), (String) bean.get("name"), (BigDecimal) bean.get("defaultPrice")));
+            System.out.println(i++ + ". " + bean.get("name"));
+        }
+        
+        String input = scanner.nextLine().trim();
+        int choice = Integer.parseInt(input);
+
+        if(choice == 0)
+        {
+            response = APICall.get("/api/buy-orders/active", null);
+        }
+        else if(choice-1 < beans.size())
+        {
+            response = APICall.get("/api/buy-orders/active/beans/" + beans.get(choice-1).getBeanId(), null);
+        }
+        else
+        {
+            System.out.println("Invalid input");
+            return;
+        }
+
+        jsonResponse = new JSONArray(response);
+
+        System.out.println(ANSI_BLUE + "\nCurrent Listings:" + ANSI_RESET);
+        for(Object json : jsonResponse)
+        {
+            JSONObject buyOrders = (JSONObject) json;
+            
+            System.out.println(
+                " " +
+                buyOrders.get("beanName") + " - " +
+                buyOrders.get("availableAmount") + " bid @ R" + buyOrders.get("price") + " each"
+            );
+        }
+        System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
     }
 
