@@ -68,14 +68,24 @@ public class RestApiHandler {
       inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
       return inventoryItems;
     }
-    public static ArrayList<InventoryItem> getInventory(int investorId) {
-        // call api using investorId from parameters
-        ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
-        //APICall.makeCall("/api/viewInventory", null);
-        inventoryItems.add(new InventoryItem(1, "A Beans", 100,new BigDecimal("109")));
-        inventoryItems.add(new InventoryItem(2, "B beans", 200,new BigDecimal("79")));
-        inventoryItems.add(new InventoryItem(3, "C beans", 150,new BigDecimal("10.9")));
-        return inventoryItems;
+    public static void getInventory(int investorId)
+    {
+        String response = APICall.get("/api/inventories/" + investorId, null);
+        JSONArray jsonResponse = new JSONArray(response);
+
+        System.out.println("\n\033[1mYour Beans: \033[0m");
+        for(Object json : jsonResponse)
+        {
+            JSONObject inventory = (JSONObject) json;
+            System.out.println(
+                " " +
+                inventory.get("beanName") + " - " +
+                inventory.get("amount") + " beans - R" +
+                inventory.get("profit") + " profit"
+            );
+        }
+        System.out.print("\nPress any key to continue...");
+        scanner.nextLine().trim();
       }
     public static ArrayList<SellOrder> getInvestorSellOrders(int id) {
         ArrayList<SellOrder> sellOrders = new ArrayList<>();

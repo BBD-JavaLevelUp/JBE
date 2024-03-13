@@ -60,9 +60,8 @@ public class MainMenu {
                     if(CurrentInvestor.isAdmin){
                         AdminMenu.display();
                     }
-                } else {
-                    //ViewBeans viewBeans = new ViewBeans();
-                    //viewBeans.display();
+                } else
+                {
                     RestApiHandler.getAllBeans();
                 }
                 break;
@@ -72,9 +71,9 @@ public class MainMenu {
                     if(CurrentInvestor.isAdmin){
                         AdminMenu.display();
                     }
-                } else {
-                    ViewInventory vi = new ViewInventory();
-                    vi.display();
+                } else
+                {
+                    RestApiHandler.getInventory(CurrentInvestor.getId());
                 }
                 break;
             case 3:
