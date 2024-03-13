@@ -1,31 +1,46 @@
 package com.jbe.server.controller;
 
+import com.jbe.server.entity.BuyOrder;
 import com.jbe.server.entity.SellOrder;
+import com.jbe.server.entity.Transaction;
+import com.jbe.server.service.BuyOrderService;
 import com.jbe.server.service.SellOrderService;
+import com.jbe.server.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import static java.util.Collections.*;
 
 @RestController
 @RequestMapping("/api/sell-orders")
 public class SellOrderController {
     private final SellOrderService sellOrderService;
+    private final BuyOrderService buyOrderService;
+    private final TransactionService transactionService;
 
     @Autowired
-    public SellOrderController(SellOrderService sellOrderService) {
+    public SellOrderController(SellOrderService sellOrderService, BuyOrderService buyOrderService, TransactionService transactionService) {
         this.sellOrderService = sellOrderService;
+        this.buyOrderService = buyOrderService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping
     public List<SellOrder> sellOrders()
     {
         return sellOrderService.getAllSellOrders();
+    }
+
+    @GetMapping("/{id}")
+    public SellOrder sellOrdersById(@PathVariable("id") int id)
+    {
+        return sellOrderService.getSellOrdersById(id);
     }
 
     @GetMapping("/investor/{id}")
@@ -83,5 +98,46 @@ public class SellOrderController {
         BigDecimal jbePrice = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size()));
         BigDecimal marketPrice = sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(99999999999999999L), BigDecimal::min);
         return List.of(jbePrice, marketPrice);
+    }
+
+    @PostMapping
+    public int saveSellOrder(@RequestBody SellOrder sellOrder){
+        sellOrderService.saveOrUpdate(sellOrder);
+        matchSellOrder(sellOrder);
+        return sellOrder.getSellOrderId();
+    }
+
+    @PutMapping
+    public int updateSellOrder(@RequestBody SellOrder sellOrder){
+        sellOrderService.saveOrUpdate(sellOrder);
+        matchSellOrder(sellOrder);
+        return sellOrder.getSellOrderId();
+    }
+
+    public void matchSellOrder(SellOrder sellOrder){
+        while (sellOrder.getAvailableAmount()>0){
+            List<BuyOrder> buyOrders = new java.util.ArrayList<>(buyOrderService.getAllActiveBuyOrdersByBean(sellOrder.getBeanId()).stream().filter(b -> b.getPrice().compareTo(sellOrder.getPrice()) > 0).toList());
+            buyOrders.sort(Comparator.comparing(BuyOrder::getOrderDate));
+            if (!buyOrders.isEmpty()){
+                BuyOrder buyOrder = buyOrders.getFirst();
+                long total = min(List.of(sellOrder.getAvailableAmount(), buyOrder.getAvailableAmount()));
+                Transaction transaction = new Transaction(buyOrder.getBuyOrderId(), sellOrder.getSellOrderId(), total);
+                sellOrder.setAvailableAmount(sellOrder.getAvailableAmount()-total);
+                buyOrder.setAvailableAmount(buyOrder.getAvailableAmount()-total);
+                if (buyOrder.getAvailableAmount()==0){
+                    List<Transaction> transactions = transactionService.getTransactionByBuyOrderId(buyOrder.getBuyOrderId());
+                    buyOrder.setPrice(transactions.stream().map(t -> t.getPrice().multiply(BigDecimal.valueOf(t.getAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add));
+                    buyOrder.setActive(false);
+                }
+                if (sellOrder.getAvailableAmount()==0){
+                    sellOrder.setActive(false);
+                }
+                buyOrderService.saveOrUpdate(buyOrder);
+                sellOrderService.saveOrUpdate(sellOrder);
+                transactionService.saveOrUpdate(transaction);
+            } else {
+                return;
+            }
+        }
     }
 }

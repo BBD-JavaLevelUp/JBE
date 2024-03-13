@@ -2,6 +2,7 @@ package com.jbe.server.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
@@ -16,6 +17,10 @@ public class Transaction {
     private int sellOrderId;
     private OffsetDateTime transactionDate;
     private Long amount;
+    @Transient
+    private String beanName;
+    @Transient
+    private BigDecimal price;
 
     public Transaction(){
 
@@ -42,6 +47,14 @@ public class Transaction {
         this.sellOrderId = sellOrderId;
         this.amount = amount;
         this.transactionDate = transactionDate;
+    }
+
+    public Transaction(Transaction transaction) {
+        this.transactionId = transaction.getTransactionId();
+        this.buyOrderId = transaction.getBuyOrderId();
+        this.sellOrderId = transaction.getSellOrderId();
+        this.amount = transaction.getAmount();
+        this.transactionDate = transaction.getTransactionDate();
     }
 
     public int getTransactionId() {
@@ -82,5 +95,21 @@ public class Transaction {
 
     public void setTransactionDate(OffsetDateTime transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
+    }
+
+    public BigDecimal getPrice() {
+        return price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
