@@ -11,7 +11,7 @@ public class ViewTransactions {
     public ArrayList<TransactionItem>  transactionItems;
 
     public ViewTransactions(int id) {
-        transactionItems = RestApiHandler.getTransactions(id);
+        //transactionItems = RestApiHandler.getTransactions(id);
     }
 
     public ViewTransactions() {

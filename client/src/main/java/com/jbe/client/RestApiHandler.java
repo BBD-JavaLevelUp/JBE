@@ -19,14 +19,7 @@ public class RestApiHandler {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static ArrayList<SellOrder> getAllSellOrders() {
-        ArrayList<SellOrder> sellOrders = new ArrayList<>();
-        sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("10.50"), 100, 200, OffsetDateTime.now(), true));
-        sellOrders.add(new SellOrder(2, 102, 2, new BigDecimal("12.75"), 150, 250, OffsetDateTime.now(), true));
-        sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("9.25"), 80, 180, OffsetDateTime.now(), true));
-        return sellOrders;
-    }
-
+    //View Available Beans
     public static void getAllBeans()
     {
         String response = APICall.get("/api/beans", null);
@@ -49,6 +42,45 @@ public class RestApiHandler {
         scanner.nextLine().trim();
     }
 
+    //View Inventory
+    public static void getInventory(int investorId)
+    {
+        String response = APICall.get("/api/inventories/" + investorId, null);
+        JSONArray jsonResponse = new JSONArray(response);
+        BigDecimal netProfit = BigDecimal.valueOf(0);
+
+        System.out.println("\n\033[1mYour Beans: \033[0m");
+        for(Object json : jsonResponse)
+        {
+            JSONObject inventory = (JSONObject) json;
+            BigDecimal profit = (BigDecimal) inventory.get("profit");
+            String profitLoss = profit.compareTo(BigDecimal.valueOf(0)) != -1 ? " profit" : " loss";
+            System.out.println(
+                " " +
+                inventory.get("beanName") + " - " +
+                inventory.get("amount") + " beans - R" +
+                inventory.get("profit") + profitLoss
+            );
+
+            netProfit = netProfit.add(profit);
+        }
+
+        System.out.println(
+            "\n\033[1mNet Profit/Loss: \033[0mR" + netProfit
+        );
+
+        System.out.print("\nPress any key to continue...");
+        scanner.nextLine().trim();
+    }
+
+    public static ArrayList<SellOrder> getAllSellOrders() {
+        ArrayList<SellOrder> sellOrders = new ArrayList<>();
+        sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("10.50"), 100, 200, OffsetDateTime.now(), true));
+        sellOrders.add(new SellOrder(2, 102, 2, new BigDecimal("12.75"), 150, 250, OffsetDateTime.now(), true));
+        sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("9.25"), 80, 180, OffsetDateTime.now(), true));
+        return sellOrders;
+    }
+
     public static Bean getBean(int beanId) {
         return null;
         // ArrayList<Bean> beans = getAllBeans();
@@ -59,6 +91,7 @@ public class RestApiHandler {
         // }
         // return null; // Bean with given beanId not found
     }
+
     public static ArrayList<InventoryItem> getInventory() {
       // call api using current investor api
       ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
@@ -68,25 +101,7 @@ public class RestApiHandler {
       inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
       return inventoryItems;
     }
-    public static void getInventory(int investorId)
-    {
-        String response = APICall.get("/api/inventories/" + investorId, null);
-        JSONArray jsonResponse = new JSONArray(response);
 
-        System.out.println("\n\033[1mYour Beans: \033[0m");
-        for(Object json : jsonResponse)
-        {
-            JSONObject inventory = (JSONObject) json;
-            System.out.println(
-                " " +
-                inventory.get("beanName") + " - " +
-                inventory.get("amount") + " beans - R" +
-                inventory.get("profit") + " profit"
-            );
-        }
-        System.out.print("\nPress any key to continue...");
-        scanner.nextLine().trim();
-      }
     public static ArrayList<SellOrder> getInvestorSellOrders(int id) {
         ArrayList<SellOrder> sellOrders = new ArrayList<>();
         sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("109"), 140, 200, OffsetDateTime.now(), true));
@@ -138,14 +153,27 @@ public class RestApiHandler {
     public static void CreateBuyOrder(BuyOrder newBuyOrder) {
         System.out.println("buy order created!");
     }
-    public static ArrayList<TransactionItem> getTransactions(int id) {
-        ArrayList<TransactionItem> transactions = new ArrayList<>();
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Coffee Beans", 100, new BigDecimal("5.00"), "Tebogo", "Alice"));
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Tea Leaves", 50, new BigDecimal("3.50"), "Tebogo", "Eve"));
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Cocoa Beans", 80, new BigDecimal("7.20"), "Tebogo", "Mallory"));
-        return transactions;
 
+    public static void getTransactions(int investorId)
+    {
+        String response = APICall.get("/api/transactions/investor/" + investorId, null);
+        JSONArray jsonResponse = new JSONArray(response);
+
+        System.out.println("\n\033[1mYour Transactions: \033[0m");
+        for(Object json : jsonResponse)
+        {
+            JSONObject transactions = (JSONObject) json;
+            System.out.println(
+                " " +
+                transactions.get("beanName") + " - " +
+                transactions.get("amount") + " beans - R" +
+                transactions.get("profit") + " profit"
+            );
+        }
+        System.out.print("\nPress any key to continue...");
+        scanner.nextLine().trim();
     }
+
     public static ArrayList<TransactionItem> getAllTransactions() {
         ArrayList<TransactionItem> transactions = new ArrayList<>();
         transactions.add(new TransactionItem(OffsetDateTime.now(), "Coffee Beans", 100, new BigDecimal("5.00"), "John", "Alice"));
