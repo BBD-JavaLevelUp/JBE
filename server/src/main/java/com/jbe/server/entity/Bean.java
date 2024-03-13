@@ -2,6 +2,7 @@ package com.jbe.server.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 @Entity
@@ -48,7 +49,7 @@ public class Bean {
     }
 
     public BigDecimal getDefaultPrice() {
-        return defaultPrice;
+        return defaultPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setBeanId(int beanId) {
@@ -64,7 +65,7 @@ public class Bean {
     }
 
     public BigDecimal getJbePrice() {
-        return jbePrice;
+        return jbePrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setJbePrice(BigDecimal jbePrice) {
@@ -72,7 +73,7 @@ public class Bean {
     }
 
     public BigDecimal getMarketPrice() {
-        return marketPrice;
+        return marketPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setMarketPrice(BigDecimal marketPrice) {

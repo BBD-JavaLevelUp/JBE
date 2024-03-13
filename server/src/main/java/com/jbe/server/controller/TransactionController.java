@@ -1,13 +1,7 @@
 package com.jbe.server.controller;
 
-import com.jbe.server.entity.Bean;
-import com.jbe.server.entity.BuyOrder;
-import com.jbe.server.entity.Investor;
-import com.jbe.server.entity.Transaction;
-import com.jbe.server.service.BeanService;
-import com.jbe.server.service.BuyOrderService;
-import com.jbe.server.service.InvestorService;
-import com.jbe.server.service.TransactionService;
+import com.jbe.server.entity.*;
+import com.jbe.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +13,15 @@ import java.util.stream.Collectors;
 public class TransactionController {
     private final TransactionService transactionService;
     private final BuyOrderService buyOrderService;
+    private final SellOrderService sellOrderService;
     private final BeanService beanService;
 
     @Autowired
-    public TransactionController(TransactionService transactionService, BuyOrderService buyOrderService, BeanService beanService) {
+    public TransactionController(TransactionService transactionService, BuyOrderService buyOrderService, BeanService beanService, SellOrderService sellOrderService) {
         this.transactionService = transactionService;
         this.buyOrderService = buyOrderService;
         this.beanService = beanService;
+        this.sellOrderService = sellOrderService;
     }
 
     @GetMapping
@@ -36,6 +32,8 @@ public class TransactionController {
             BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
             Bean bean = beanService.getBeanById(buyOrder.getBeanId());
             n.setBeanName(bean.getName());
+            SellOrder sellOrder = sellOrderService.getSellOrdersById(t.getSellOrderId());
+            n.setPrice(sellOrder.getPrice());
             return n;
         }).toList();
     }
@@ -46,6 +44,8 @@ public class TransactionController {
         BuyOrder buyOrder = buyOrderService.getBuyOrdersById(n.getBuyOrderId());
         Bean bean = beanService.getBeanById(buyOrder.getBeanId());
         n.setBeanName(bean.getName());
+        SellOrder sellOrder = sellOrderService.getSellOrdersById(n.getSellOrderId());
+        n.setPrice(sellOrder.getPrice());
         return n;
     }
 
@@ -62,6 +62,8 @@ public class TransactionController {
                     BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
                     Bean bean = beanService.getBeanById(buyOrder.getBeanId());
                     n.setBeanName(bean.getName());
+                    SellOrder sellOrder = sellOrderService.getSellOrdersById(t.getSellOrderId());
+                    n.setPrice(sellOrder.getPrice());
                     return n;
                 }).toList();
     }
@@ -79,8 +81,38 @@ public class TransactionController {
                     BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
                     Bean bean = beanService.getBeanById(buyOrder.getBeanId());
                     n.setBeanName(bean.getName());
+                    SellOrder sellOrder = sellOrderService.getSellOrdersById(t.getSellOrderId());
+                    n.setPrice(sellOrder.getPrice());
                     return n;
                 }).toList();
+    }
+
+    @GetMapping("/buy-orders/{id}")
+    public List<Transaction> getTransactionsByBuyOrderId(@PathVariable int id) {
+        return transactionService.getTransactionByBuyOrderId(id).stream().map(t ->
+        {
+            Transaction n = new Transaction(t);
+            BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
+            Bean bean = beanService.getBeanById(buyOrder.getBeanId());
+            n.setBeanName(bean.getName());
+            SellOrder sellOrder = sellOrderService.getSellOrdersById(t.getSellOrderId());
+            n.setPrice(sellOrder.getPrice());
+            return n;
+        }).toList();
+    }
+
+    @GetMapping("/sell-orders/{id}")
+    public List<Transaction> getTransactionsBySellOrderId(@PathVariable int id) {
+        return transactionService.getTransactionByBuyOrderId(id).stream().map(t ->
+        {
+            Transaction n = new Transaction(t);
+            BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
+            Bean bean = beanService.getBeanById(buyOrder.getBeanId());
+            n.setBeanName(bean.getName());
+            SellOrder sellOrder = sellOrderService.getSellOrdersById(t.getSellOrderId());
+            n.setPrice(sellOrder.getPrice());
+            return n;
+        }).toList();
     }
 
     @PostMapping
