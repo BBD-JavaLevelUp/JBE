@@ -12,7 +12,7 @@ public class ViewBuyOrders{
     public boolean viewingOwn = false;
 
     public ViewBuyOrders(int id) {
-        buyOrders = RestApiHandler.getInvestorBuyOrders(id);
+        //buyOrders = RestApiHandler.getInvestorBuyOrders(id);
         viewingOwn = true;
     }
 
