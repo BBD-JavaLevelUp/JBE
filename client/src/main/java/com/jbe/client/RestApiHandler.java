@@ -1,5 +1,7 @@
 package com.jbe.client;
 
+import java.util.Scanner;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -11,7 +13,11 @@ import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
 import com.jbe.client.Models.TransactionItem;
 
+import org.json.*;
+
 public class RestApiHandler {
+
+    private static Scanner scanner = new Scanner(System.in);
 
     public static ArrayList<SellOrder> getAllSellOrders() {
         ArrayList<SellOrder> sellOrders = new ArrayList<>();
@@ -20,28 +26,43 @@ public class RestApiHandler {
         sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("9.25"), 80, 180, OffsetDateTime.now(), true));
         return sellOrders;
     }
-    public static ArrayList<Bean> getAllBeans() {
-        ArrayList<Bean> beans = new ArrayList<>();
-        APICall.makeCall("/api/beans/beans", null);
-        beans.add(new Bean(1, "Coffee beans", new BigDecimal(10.99)));
-        beans.add(new Bean(2, "Baked beans", new BigDecimal(8.99)));
-        beans.add(new Bean(3, "More beans", new BigDecimal(12.99)));
-        return beans;
+
+    public static void getAllBeans()
+    {
+        String response = APICall.get("/api/beans", null);
+        JSONArray jsonResponse = new JSONArray(response);
+
+        System.out.println("\n\033[1mBeans listed on the JBE: \033[0m");
+        for(Object json : jsonResponse)
+        {
+            JSONObject bean = (JSONObject) json;
+            BigDecimal jbePrice = (BigDecimal) bean.get("jbePrice");
+            BigDecimal marketPrice = !bean.get("marketPrice").equals(null) ? (BigDecimal) bean.get("marketPrice") : BigDecimal.valueOf(0);
+            BigDecimal lowestPrice = marketPrice.equals(BigDecimal.valueOf(0)) ? jbePrice : jbePrice.min(marketPrice);
+            System.out.println(
+                " " +
+                bean.get("name") + " - R" +
+                lowestPrice + " per bean."
+            );
+        }
+        System.out.print("\nPress any key to continue...");
+        scanner.nextLine().trim();
     }
 
     public static Bean getBean(int beanId) {
-        ArrayList<Bean> beans = getAllBeans();
-        for (Bean bean : beans) {
-            if (bean.getBeanId() == beanId) {
-                return bean;
-            }
-        }
-        return null; // Bean with given beanId not found
+        return null;
+        // ArrayList<Bean> beans = getAllBeans();
+        // for (Bean bean : beans) {
+        //     if (bean.getBeanId() == beanId) {
+        //         return bean;
+        //     }
+        // }
+        // return null; // Bean with given beanId not found
     }
     public static ArrayList<InventoryItem> getInventory() {
       // call api using current investor api
       ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
-      APICall.makeCall("/api/viewInventory", null);
+      //APICall.makeCall("/api/viewInventory", null);
       inventoryItems.add(new InventoryItem(1, "Arabica Beans", 100,new BigDecimal("109")));
       inventoryItems.add(new InventoryItem(2, "Cool beans", 200,new BigDecimal("79")));
       inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
@@ -50,7 +71,7 @@ public class RestApiHandler {
     public static ArrayList<InventoryItem> getInventory(int investorId) {
         // call api using investorId from parameters
         ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
-        APICall.makeCall("/api/viewInventory", null);
+        //APICall.makeCall("/api/viewInventory", null);
         inventoryItems.add(new InventoryItem(1, "A Beans", 100,new BigDecimal("109")));
         inventoryItems.add(new InventoryItem(2, "B beans", 200,new BigDecimal("79")));
         inventoryItems.add(new InventoryItem(3, "C beans", 150,new BigDecimal("10.9")));
