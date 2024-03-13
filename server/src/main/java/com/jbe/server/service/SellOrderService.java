@@ -20,6 +20,10 @@ public class SellOrderService {
         return sellOrderRepository.findAll();
     }
 
+    public SellOrder getSellOrdersById(int sellOrderId) {
+        return sellOrderRepository.findById(sellOrderId).get();
+    }
+
     public List<SellOrder> getSellOrdersByInvestor(int id){return sellOrderRepository.findByInvestorId(id);}
 
     public List<SellOrder> getSellOrdersByBean(int id){return sellOrderRepository.findByBeanId(id);}
