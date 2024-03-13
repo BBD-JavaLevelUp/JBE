@@ -24,7 +24,16 @@ public class TransactionService {
         return transactionRepository.findById(transactionId).get();
     }
 
+    public List<Transaction> getTransactionByBuyOrderId(int id) {
+        return transactionRepository.findByBuyOrderId(id);
+    }
+
+    public List<Transaction> getTransactionBySellOrderId(int id) {
+        return transactionRepository.findBySellOrderId(id);
+    }
+
     public void saveOrUpdate(Transaction transaction){
         transactionRepository.save(transaction);
     }
+
 }

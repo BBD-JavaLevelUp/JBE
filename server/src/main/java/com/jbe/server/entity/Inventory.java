@@ -3,6 +3,7 @@ package com.jbe.server.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table
@@ -84,7 +85,7 @@ public class Inventory {
     }
 
     public BigDecimal getProfit() {
-        return profit;
+        return profit.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setProfit(BigDecimal profit) {
