@@ -301,6 +301,24 @@ public class RestApiHandler {
     }
 
     //Create Sell Order
+    public static void CreateSellOrder(SellOrder newSellOrder)
+    {
+        String body = "{" + 
+            "\"investorId\":" + CurrentInvestor.getId() + ",\n" +
+            "\"beanId\":" + newSellOrder.getBeanId() + ",\n" +
+            "\"price\":" + newSellOrder.getSellingPrice() + ",\n" +
+            "\"availableAmount\":" + newSellOrder.getAvailableAmount() + ",\n" +
+            "\"totalAmount\":" + newSellOrder.getTotalAmount() + ",\n" +
+            "\"orderDate\":" + "\"" + newSellOrder.getSellOrderDate() + "\",\n" + 
+            "\"isActive\":" + newSellOrder.isActive() + "\n" + 
+            "}";
+
+        System.out.println(body);
+        APICall.post("/api/sell-orders", body);
+        System.out.println(ANSI_GREEN + "Sell order placed" + ANSI_RESET);
+        System.out.print("\nPress enter to continue...");
+        scanner.nextLine().trim();
+    }
 
     //Create Buy Order
 
@@ -340,9 +358,7 @@ public class RestApiHandler {
     public static void acceptSellOrder(int sellOrderId) {
         System.out.println("Sell order accepted");
     }
-    public static void CreateSellOrder(SellOrder newSellOrder) {
-        System.out.println("Sell order created!");
-    }
+    
     public static void BuyBeansFromJBE(int beanId, int amount) {
         System.out.println("Beans bought!");
     }

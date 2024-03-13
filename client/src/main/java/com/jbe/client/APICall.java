@@ -33,11 +33,11 @@ public class APICall {
     return response.body();
   }
 
-  public static void post(String endpoint, String[] params)
+  public static void post(String endpoint, String body)
   {
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(url+endpoint))
-      .method("POST", HttpRequest.BodyPublishers.noBody())
+      .method("POST", HttpRequest.BodyPublishers.ofString(body))
       .build();
 
     HttpResponse<String> response = null;
@@ -53,7 +53,5 @@ public class APICall {
     {
       e.printStackTrace();
     }
-
-    System.out.println(response.body());
   }
 }

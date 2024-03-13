@@ -4,6 +4,10 @@ import java.time.OffsetDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.jbe.client.APICall;
 import com.jbe.client.CurrentInvestor;
 import com.jbe.client.MainMenu;
 import com.jbe.client.RestApiHandler;
@@ -14,8 +18,19 @@ public class CreateSellOrder{
     private static Scanner scanner = new Scanner(System.in);
     private ViewInventory vi;
 
-    public CreateSellOrder() {
+    public CreateSellOrder()
+    {
+        String response = APICall.get("/api/inventories/investor/" + CurrentInvestor.getId(), null);
+        JSONArray jsonResponse = new JSONArray(response);
         vi = new ViewInventory();
+        for(Object json : jsonResponse)
+        {
+            JSONObject inventory = (JSONObject) json;
+            vi.inventoryItems.add(new InventoryItem((int) inventory.get("beanId"), 
+                                                    (String) inventory.get("beanName"), 
+                                                    (int) inventory.get("amount"), 
+                                                    BigDecimal.valueOf(0)));
+        }
     }
 
     public void display() {
@@ -28,7 +43,6 @@ public class CreateSellOrder{
             vi.printInventory();
             System.out.println("0. Go back to Main Menu");
             System.out.print("\nSelect bean you want to create sell order on: ");
-            
             
             int choice = -1;
     
