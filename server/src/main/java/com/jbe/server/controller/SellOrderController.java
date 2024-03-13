@@ -1,8 +1,10 @@
 package com.jbe.server.controller;
 
+import com.jbe.server.entity.Bean;
 import com.jbe.server.entity.BuyOrder;
 import com.jbe.server.entity.SellOrder;
 import com.jbe.server.entity.Transaction;
+import com.jbe.server.service.BeanService;
 import com.jbe.server.service.BuyOrderService;
 import com.jbe.server.service.SellOrderService;
 import com.jbe.server.service.TransactionService;
@@ -23,72 +25,122 @@ public class SellOrderController {
     private final SellOrderService sellOrderService;
     private final BuyOrderService buyOrderService;
     private final TransactionService transactionService;
+    private final BeanService beanService;
 
     @Autowired
-    public SellOrderController(SellOrderService sellOrderService, BuyOrderService buyOrderService, TransactionService transactionService) {
+    public SellOrderController(SellOrderService sellOrderService, BuyOrderService buyOrderService, TransactionService transactionService, BeanService beanService) {
         this.sellOrderService = sellOrderService;
         this.buyOrderService = buyOrderService;
         this.transactionService = transactionService;
+        this.beanService = beanService;
     }
 
     @GetMapping
     public List<SellOrder> sellOrders()
     {
-        return sellOrderService.getAllSellOrders();
+        return sellOrderService.getAllSellOrders().stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/{id}")
     public SellOrder sellOrdersById(@PathVariable("id") int id)
     {
-        return sellOrderService.getSellOrdersById(id);
+        SellOrder n = new SellOrder(sellOrderService.getSellOrdersById(id));
+        Bean bean = beanService.getBeanById(n.getBeanId());
+        n.setBeanName(bean.getName());
+        return n;
     }
 
     @GetMapping("/investor/{id}")
     public List<SellOrder> sellOrdersByInvestor(@PathVariable int id)
     {
-        return sellOrderService.getSellOrdersByInvestor(id);
+        return sellOrderService.getSellOrdersByInvestor(id).stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/beans/{id}")
     public List<SellOrder> sellOrdersByBean(@PathVariable int id)
     {
-        return sellOrderService.getSellOrdersByBean(id);
+        return sellOrderService.getSellOrdersByBean(id).stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/active")
     public List<SellOrder> activeSellOrders()
     {
-        return sellOrderService.getAllActiveSellOrders();
+        return sellOrderService.getAllActiveSellOrders().stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/active/investor/{id}")
     public List<SellOrder> activeSellOrdersByInvestor(@PathVariable int id)
     {
-        return sellOrderService.getAllActiveSellOrdersByInvestor(id);
+        return sellOrderService.getAllActiveSellOrdersByInvestor(id).stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/active/beans/{id}")
     public List<SellOrder> activeSellOrdersByBean(@PathVariable int id)
     {
-        return sellOrderService.getAllActiveSellOrdersByBean(id);
+        return sellOrderService.getAllActiveSellOrdersByBean(id).stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/inactive")
     public List<SellOrder> inactiveSellOrders()
     {
-        return sellOrderService.getAllInactiveSellOrders();
+        return sellOrderService.getAllInactiveSellOrders().stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/inactive/investor/{id}")
     public List<SellOrder> inactiveSellOrdersByInvestor(@PathVariable int id)
     {
-        return sellOrderService.getAllInactiveSellOrdersByInvestor(id);
+        return sellOrderService.getAllInactiveSellOrdersByInvestor(id).stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/inactive/beans/{id}")
     public List<SellOrder> inactiveSellOrdersByBean(@PathVariable int id)
     {
-        return sellOrderService.getAllInactiveSellOrdersByBean(id);
+        return sellOrderService.getAllInactiveSellOrdersByBean(id).stream().map(s -> {
+            SellOrder n = new SellOrder(s);
+            Bean bean = beanService.getBeanById(s.getBeanId());
+            n.setBeanName(bean.getName());
+            return n;
+        }).toList();
     }
 
     @GetMapping("/bean-prices/{id}")
