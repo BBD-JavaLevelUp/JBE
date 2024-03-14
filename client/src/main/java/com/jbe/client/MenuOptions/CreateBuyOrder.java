@@ -1,34 +1,41 @@
 package com.jbe.client.MenuOptions;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.jbe.client.CurrentInvestor;
 import com.jbe.client.MainMenu;
 import com.jbe.client.RestApiHandler;
-import com.jbe.client.Models.InventoryItem;
+import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.BuyOrder;
 
 public class CreateBuyOrder{
     private static Scanner scanner = new Scanner(System.in);
-    private ViewInventory vi;
+    private ArrayList<Bean> beans;
 
-    public CreateBuyOrder() {
-        vi = new ViewInventory();
+    public CreateBuyOrder()
+    {
+        this.beans = RestApiHandler.getBeansList();
     }
+    
 
     public void display() {
-        System.out.println("\nYour beans");
+        System.out.println("\nAll the beans in the world");
         subMenu();
     }
 
     public void subMenu(){
         while (true) {
-            vi.printInventory();
+            // print all beans!
+            for (int index = 0; index < beans.size(); index++) {
+                Bean bean = beans.get(index);
+                System.out.println(index+1 + ". "+bean.getName());
+            }
+
             System.out.println("0. Go back to Main Menu");
             System.out.print("\nSelect bean you want to create buy order on: ");
-            
             
             int choice = -1;
     
@@ -40,7 +47,7 @@ public class CreateBuyOrder{
                 continue;
             }
     
-            if (choice > vi.inventoryItems.size()) {
+            if (choice > beans.size()) {
                 System.out.println("If you not serious tell me");
                 continue; 
             }
@@ -53,13 +60,13 @@ public class CreateBuyOrder{
             if(choice == 0){
                 MainMenu.display();
             }
-            InventoryItem inventoryItem = vi.inventoryItems.get(choice-1);
+            Bean bean = beans.get(choice-1);
 
             // Ask for buying price
             BigDecimal buyingPrice = null;
             while (buyingPrice == null) {
                 try {
-                    System.out.print("Enter buying price: ");
+                    System.out.print("Enter buying price(for each bean) : ");
                     buyingPrice = scanner.nextBigDecimal();
                 } catch (InputMismatchException e) {
                     System.out.println("Invalid input. Please enter a valid decimal.");
@@ -67,7 +74,7 @@ public class CreateBuyOrder{
                 }
             }
 
-            // Ask for amount of beans to buy
+            // Ask for amount of beans to sell
             int amount = -1;
             while (amount == -1) {
                 try {
@@ -78,7 +85,15 @@ public class CreateBuyOrder{
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
-            BuyOrder newBuyOrder = new BuyOrder(CurrentInvestor.getId(), inventoryItem.getBeanId(), buyingPrice, amount, amount, OffsetDateTime.now(), true);
+            BuyOrder newBuyOrder = new BuyOrder(CurrentInvestor.getId(), 
+                                                    bean.getBeanId(), 
+                                                    buyingPrice, 
+                                                    amount, 
+                                                    amount, 
+                                                    OffsetDateTime.now().toString(), 
+                                                    true,
+                                                    bean.getName()
+                                                    );
             RestApiHandler.CreateBuyOrder(newBuyOrder);
             MainMenu.display();
         }

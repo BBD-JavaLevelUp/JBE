@@ -17,9 +17,9 @@ public class ViewBuyOrders{
     }
 
     // if an investorID is not provided we get all of the buy orders
-    public ViewBuyOrders() {
+/*     public ViewBuyOrders() {
         buyOrders = RestApiHandler.getAllBuyOrders();
-    }
+    } */
 
     public void display() {
         System.out.println("\nAll buy orders");
@@ -60,7 +60,7 @@ public class ViewBuyOrders{
             for (int index = 0; index < buyOrders.size(); index++) {
                 BuyOrder buyOrder = buyOrders.get(index);
                 String beanName = RestApiHandler.getBean(buyOrder.getBeanId()).getName();
-                System.out.println(index+1 + ". " + beanName + " - " + buyOrder.getTotalAmount() + " - R" + buyOrder.getBuyingPrice() );
+                System.out.println(index+1 + ". " + beanName + " - " + buyOrder.getTotalAmount() + " - R" + buyOrder.getSellingPrice() );
             }
         }
 

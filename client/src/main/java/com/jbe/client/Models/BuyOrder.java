@@ -1,47 +1,49 @@
 package com.jbe.client.Models;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 
 public class BuyOrder {
-    private int buyOrderId;
+    private int sellOrderId;
     private int investorId;
     private int beanId;
-    private BigDecimal buyingPrice;
+    private BigDecimal sellingPrice;
     private long availableAmount;
     private long totalAmount;
-    private OffsetDateTime buyOrderDate;
+    private String sellOrderDate;
     private boolean isActive;
+    private String beanName;
 
     // Constructor
-    public BuyOrder(int buyOrderId, int investorId, int beanId, BigDecimal buyingPrice, int availableAmount, int totalAmount, OffsetDateTime buyOrderDate, boolean isActive) {
-        this.buyOrderId = buyOrderId;
+    public BuyOrder(int sellOrderId, int investorId, int beanId, BigDecimal sellingPrice, long availableAmount, long totalAmount, String sellOrderDate, boolean isActive, String beanName) {
+        this.sellOrderId = sellOrderId;
         this.investorId = investorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.sellingPrice = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
-        this.buyOrderDate = buyOrderDate;
+        this.sellOrderDate = sellOrderDate;
         this.isActive = isActive;
+        this.beanName = beanName;
     }
 
-    public BuyOrder(int investorId, int beanId, BigDecimal buyingPrice, int availableAmount, int totalAmount, OffsetDateTime buyOrderDate, boolean isActive) {
+    public BuyOrder(int investorId, int beanId, BigDecimal sellingPrice, long availableAmount, long totalAmount, String sellOrderDate, boolean isActive, String beanName) {
         this.investorId = investorId;
         this.beanId = beanId;
-        this.buyingPrice = buyingPrice;
+        this.sellingPrice = sellingPrice;
         this.availableAmount = availableAmount;
         this.totalAmount = totalAmount;
-        this.buyOrderDate = buyOrderDate;
+        this.sellOrderDate = sellOrderDate;
         this.isActive = isActive;
+        this.beanName = beanName;
     }
 
     // Getters and Setters
     public int getBuyOrderId() {
-        return buyOrderId;
+        return sellOrderId;
     }
 
-    public void setBuyOrderId(int buyOrderId) {
-        this.buyOrderId = buyOrderId;
+    public void setBuyOrderId(int sellOrderId) {
+        this.sellOrderId = sellOrderId;
     }
 
     public int getInvestorId() {
@@ -60,12 +62,12 @@ public class BuyOrder {
         this.beanId = beanId;
     }
 
-    public BigDecimal getBuyingPrice() {
-        return buyingPrice;
+    public BigDecimal getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setBuyingPrice(BigDecimal buyingPrice) {
-        this.buyingPrice = buyingPrice;
+    public void setSellingPrice(BigDecimal sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public long getAvailableAmount() {
@@ -84,12 +86,12 @@ public class BuyOrder {
         this.totalAmount = totalAmount;
     }
 
-    public OffsetDateTime getBuyOrderDate() {
-        return buyOrderDate;
+    public String getBuyOrderDate() {
+        return sellOrderDate;
     }
 
-    public void setBuyOrderDate(OffsetDateTime buyOrderDate) {
-        this.buyOrderDate = buyOrderDate;
+    public void setBuyOrderDate(String sellOrderDate) {
+        this.sellOrderDate = sellOrderDate;
     }
 
     public boolean isActive() {
@@ -98,5 +100,8 @@ public class BuyOrder {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+    public String getBeanName() {
+        return beanName;
     }
 }

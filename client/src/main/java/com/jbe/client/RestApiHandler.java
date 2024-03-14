@@ -5,7 +5,6 @@ import java.util.Scanner;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.jbe.client.MenuOptions.ViewSellOrders;
 import com.jbe.client.Models.Bean;
@@ -26,6 +25,18 @@ public class RestApiHandler {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_MAGENTA = "\u001B[35m";
 
+    public static ArrayList<Bean> getBeansList(){
+        ArrayList<Bean> beans = new ArrayList<>();
+        String response = APICall.get("/api/beans", null);
+        JSONArray jsonResponse = new JSONArray(response);
+
+        for(Object json : jsonResponse)
+        {
+            JSONObject bean = (JSONObject) json;
+            beans.add(new Bean((int) bean.get("beanId"), (String) bean.get("name"), (BigDecimal) bean.get("defaultPrice")));
+        }
+        return beans;
+    }
     //View Available Beans
     public static void getAllBeans()
     {
@@ -314,20 +325,19 @@ public class RestApiHandler {
     }
 
     //Create Sell Order
-    public static void CreateSellOrder(SellOrder newSellOrder)
+    public static void CreateSellOrder(SellOrder sellOrder)
     {
-        String body = "{" + 
-            "\"investorId\":" + CurrentInvestor.getId() + ",\n" +
-            "\"beanId\":" + newSellOrder.getBeanId() + ",\n" +
-            "\"price\":" + newSellOrder.getSellingPrice() + ",\n" +
-            "\"availableAmount\":" + newSellOrder.getAvailableAmount() + ",\n" +
-            "\"totalAmount\":" + newSellOrder.getTotalAmount() + ",\n" +
-            "\"orderDate\":" + "\"" + newSellOrder.getSellOrderDate() + "\",\n" + 
-            "\"isActive\":" + newSellOrder.isActive() + "\n" + 
-            "}";
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("investorId", CurrentInvestor.getId());
+        jsonData.put("beanId", sellOrder.getBeanId());
+        jsonData.put("price", sellOrder.getSellingPrice());
+        jsonData.put("availableAmount", sellOrder.getAvailableAmount());
+        jsonData.put("totalAmount", sellOrder.getTotalAmount());
+        jsonData.put("orderDate", OffsetDateTime.now());
+        jsonData.put("isActive", true);
 
-        System.out.println(body);
-        APICall.post("/api/sell-orders", body);
+        System.out.println(jsonData);
+        System.out.println(APICall.post("/api/sell-orders", jsonData.toString()));
         System.out.println(ANSI_GREEN + "Sell order placed" + ANSI_RESET);
         System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
@@ -335,13 +345,25 @@ public class RestApiHandler {
 
     //Create Buy Order
 
-/*     public static ArrayList<SellOrder> getAllSellOrders() {
-        ArrayList<SellOrder> sellOrders = new ArrayList<>();
-        sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("10.50"), 100, 200, OffsetDateTime.now(), true));
-        sellOrders.add(new SellOrder(2, 102, 2, new BigDecimal("12.75"), 150, 250, OffsetDateTime.now(), true));
-        sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("9.25"), 80, 180, OffsetDateTime.now(), true));
-        return sellOrders;
-    } */
+    //Create Sell Order
+     public static void CreateBuyOrder(BuyOrder buyOrder)
+    {
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("investorId", CurrentInvestor.getId());
+        jsonData.put("beanId", buyOrder.getBeanId());
+        jsonData.put("price", buyOrder.getSellingPrice());
+        jsonData.put("availableAmount", buyOrder.getAvailableAmount());
+        jsonData.put("totalAmount", buyOrder.getTotalAmount());
+        jsonData.put("orderDate", OffsetDateTime.now());
+        jsonData.put("isActive", true);
+
+        System.out.println(jsonData);
+        System.out.println(APICall.post("/api/buy-orders", jsonData.toString()));
+        System.out.println(ANSI_GREEN + "buy order placed" + ANSI_RESET);
+        System.out.print("\nPress enter to continue...");
+        scanner.nextLine().trim();
+    } 
+
 
     public static Bean getBean(int beanId) {
         return null;
@@ -403,17 +425,6 @@ public class RestApiHandler {
     }
     public static void acceptBuyOrder(int buyOrderId) {
         System.out.println("Buy order accepted");
-    }
-
-    public static ArrayList<BuyOrder> getAllBuyOrders() {
-        ArrayList<BuyOrder> buyOrders = new ArrayList<>();
-        buyOrders.add(new BuyOrder(1, 101, 1, new BigDecimal("109"), 140, 200, OffsetDateTime.now(), true));
-        buyOrders.add(new BuyOrder(2, 102, 2, new BigDecimal("75"), 10, 50, OffsetDateTime.now(), true));
-        buyOrders.add(new BuyOrder(3, 103, 3, new BigDecimal("587"), 78, 100, OffsetDateTime.now(), true));
-        return buyOrders;
-    }
-    public static void CreateBuyOrder(BuyOrder newBuyOrder) {
-        System.out.println("buy order created!");
     }
 
     public static ArrayList<TransactionItem> getAllTransactions() {
