@@ -11,4 +11,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
 
     public List<Inventory> findByInvestorId(int id);
 
+    public Inventory findByInvestorIdAndBeanId(int investorId, int beanId);
+
 }
