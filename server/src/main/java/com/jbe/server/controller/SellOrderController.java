@@ -151,7 +151,7 @@ public class SellOrderController {
     @PostMapping
     public int saveSellOrder(@RequestBody SellOrder sellOrder){
         Inventory inventory = inventoryService.getInventoryForUserByBean(sellOrder.getInvestorId(), sellOrder.getBeanId());
-        if (sellOrder.getTotalAmount()>inventory.getAmount()) {
+        if (sellOrder.getTotalAmount()<=inventory.getAmount()) {
             sellOrderService.saveOrUpdate(sellOrder);
             matchSellOrder(sellOrder);
             return sellOrder.getSellOrderId();
