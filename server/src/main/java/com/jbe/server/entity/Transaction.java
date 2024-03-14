@@ -23,7 +23,6 @@ public class Transaction {
     private BigDecimal price;
 
     public Transaction(){
-
     }
 
     public Transaction(int buyOrderId, int sellOrderId, long amount){

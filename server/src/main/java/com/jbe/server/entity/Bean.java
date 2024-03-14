@@ -25,18 +25,24 @@ public class Bean {
         this.beanId = bean.getBeanId();
         this.name = bean.getName();
         this.defaultPrice = bean.getDefaultPrice();
-        jbePrice = BigDecimal.ZERO;
-        marketPrice = BigDecimal.ZERO;
+        this.jbePrice = BigDecimal.ZERO;
+        this.marketPrice = BigDecimal.ZERO;
     }
 
     public Bean(int beanId, String name, BigDecimal defaultPrice) {
         this.beanId = beanId;
+        this.name = name;
+        this.defaultPrice = defaultPrice;
+        this.jbePrice = BigDecimal.ZERO;
+        this.marketPrice = BigDecimal.ZERO;
     }
 
 
     public Bean(String name, BigDecimal defaultPrice) {
         this.name = name;
         this.defaultPrice = defaultPrice;
+        this.jbePrice = BigDecimal.ZERO;
+        this.marketPrice = BigDecimal.ZERO;
     }
 
 

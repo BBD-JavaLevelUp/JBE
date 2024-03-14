@@ -28,7 +28,6 @@ public class BuyOrderController {
         this.beanService = beanService;
         this.inventoryService = inventoryService;
     }
-
     @GetMapping
     public List<BuyOrder> getAllBuyOrders() {
         return buyOrderService.getAllBuyOrders().stream().map(b -> {
@@ -38,6 +37,7 @@ public class BuyOrderController {
             return n;
         }).toList();
     }
+
 
     @GetMapping("/{buyOrderId}")
     public BuyOrder buyOrdersById(@PathVariable("buyOrderId") int buyOrderId)
