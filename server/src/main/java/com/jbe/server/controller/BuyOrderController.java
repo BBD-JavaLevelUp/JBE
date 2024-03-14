@@ -172,6 +172,7 @@ public class BuyOrderController {
                 if (buyOrder.getAvailableAmount()==0){
 
                     List<Transaction> transactions = transactionService.getTransactionByBuyOrderId(buyOrder.getBuyOrderId());
+                    transactions.add(transaction);
                     buyOrder.setPrice(transactions.stream().map(t -> t.getPrice().multiply(BigDecimal.valueOf(t.getAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(buyOrder.getTotalAmount())));
                     buyOrder.setActive(false);
                 }
