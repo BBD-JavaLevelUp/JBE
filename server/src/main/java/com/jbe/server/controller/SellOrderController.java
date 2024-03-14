@@ -196,6 +196,7 @@ public class SellOrderController {
                 inventoryService.saveOrUpdate(sellerInventory);
                 inventoryService.saveOrUpdate(buyerInventory);
             } else {
+                sellOrderService.saveOrUpdate(sellOrder);
                 return;
             }
         }
