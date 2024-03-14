@@ -16,7 +16,7 @@ public class Transaction {
     private int buyOrderId;
     private int sellOrderId;
     private OffsetDateTime transactionDate;
-    private Long amount;
+    private long amount;
     @Transient
     private String beanName;
     @Transient
