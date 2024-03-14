@@ -42,6 +42,8 @@ public class SellOrderService {
 
     public List<SellOrder> getAllSellOrdersByInvestorForBean(int investorId, int beanId){return sellOrderRepository.findByInvestorIdAndBeanId(investorId, beanId);}
 
+    public List<SellOrder> getAllActiveSellOrdersByInvestorForBean(int investorId, int beanId){return sellOrderRepository.findByIsActiveAndInvestorIdAndBeanId(true, investorId, beanId);}
+
     public void saveOrUpdate(SellOrder sellOrder){
         sellOrderRepository.save(sellOrder);
     }
