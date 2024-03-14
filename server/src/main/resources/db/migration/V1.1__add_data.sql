@@ -1,9 +1,9 @@
 /*Insert data*/
-INSERT INTO bean (bean_id, name, default_price)
+INSERT INTO bean (name, default_price)
 VALUES
-	(1, 'Butter', 10.50),
-	(2, 'Kidney', 8.75),
-	(3, 'Sugar', 12.00);
+	('Butter', 10.50),
+	('Kidney', 8.75),
+	('Sugar', 12.00);
 
 INSERT INTO investor (investor_id, name, sa_id, email)
 VALUES
