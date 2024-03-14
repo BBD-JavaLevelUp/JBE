@@ -33,8 +33,7 @@ public class AdminMenu {
         }
         switch (choice) {            
             case 1:
-                ViewBeans vb = new ViewBeans();
-                vb.display();
+                RestApiHandler.getAllBeans();
                 break;
             case 2:
                 CreateBean cb = new CreateBean();

@@ -441,7 +441,12 @@ public class RestApiHandler {
         System.out.println("Bean edited!");
     }
     public static void createBean(String name, long amount, BigDecimal price) {
-        System.out.println("bean created!");
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("name", name);
+        jsonData.put("defaultPrice", price);
+        APICall.post("/api/beans/"+amount,jsonData.toString());
+        System.out.println(RestApiHandler.ANSI_GREEN + "New bean created!" + RestApiHandler.ANSI_RESET);
+
     }
     public static ArrayList<Investor> getInvestors() {
         ArrayList<Investor> investors = new ArrayList<>();
