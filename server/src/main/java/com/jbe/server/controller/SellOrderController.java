@@ -151,7 +151,8 @@ public class SellOrderController {
     @PostMapping
     public int saveSellOrder(@RequestBody SellOrder sellOrder){
         Inventory inventory = inventoryService.getInventoryForUserByBean(sellOrder.getInvestorId(), sellOrder.getBeanId());
-        if (sellOrder.getTotalAmount()<=inventory.getAmount()) {
+        long selling = sellOrderService.getAllActiveSellOrdersByInvestorForBean(sellOrder.getInvestorId(), sellOrder.getBeanId()).stream().map(s -> s.getTotalAmount()-s.getAvailableAmount()).reduce(0L, Long::sum);
+        if (sellOrder.getTotalAmount()<=inventory.getAmount()-selling) {
             sellOrderService.saveOrUpdate(sellOrder);
             matchSellOrder(sellOrder);
             return sellOrder.getSellOrderId();
