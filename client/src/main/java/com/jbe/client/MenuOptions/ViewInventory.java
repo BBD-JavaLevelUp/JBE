@@ -17,6 +17,10 @@ public class ViewInventory {
     public ViewInventory() {
         inventoryItems = RestApiHandler.getInventory();
     }
+    public ViewInventory(int investorId) {
+        inventoryItems = RestApiHandler.getInventory(investorId);
+    }
+
 
     public void display() {
         System.out.println("\nInventory:");

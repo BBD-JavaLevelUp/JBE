@@ -2,8 +2,12 @@ package com.jbe.server.controller;
 
 
 import com.jbe.server.entity.Bean;
+import com.jbe.server.entity.Inventory;
+import com.jbe.server.entity.Investor;
 import com.jbe.server.entity.SellOrder;
 import com.jbe.server.service.BeanService;
+import com.jbe.server.service.InventoryService;
+import com.jbe.server.service.InvestorService;
 import com.jbe.server.service.SellOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +21,13 @@ import java.util.Optional;
 public class BeanController {
     private final BeanService beanService;
     private final SellOrderService sellOrderService;
+    private final InventoryService inventoryService;
 
     @Autowired
-    public BeanController(BeanService beanService, SellOrderService sellOrderService) {
+    public BeanController(BeanService beanService, SellOrderService sellOrderService, InventoryService investorservice) {
         this.beanService = beanService;
         this.sellOrderService = sellOrderService;
+        this.inventoryService = investorservice;
     }
 
     @GetMapping
@@ -30,11 +36,11 @@ public class BeanController {
         {
             Bean n = new Bean(b);
             List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(n.getBeanId());
-            if (sellOrders.size()>0) {
+            if (!sellOrders.isEmpty()) {
                 n.setJbePrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size())));
                 n.setMarketPrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(99999999999999999L), BigDecimal::min));
             } else {
-                n.setMarketPrice(null);
+                n.setMarketPrice(n.getDefaultPrice());
                 n.setJbePrice(n.getDefaultPrice());
             }
             return n;
@@ -56,9 +62,21 @@ public class BeanController {
     }
 
     @PostMapping
-    public int saveBean(@RequestBody Bean bean){
+    public int saveBean(@RequestBody Bean bean, @RequestBody long amount){
         beanService.saveOrUpdate(bean);
+        inventoryService.saveOrUpdate(new Inventory(1, bean.getBeanId(), amount));
+        sellOrderService.saveOrUpdate(new SellOrder(1, bean.getBeanId(), bean.getDefaultPrice(), amount, amount, true));
         return bean.getBeanId();
+    }
+
+    @PutMapping
+    public Bean updateBean(@RequestBody Bean bean, @RequestBody long amount){
+        beanService.saveOrUpdate(bean);
+        Inventory inventory = inventoryService.getInventoryForUserByBean(1, bean.getBeanId());
+        inventoryService.saveOrUpdate(new Inventory(1, bean.getBeanId(), inventory.getAmount()+amount));
+        SellOrder sellOrder = sellOrderService.getAllSellOrdersByInvestorForBean(1, bean.getBeanId()).getFirst();
+        sellOrderService.saveOrUpdate(new SellOrder(1, bean.getBeanId(), bean.getJbePrice(), sellOrder.getAvailableAmount()+amount, sellOrder.getTotalAmount()+amount, true));
+        return bean;
     }
 
 }

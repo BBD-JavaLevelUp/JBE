@@ -2,6 +2,7 @@ package com.jbe.server.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
@@ -22,11 +23,24 @@ public class SellOrder {
     private long totalAmount;
     private OffsetDateTime orderDate;
     private boolean isActive;
+    @Transient
+    private String beanName;
 
     public SellOrder(){
 
     }
-    public SellOrder(int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+
+    public SellOrder(SellOrder sellOrder){
+        this.sellOrderId = sellOrder.getSellOrderId();
+        this.investorId = sellOrder.getInvestorId();
+        this.beanId = sellOrder.getBeanId();
+        this.price = sellOrder.getPrice();
+        this.availableAmount = sellOrder.getAvailableAmount();
+        this.totalAmount = sellOrder.getTotalAmount();
+        this.orderDate = sellOrder.getOrderDate();
+        this.isActive = sellOrder.isActive();
+    }
+    public SellOrder(int sellingInvestorId, int beanId, BigDecimal sellingPrice, long availableAmount, Long totalAmount, boolean isActive){
         this.investorId = sellingInvestorId;
         this.beanId = beanId;
         this.price = sellingPrice;
@@ -36,7 +50,7 @@ public class SellOrder {
         this.isActive = isActive;
     }
 
-    public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+    public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, long availableAmount, long totalAmount, boolean isActive){
         this.sellOrderId = sellOrderId;
         this.investorId = sellingInvestorId;
         this.beanId = beanId;
@@ -83,26 +97,29 @@ public class SellOrder {
     }
 
     public BigDecimal getPrice() {
-        return price;
+        if (price==null){
+            return BigDecimal.ZERO;
+        }
+        return price.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setPrice(BigDecimal sellingPrice) {
         this.price = sellingPrice;
     }
 
-    public Long getAvailableAmount() {
+    public long getAvailableAmount() {
         return availableAmount;
     }
 
-    public void setAvailableAmount(Long availableAmount) {
+    public void setAvailableAmount(long availableAmount) {
         this.availableAmount = availableAmount;
     }
 
-    public Long getTotalAmount() {
+    public long getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Long totalAmount) {
+    public void setTotalAmount(long totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -120,5 +137,13 @@ public class SellOrder {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
     }
 }

@@ -2,6 +2,7 @@ package com.jbe.server.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
@@ -21,9 +22,22 @@ public class BuyOrder {
     private long totalAmount;
     private OffsetDateTime orderDate;
     private boolean isActive;
+    @Transient
+    private String beanName;
 
     public BuyOrder(){
 
+    }
+
+    public BuyOrder(BuyOrder buyOrder){
+        this.buyOrderId = buyOrder.getBuyOrderId();
+        this.investorId = buyOrder.getInvestorId();
+        this.beanId = buyOrder.getBeanId();
+        this.price = buyOrder.getPrice();
+        this.availableAmount = buyOrder.getAvailableAmount();
+        this.totalAmount = buyOrder.getTotalAmount();
+        this.orderDate = buyOrder.getOrderDate();
+        this.isActive = buyOrder.isActive();
     }
 
     public BuyOrder(int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
@@ -83,7 +97,10 @@ public class BuyOrder {
     }
 
     public BigDecimal getPrice() {
-        return price;
+        if (price==null){
+            return BigDecimal.ZERO;
+        }
+        return price.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setPrice(BigDecimal buyingPrice) {
@@ -120,5 +137,13 @@ public class BuyOrder {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
     }
 }

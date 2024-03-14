@@ -2,6 +2,7 @@ package com.jbe.server.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
@@ -16,19 +17,23 @@ public class Transaction {
     private int sellOrderId;
     private OffsetDateTime transactionDate;
     private Long amount;
+    @Transient
+    private String beanName;
+    @Transient
+    private BigDecimal price;
 
     public Transaction(){
 
     }
 
-    public Transaction(int buyOrderId, int sellOrderId, Long amount){
+    public Transaction(int buyOrderId, int sellOrderId, long amount){
         this.buyOrderId = buyOrderId;
         this.sellOrderId = sellOrderId;
         this.amount = amount;
         this.transactionDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
     }
 
-    public Transaction(int transactionId,int buyOrderId, int sellOrderId, Long amount){
+    public Transaction(int transactionId,int buyOrderId, int sellOrderId, long amount){
         this.transactionId = transactionId;
         this.buyOrderId = buyOrderId;
         this.sellOrderId = sellOrderId;
@@ -36,12 +41,20 @@ public class Transaction {
         this.transactionDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
     }
 
-    public Transaction(int transactionId,int buyOrderId, int sellOrderId, Long amount, OffsetDateTime transactionDate){
+    public Transaction(int transactionId,int buyOrderId, int sellOrderId, long amount, OffsetDateTime transactionDate){
         this.transactionId = transactionId;
         this.buyOrderId = buyOrderId;
         this.sellOrderId = sellOrderId;
         this.amount = amount;
         this.transactionDate = transactionDate;
+    }
+
+    public Transaction(Transaction transaction) {
+        this.transactionId = transaction.getTransactionId();
+        this.buyOrderId = transaction.getBuyOrderId();
+        this.sellOrderId = transaction.getSellOrderId();
+        this.amount = transaction.getAmount();
+        this.transactionDate = transaction.getTransactionDate();
     }
 
     public int getTransactionId() {
@@ -68,11 +81,11 @@ public class Transaction {
         this.sellOrderId = sellOrderId;
     }
 
-    public Long getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 
@@ -82,5 +95,24 @@ public class Transaction {
 
     public void setTransactionDate(OffsetDateTime transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
+    }
+
+    public BigDecimal getPrice() {
+        if (price==null){
+            return BigDecimal.ZERO;
+        }
+        return price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

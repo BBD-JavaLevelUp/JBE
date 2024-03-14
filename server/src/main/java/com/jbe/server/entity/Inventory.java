@@ -3,6 +3,7 @@ package com.jbe.server.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table
@@ -15,7 +16,7 @@ public class Inventory {
     private int beanId;
     @Transient
     private String beanName;
-    private Long amount;
+    private long amount;
     @Transient
     private BigDecimal profit;
 
@@ -30,13 +31,13 @@ public class Inventory {
         this.amount = inventory.getAmount();
     }
 
-    public Inventory(int investorId, int beanId, Long amount){
+    public Inventory(int investorId, int beanId, long amount){
         this.investorId = investorId;
         this.beanId = beanId;
         this.amount = amount;
     }
 
-    public Inventory(int inventoryId, int investorId, int beanId, Long amount){
+    public Inventory(int inventoryId, int investorId, int beanId, long amount){
         this.inventoryId = inventoryId;
         this.investorId = investorId;
         this.beanId = beanId;
@@ -67,7 +68,7 @@ public class Inventory {
         this.beanId = beanId;
     }
 
-    public Long getAmount() {
+    public long getAmount() {
         return amount;
     }
 
@@ -84,7 +85,7 @@ public class Inventory {
     }
 
     public BigDecimal getProfit() {
-        return profit;
+        return profit.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setProfit(BigDecimal profit) {

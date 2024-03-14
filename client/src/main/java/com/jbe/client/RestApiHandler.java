@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.BuyOrder;
 import com.jbe.client.Models.InventoryItem;
+import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
 import com.jbe.client.Models.TransactionItem;
 
@@ -46,6 +47,15 @@ public class RestApiHandler {
       inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
       return inventoryItems;
     }
+    public static ArrayList<InventoryItem> getInventory(int investorId) {
+        // call api using investorId from parameters
+        ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
+        APICall.makeCall("/api/viewInventory", null);
+        inventoryItems.add(new InventoryItem(1, "A Beans", 100,new BigDecimal("109")));
+        inventoryItems.add(new InventoryItem(2, "B beans", 200,new BigDecimal("79")));
+        inventoryItems.add(new InventoryItem(3, "C beans", 150,new BigDecimal("10.9")));
+        return inventoryItems;
+      }
     public static ArrayList<SellOrder> getInvestorSellOrders(int id) {
         ArrayList<SellOrder> sellOrders = new ArrayList<>();
         sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("109"), 140, 200, OffsetDateTime.now(), true));
@@ -114,6 +124,19 @@ public class RestApiHandler {
         transactions.add(new TransactionItem(OffsetDateTime.now(), "Cherry Beans", 70, new BigDecimal("6.75"), "Emily", "JBE"));
         return transactions;
 
+    }
+    public static void editBean(int beanId, String newName, long newAmount, BigDecimal newPrice) {
+        System.out.println("Bean edited!");
+    }
+    public static void createBean(String name, long amount, BigDecimal price) {
+        System.out.println("bean created!");
+    }
+    public static ArrayList<Investor> getInvestors() {
+        ArrayList<Investor> investors = new ArrayList<>();
+        investors.add(new Investor(1, "John Doe", "9902185503086", "johndoe@example.com"));
+        investors.add(new Investor(2, "Jane Smith", "0001206603017", "janesmith@example.com"));
+        investors.add(new Investor(3, "Alice Johnson", "8912287741625", "alicejohnson@example.com"));
+        return investors;
     }
     
 }

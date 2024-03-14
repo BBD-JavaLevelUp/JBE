@@ -55,6 +55,9 @@ public class MainMenu {
             case 1:
                 if (!CurrentInvestor.signedIn) {
                     CurrentInvestor.signUp();
+                    if(CurrentInvestor.isAdmin){
+                        AdminMenu.display();
+                    }
                 } else {
                     ViewInventory vi = new ViewInventory();
                     vi.display();
@@ -63,6 +66,9 @@ public class MainMenu {
             case 2:
                 if (!CurrentInvestor.signedIn) {
                     CurrentInvestor.signIn();
+                    if(CurrentInvestor.isAdmin){
+                        AdminMenu.display();
+                    }
                 } else {
                     System.out.println("viewing profit/loss");
                 }
