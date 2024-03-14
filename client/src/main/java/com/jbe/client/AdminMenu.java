@@ -3,7 +3,6 @@ package com.jbe.client;
 import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.CreateBean;
-import com.jbe.client.MenuOptions.ViewBeans;
 import com.jbe.client.MenuOptions.ViewInvestorInventory;
 import com.jbe.client.MenuOptions.ViewInvestors;
 
@@ -33,8 +32,7 @@ public class AdminMenu {
         }
         switch (choice) {            
             case 1:
-                ViewBeans vb = new ViewBeans();
-                vb.display();
+                RestApiHandler.getAllBeans();
                 break;
             case 2:
                 CreateBean cb = new CreateBean();

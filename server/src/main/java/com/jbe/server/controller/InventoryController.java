@@ -46,9 +46,13 @@ public class InventoryController {
                 List<SellOrder> sellOrders1 = sellOrderService.getAllActiveSellOrdersByBean(n.getBeanId());
                 BigDecimal marketPrice = bean.getDefaultPrice();
                 if (!sellOrders1.isEmpty()) {
-                    marketPrice = sellOrders1.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders1.size()));
+                    marketPrice = sellOrders1.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(9999999999L), BigDecimal::min);
                 }
-                n.setProfit(marketPrice.multiply(BigDecimal.valueOf(n.getAmount())).subtract(buyOrders.stream().map(b->b.getPrice().multiply(BigDecimal.valueOf(b.getTotalAmount()-b.getAvailableAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add)).add(sellOrders.stream().map(s->s.getPrice().multiply(BigDecimal.valueOf(s.getTotalAmount()-s.getAvailableAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add)));
+                if (!sellOrders.isEmpty()) {
+                    n.setProfit(marketPrice.multiply(BigDecimal.valueOf(n.getAmount())).subtract(buyOrders.stream().map(b -> b.getPrice().multiply(BigDecimal.valueOf(b.getTotalAmount() - b.getAvailableAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add)).add(sellOrders.stream().map(s -> s.getPrice().multiply(BigDecimal.valueOf(s.getTotalAmount() - s.getAvailableAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add)));
+                } else {
+                    n.setProfit(marketPrice.multiply(BigDecimal.valueOf(n.getAmount())).subtract(buyOrders.stream().map(b -> b.getPrice().multiply(BigDecimal.valueOf(b.getTotalAmount() - b.getAvailableAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add)));
+                }
             } else {
                 n.setProfit(BigDecimal.ZERO);
             }

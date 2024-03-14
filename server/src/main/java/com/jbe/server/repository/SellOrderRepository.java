@@ -22,4 +22,6 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Integer> {
 
     public List<SellOrder> findByInvestorIdAndBeanId(int investorId, int beanId);
 
+    public List<SellOrder> findByIsActiveAndInvestorIdAndBeanId(boolean isActive, int investorId, int beanId);
+
 }

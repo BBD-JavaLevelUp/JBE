@@ -150,9 +150,19 @@ public class SellOrderController {
 
     @PostMapping
     public int saveSellOrder(@RequestBody SellOrder sellOrder){
-        sellOrderService.saveOrUpdate(sellOrder);
-        matchSellOrder(sellOrder);
-        return sellOrder.getSellOrderId();
+        Inventory inventory = inventoryService.getInventoryForUserByBean(sellOrder.getInvestorId(), sellOrder.getBeanId());
+        long selling = sellOrderService.getAllActiveSellOrdersByInvestorForBean(sellOrder.getInvestorId(), sellOrder.getBeanId()).stream().map(s -> s.getTotalAmount()-s.getAvailableAmount()).reduce(0L, Long::sum);
+        if (sellOrder.getTotalAmount()<=inventory.getAmount()-selling) {
+            sellOrderService.saveOrUpdate(sellOrder);
+            matchSellOrder(sellOrder);
+            SellOrder jbeSellOrder = sellOrderService.getAllSellOrdersByInvestorForBean(1,sellOrder.getBeanId()).getFirst();
+            List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(sellOrder.getBeanId());
+            jbeSellOrder.setPrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size())));
+            sellOrderService.saveOrUpdate(jbeSellOrder);
+            return sellOrder.getSellOrderId();
+        } else {
+            return 0;
+        }
     }
 
     @PutMapping
@@ -196,6 +206,7 @@ public class SellOrderController {
                 inventoryService.saveOrUpdate(sellerInventory);
                 inventoryService.saveOrUpdate(buyerInventory);
             } else {
+                sellOrderService.saveOrUpdate(sellOrder);
                 return;
             }
         }

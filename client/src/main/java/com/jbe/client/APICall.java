@@ -4,12 +4,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.net.http.HttpClient;
-import java.io.IOException;
 
 public class APICall {
-  public static String url = "http://ec2-34-244-37-169.eu-west-1.compute.amazonaws.com:8080";
+  public static String url = "http://ec2-34-242-203-156.eu-west-1.compute.amazonaws.com:8080";
 
-  public static void makeCall(String endpoint, String[] params)
+  public static String get(String endpoint, String[] params)
   {
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(url+endpoint))
@@ -19,17 +18,35 @@ public class APICall {
     HttpResponse<String> response = null;
     try
     {
+      System.out.println(RestApiHandler.ANSI_MAGENTA + "loading..." + RestApiHandler.ANSI_RESET);
       response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
-    catch (IOException e)
+    catch (Exception e)
     {
-      e.printStackTrace();
-    }
-    catch (InterruptedException e)
-    {
-      e.printStackTrace();
+      System.out.println(RestApiHandler.ANSI_RED + "An error occured making get request to " + endpoint + RestApiHandler.ANSI_RESET);
     }
 
-    System.out.println(response.body());
+    return response.body();
+  }
+
+  public static HttpResponse<String> post(String endpoint, String body)
+  {
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(url+endpoint))
+      .method("POST", HttpRequest.BodyPublishers.ofString(body))
+      .setHeader("Content-Type", "application/json")
+      .build();
+
+    HttpResponse<String> response = null;
+    try
+    {
+      response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    }
+    catch (Exception e)
+    {
+      System.out.println(RestApiHandler.ANSI_RED + "An error occured making post request to " + endpoint + RestApiHandler.ANSI_RESET);
+    }
+
+    return response;
   }
 }
