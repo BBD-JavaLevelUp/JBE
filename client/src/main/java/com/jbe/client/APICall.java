@@ -18,6 +18,7 @@ public class APICall {
     HttpResponse<String> response = null;
     try
     {
+      System.out.println(RestApiHandler.ANSI_MAGENTA + "loading..." + RestApiHandler.ANSI_RESET);
       response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
     catch (Exception e)
