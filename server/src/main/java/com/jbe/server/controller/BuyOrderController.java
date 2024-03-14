@@ -168,7 +168,6 @@ public class BuyOrderController {
                 buyOrder.setAvailableAmount(buyOrder.getAvailableAmount()-total);
                 sellerInventory.setAmount(sellerInventory.getAmount()-total);
                 buyerInventory.setAmount(buyerInventory.getAmount()+total);
-                transactionService.saveOrUpdate(transaction);
                 if (buyOrder.getAvailableAmount()==0){
 
                     List<Transaction> transactions = transactionService.getTransactionByBuyOrderId(buyOrder.getBuyOrderId());
@@ -179,6 +178,7 @@ public class BuyOrderController {
                 if (sellOrder.getAvailableAmount()==0){
                     sellOrder.setActive(false);
                 }
+                transactionService.saveOrUpdate(transaction);
                 buyOrderService.saveOrUpdate(buyOrder);
                 sellOrderService.saveOrUpdate(sellOrder);
                 inventoryService.saveOrUpdate(sellerInventory);
