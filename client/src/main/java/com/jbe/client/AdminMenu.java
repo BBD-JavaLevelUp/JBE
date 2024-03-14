@@ -3,7 +3,6 @@ package com.jbe.client;
 import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.CreateBean;
-import com.jbe.client.MenuOptions.ViewBeans;
 import com.jbe.client.MenuOptions.ViewInvestorInventory;
 import com.jbe.client.MenuOptions.ViewInvestors;
 

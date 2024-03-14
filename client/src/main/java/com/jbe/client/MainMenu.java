@@ -72,7 +72,7 @@ public class MainMenu
                     }
                     else
                     {
-                        RestApiHandler.getInventory(CurrentInvestor.getId());
+                        RestApiHandler.getInventory(CurrentInvestor.getId(),true);
                     }
                     break;
                 case 3:

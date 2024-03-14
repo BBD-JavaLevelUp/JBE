@@ -61,13 +61,16 @@ public class RestApiHandler {
     }
 
     //View Inventory
-    public static void getInventory(int investorId)
+    public static void getInventory(int investorId,boolean viewingOwn)
     {
         String response = APICall.get("/api/inventories/investor/" + investorId, null);
         JSONArray jsonResponse = new JSONArray(response);
         BigDecimal netProfit = BigDecimal.valueOf(0);
 
-        System.out.println(ANSI_BLUE + "\nYour Beans:" + ANSI_RESET);
+        if(viewingOwn) 
+            System.out.println(ANSI_BLUE + "\nYour Beans:" + ANSI_RESET);
+        else
+            System.out.println(ANSI_BLUE + "\nAn Investor's inventory:" + ANSI_RESET);
         for(Object json : jsonResponse)
         {
             JSONObject inventory = (JSONObject) json;
@@ -450,10 +453,21 @@ public class RestApiHandler {
     }
     public static ArrayList<Investor> getInvestors() {
         ArrayList<Investor> investors = new ArrayList<>();
-        investors.add(new Investor(1, "John Doe", "9902185503086", "johndoe@example.com"));
-        investors.add(new Investor(2, "Jane Smith", "0001206603017", "janesmith@example.com"));
-        investors.add(new Investor(3, "Alice Johnson", "8912287741625", "alicejohnson@example.com"));
+        String response = APICall.get("/api/investors", null);
+        JSONArray jsonResponse = new JSONArray(response);
+
+        for(Object json : jsonResponse)
+        {
+            JSONObject investor = (JSONObject) json;
+            investors.add(new Investor((int) investor.get("investorId"), 
+                            (String) investor.get("name"), 
+                            (String) investor.get("saId"),
+                            (String) investor.get("email")
+                            ));
+        }
         return investors;
+
+
     }
     
 }
