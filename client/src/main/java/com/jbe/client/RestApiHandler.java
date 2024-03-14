@@ -239,11 +239,11 @@ public class RestApiHandler {
         }
         else
         {
-            System.out.println("Invalid input");
+            System.out.println(RestApiHandler.ANSI_RED + "Invalid input" + RestApiHandler.ANSI_RESET);
             return;
         }
         } catch (NumberFormatException e) {
-            System.out.println("You were suppose to input a number and you chose that. Wow");
+            System.out.println(RestApiHandler.ANSI_RED + "You were suppose to input a number and you chose that. Wow" + RestApiHandler.ANSI_RESET );
             return;
         }
 
@@ -301,7 +301,7 @@ public class RestApiHandler {
         }
         else
         {
-            System.out.println("Invalid input");
+            System.out.println(RestApiHandler.ANSI_RED + "Invalid input" + RestApiHandler.ANSI_RESET );
             return;
         }
 

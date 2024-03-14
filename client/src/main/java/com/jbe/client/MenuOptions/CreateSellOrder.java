@@ -50,12 +50,12 @@ public class CreateSellOrder{
                 String input = scanner.nextLine().trim();
                 choice = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(RestApiHandler.ANSI_RED + "Invalid input. Please enter a number." + RestApiHandler.ANSI_RESET);
                 continue;
             }
     
             if (choice > vi.inventoryItems.size()) {
-                System.out.println("If you not serious tell me");
+                System.out.println(RestApiHandler.ANSI_RED + "If you not serious tell me" + RestApiHandler.ANSI_RESET);
                 continue; 
             }
     
@@ -76,7 +76,7 @@ public class CreateSellOrder{
                     System.out.print("Enter selling price: ");
                     sellingPrice = scanner.nextBigDecimal();
                 } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. Please enter a valid decimal.");
+                    System.out.println(RestApiHandler.ANSI_RED + "Invalid input. Please enter a valid decimal." + RestApiHandler.ANSI_RESET);
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
@@ -88,11 +88,11 @@ public class CreateSellOrder{
                     System.out.print("Enter amount: ");
                     amount = scanner.nextInt();
                     if (amount > inventoryItem.getAmount()) {
-                        System.out.println("Amount exceeds available inventory!");
+                        System.out.println(RestApiHandler.ANSI_RED + "Amount exceeds available inventory!" + RestApiHandler.ANSI_RESET);
                         amount = -1; // Reset amount to trigger retry
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. Please enter a valid integer.");
+                    System.out.println(RestApiHandler.ANSI_RED + "Invalid input. Please enter a valid integer." +RestApiHandler.ANSI_RESET);
                     scanner.nextLine(); // Consume the invalid input
                 }
             }

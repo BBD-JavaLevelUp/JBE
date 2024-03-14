@@ -43,12 +43,12 @@ public class CreateBuyOrder{
                 String input = scanner.nextLine().trim();
                 choice = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(RestApiHandler.ANSI_RED + "Invalid input. Please enter a number." + RestApiHandler.ANSI_RESET);
                 continue;
             }
     
             if (choice > beans.size()) {
-                System.out.println("If you not serious tell me");
+                System.out.println(RestApiHandler.ANSI_RED + "If you not serious tell me" + RestApiHandler.ANSI_RESET);
                 continue; 
             }
     
@@ -69,7 +69,7 @@ public class CreateBuyOrder{
                     System.out.print("Enter buying price(for each bean) : ");
                     buyingPrice = scanner.nextBigDecimal();
                 } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. Please enter a valid decimal.");
+                    System.out.println(RestApiHandler.ANSI_RED+"Invalid input. Please enter a valid decimal." + RestApiHandler.ANSI_RESET);
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
@@ -81,7 +81,7 @@ public class CreateBuyOrder{
                     System.out.print("Enter amount: ");
                     amount = scanner.nextInt();
                 } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. Please enter a valid integer.");
+                    System.out.println(RestApiHandler.ANSI_RED+"Invalid input. Please enter a valid integer." + RestApiHandler.ANSI_RESET);
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
