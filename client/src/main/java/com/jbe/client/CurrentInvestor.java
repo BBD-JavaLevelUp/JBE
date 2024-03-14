@@ -70,7 +70,7 @@ public class CurrentInvestor {
             if (hashed != null) 
             {
                 String result = selectAndReverse(hashed);
-                if (password == result) 
+                if (password.equals(result)) 
                 {
                     System.out.println(RestApiHandler.ANSI_GREEN+"Signed in."+RestApiHandler.ANSI_RESET);
                     signedIn = true;

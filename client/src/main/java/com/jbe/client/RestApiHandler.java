@@ -456,10 +456,17 @@ public class RestApiHandler {
     }
     public static Investor getInvestor(String id){
         //if no response return null
-        String response = APICall.get("/api/investors/id/"+id, null);
-        JSONObject jsonResponse = new JSONObject(response);
-        Investor investor = new Investor((int)jsonResponse.get("investorId"),(String) jsonResponse.get("name"), (String)jsonResponse.get("saId"),(String)jsonResponse.get("email"));
-        return investor;
+        try{
+            String response = APICall.get("/api/investors/id/"+id, null);
+            JSONObject jsonResponse = new JSONObject(response);
+            Investor investor = new Investor((int)jsonResponse.get("investorId"),(String) jsonResponse.get("name"), (String)jsonResponse.get("saId"),(String)jsonResponse.get("email"));
+            return investor;
+        }
+        catch( Exception e){
+            return null;
+        }
+        
+        
     }
 
     public static void createInvestor(String name, String SAid, String email) {
@@ -467,7 +474,8 @@ public class RestApiHandler {
         jsonData.put("name", name);
         jsonData.put("saId", SAid);
         jsonData.put("email", email);
-        APICall.post("/api/investors/",jsonData.toString());
+        System.out.println(jsonData.toString());
+        APICall.post("/api/investors",jsonData.toString());
         System.out.println(RestApiHandler.ANSI_GREEN + "New investor created!" + RestApiHandler.ANSI_RESET);
     }
     
