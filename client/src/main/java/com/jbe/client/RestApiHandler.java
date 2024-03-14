@@ -403,5 +403,59 @@ public class RestApiHandler {
         return investors;
 
     }
+    public static void createInvestor(String name, String SAid, String email) {
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("name", name);
+        jsonData.put("saId", SAid);
+        jsonData.put("email", email);
+        System.out.println(jsonData.toString());
+        APICall.post("/api/investors",jsonData.toString());
+        System.out.println(RestApiHandler.ANSI_GREEN + "New investor created!" + RestApiHandler.ANSI_RESET);
+    }
     
+    public static void getInventory(int investorId)
+    {
+        String response = APICall.get("/api/inventories/investor/" + investorId, null);
+        JSONArray jsonResponse = new JSONArray(response);
+        BigDecimal netProfit = BigDecimal.valueOf(0);
+ 
+        System.out.println(ANSI_BLUE + "\nYour Beans:" + ANSI_RESET);
+        for(Object json : jsonResponse)
+        {
+            JSONObject inventory = (JSONObject) json;
+            BigDecimal profit = (BigDecimal) inventory.get("profit");
+            String profitLoss = profit.compareTo(BigDecimal.valueOf(0)) >= 0 ? ANSI_GREEN + "R" + inventory.get("profit") : ANSI_RED + "R" + inventory.get("profit");
+            System.out.println(
+                " " +
+                inventory.get("beanName") + " - " +
+                inventory.get("amount") + " beans - " +
+                profitLoss + ANSI_RESET
+            );
+ 
+            netProfit = netProfit.add(profit);
+        }
+ 
+        if(netProfit.compareTo(BigDecimal.valueOf(0)) >= 0)
+        {
+            System.out.println(
+                ANSI_MAGENTA + "\nNet Profit/Loss: " + ANSI_RESET + ANSI_GREEN + "R" + netProfit + ANSI_RESET
+            );
+        }
+        else
+        {
+            System.out.println(
+                ANSI_MAGENTA + "\nNet Profit/Loss: " + ANSI_RESET + ANSI_RED + "R" + netProfit + ANSI_RESET
+            );
+        }
+ 
+        System.out.print("\nPress enter to continue...");
+        scanner.nextLine().trim();
+    }
+    public static Investor getInvestor(String id){
+        //if no response return null
+        String response = APICall.get("/api/investors/id/"+id, null);
+        JSONObject jsonResponse = new JSONObject(response);
+        Investor investor = new Investor((int)jsonResponse.get("investorId"),(String) jsonResponse.get("name"), (String)jsonResponse.get("saId"),(String)jsonResponse.get("email"));
+        return investor;
+    }
 }
