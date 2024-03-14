@@ -176,6 +176,7 @@ public class SellOrderController {
                 }
                 long total = min(List.of(sellOrder.getAvailableAmount(), buyOrder.getAvailableAmount()));
                 Transaction transaction = new Transaction(buyOrder.getBuyOrderId(), sellOrder.getSellOrderId(), total);
+                transaction.setPrice(sellOrder.getPrice());
                 sellOrder.setAvailableAmount(sellOrder.getAvailableAmount()-total);
                 buyOrder.setAvailableAmount(buyOrder.getAvailableAmount()-total);
                 sellerInventory.setAmount(sellerInventory.getAmount()-total);
