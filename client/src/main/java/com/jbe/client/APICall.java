@@ -38,6 +38,7 @@ public class APICall {
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(url+endpoint))
       .method("POST", HttpRequest.BodyPublishers.ofString(body))
+      .setHeader("Content-Type", "application/json")
       .build();
 
     HttpResponse<String> response = null;

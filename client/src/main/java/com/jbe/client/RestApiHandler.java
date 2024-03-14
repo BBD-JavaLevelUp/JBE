@@ -379,16 +379,6 @@ public class RestApiHandler {
         jsonData.put("orderDate", OffsetDateTime.now());
         jsonData.put("isActive", true);
 
-        // String body = "{" + 
-        // "\"investorId\":" + CurrentInvestor.getId() + ",\n" +
-        // "\"beanId\":" + sellOrder.getBeanId() + ",\n" +
-        // "\"price\":" + sellOrder.getSellingPrice() + ",\n" +
-        // "\"availableAmount\":" + amount + ",\n" +
-        // "\"totalAmount\":" + amount + ",\n" +
-        // "\"orderDate\":" + "\"" + OffsetDateTime.now() + "\",\n" + 
-        // "\"isActive\": true\n" + 
-        // "}";
-
         System.out.println(jsonData);
         System.out.println(APICall.post("/api/buy-orders", jsonData.toString()));
         System.out.println(ANSI_GREEN + "Buy order placed" + ANSI_RESET);
