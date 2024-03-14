@@ -103,7 +103,7 @@ public class MainMenu
                         // Ask for selling price
                         String idNum = null;
                         String password = null;
-                        while (idNum == null) {
+                        while (true) {
                             System.out.print("Enter ID number:");
                             idNum = scanner.nextLine();
                             if (!idNum.trim().isEmpty()) {
@@ -116,7 +116,7 @@ public class MainMenu
                                 System.out.println(RestApiHandler.ANSI_RED+"Name cannot be blank. Please enter a valid name."+RestApiHandler.ANSI_RESET);
                             }
                         }
-                        while (password == null) {
+                        while (true) {
                             System.out.println("Enter password:");
                             password = scanner.nextLine();
                             if (!password.trim().isEmpty()) {
