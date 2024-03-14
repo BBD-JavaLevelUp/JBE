@@ -368,20 +368,29 @@ public class RestApiHandler {
     public static void deleteSellOrder(int sellOrderId) {
         System.out.println("Sell order deleted");
     }
-    public static void acceptSellOrder(SellOrder sellOrder, long amount) {
-      
-        String body = "{" + 
-        "\"investorId\":" + CurrentInvestor.getId() + ",\n" +
-        "\"beanId\":" + sellOrder.getBeanId() + ",\n" +
-        "\"price\":" + sellOrder.getSellingPrice() + ",\n" +
-        "\"availableAmount\":" + amount + ",\n" +
-        "\"totalAmount\":" + amount + ",\n" +
-        "\"orderDate\":" + "\"" + OffsetDateTime.now() + "\",\n" + 
-        "\"isActive\": true\n" + 
-        "}";
+    public static void acceptSellOrder(SellOrder sellOrder, long amount)
+    {
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("investorId", CurrentInvestor.getId());
+        jsonData.put("beanId", sellOrder.getBeanId());
+        jsonData.put("price", sellOrder.getSellingPrice());
+        jsonData.put("availableAmount", amount);
+        jsonData.put("totalAmount", amount);
+        jsonData.put("orderDate", OffsetDateTime.now());
+        jsonData.put("isActive", true);
 
-        System.out.println(body);
-        System.out.println(APICall.post("/api/buy-orders", body));
+        // String body = "{" + 
+        // "\"investorId\":" + CurrentInvestor.getId() + ",\n" +
+        // "\"beanId\":" + sellOrder.getBeanId() + ",\n" +
+        // "\"price\":" + sellOrder.getSellingPrice() + ",\n" +
+        // "\"availableAmount\":" + amount + ",\n" +
+        // "\"totalAmount\":" + amount + ",\n" +
+        // "\"orderDate\":" + "\"" + OffsetDateTime.now() + "\",\n" + 
+        // "\"isActive\": true\n" + 
+        // "}";
+
+        System.out.println(jsonData);
+        System.out.println(APICall.post("/api/buy-orders", jsonData.toString()));
         System.out.println(ANSI_GREEN + "Buy order placed" + ANSI_RESET);
         System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
