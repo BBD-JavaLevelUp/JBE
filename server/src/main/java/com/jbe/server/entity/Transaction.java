@@ -26,14 +26,14 @@ public class Transaction {
 
     }
 
-    public Transaction(int buyOrderId, int sellOrderId, Long amount){
+    public Transaction(int buyOrderId, int sellOrderId, long amount){
         this.buyOrderId = buyOrderId;
         this.sellOrderId = sellOrderId;
         this.amount = amount;
         this.transactionDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
     }
 
-    public Transaction(int transactionId,int buyOrderId, int sellOrderId, Long amount){
+    public Transaction(int transactionId,int buyOrderId, int sellOrderId, long amount){
         this.transactionId = transactionId;
         this.buyOrderId = buyOrderId;
         this.sellOrderId = sellOrderId;
@@ -41,7 +41,7 @@ public class Transaction {
         this.transactionDate = OffsetDateTime.now(ZoneId.of("Africa/Johannesburg"));
     }
 
-    public Transaction(int transactionId,int buyOrderId, int sellOrderId, Long amount, OffsetDateTime transactionDate){
+    public Transaction(int transactionId,int buyOrderId, int sellOrderId, long amount, OffsetDateTime transactionDate){
         this.transactionId = transactionId;
         this.buyOrderId = buyOrderId;
         this.sellOrderId = sellOrderId;
@@ -81,11 +81,11 @@ public class Transaction {
         this.sellOrderId = sellOrderId;
     }
 
-    public Long getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 
@@ -106,6 +106,9 @@ public class Transaction {
     }
 
     public BigDecimal getPrice() {
+        if (price==null){
+            return BigDecimal.ZERO;
+        }
         return price.setScale(2, RoundingMode.HALF_UP);
     }
 

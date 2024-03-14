@@ -65,6 +65,9 @@ public class Bean {
     }
 
     public BigDecimal getJbePrice() {
+        if (jbePrice==null){
+            return BigDecimal.ZERO;
+        }
         return jbePrice.setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -73,6 +76,9 @@ public class Bean {
     }
 
     public BigDecimal getMarketPrice() {
+        if (marketPrice==null){
+            return BigDecimal.ZERO;
+        }
         return marketPrice.setScale(2, RoundingMode.HALF_UP);
     }
 
