@@ -68,12 +68,31 @@ public class TransactionController {
                 }).toList();
     }
 
-    @GetMapping("/investor/{investorId}")
-    public List<Transaction> getTransactionsByInvestor(@PathVariable("investorId") int investorId) {
+    @GetMapping("/buying-investor/{investorId}")
+    public List<Transaction> getTransactionsByBuyingInvestor(@PathVariable("investorId") int investorId) {
         return transactionService.getAllTransactions().stream()
                 .filter(transaction -> {
                     BuyOrder currentBuyOrder = buyOrderService.getBuyOrdersById(transaction.getBuyOrderId());
                     return currentBuyOrder.getInvestorId() == investorId;
+                })
+                .collect(Collectors.toList()).stream().map(t ->
+                {
+                    Transaction n = new Transaction(t);
+                    BuyOrder buyOrder = buyOrderService.getBuyOrdersById(t.getBuyOrderId());
+                    Bean bean = beanService.getBeanById(buyOrder.getBeanId());
+                    n.setBeanName(bean.getName());
+                    SellOrder sellOrder = sellOrderService.getSellOrdersById(t.getSellOrderId());
+                    n.setPrice(sellOrder.getPrice());
+                    return n;
+                }).toList();
+    }
+
+    @GetMapping("/selling-investor/{investorId}")
+    public List<Transaction> getTransactionsBySellingInvestor(@PathVariable("investorId") int investorId) {
+        return transactionService.getAllTransactions().stream()
+                .filter(transaction -> {
+                    SellOrder currentSellOrder = sellOrderService.getSellOrdersById(transaction.getBuyOrderId());
+                    return currentSellOrder.getInvestorId() == investorId;
                 })
                 .collect(Collectors.toList()).stream().map(t ->
                 {

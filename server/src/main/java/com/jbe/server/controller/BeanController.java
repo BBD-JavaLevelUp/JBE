@@ -30,11 +30,11 @@ public class BeanController {
         {
             Bean n = new Bean(b);
             List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(n.getBeanId());
-            if (sellOrders.size()>0) {
+            if (!sellOrders.isEmpty()) {
                 n.setJbePrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size())));
                 n.setMarketPrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.valueOf(99999999999999999L), BigDecimal::min));
             } else {
-                n.setMarketPrice(null);
+                n.setMarketPrice(n.getDefaultPrice());
                 n.setJbePrice(n.getDefaultPrice());
             }
             return n;
