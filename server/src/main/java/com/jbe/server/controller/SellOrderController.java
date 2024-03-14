@@ -155,6 +155,10 @@ public class SellOrderController {
         if (sellOrder.getTotalAmount()<=inventory.getAmount()-selling) {
             sellOrderService.saveOrUpdate(sellOrder);
             matchSellOrder(sellOrder);
+            SellOrder jbeSellOrder = sellOrderService.getAllSellOrdersByInvestorForBean(1,sellOrder.getBeanId()).getFirst();
+            List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(sellOrder.getBeanId());
+            jbeSellOrder.setPrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size())));
+            sellOrderService.saveOrUpdate(jbeSellOrder);
             return sellOrder.getSellOrderId();
         } else {
             return 0;

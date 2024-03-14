@@ -137,14 +137,18 @@ public class BuyOrderController {
     }
 
     @PostMapping
-    public int saveBean(@RequestBody BuyOrder buyOrder){
+    public int saveBuyOrder(@RequestBody BuyOrder buyOrder){
         buyOrderService.saveOrUpdate(buyOrder);
         matchBuyOrder(buyOrder);
+        SellOrder jbeSellOrder = sellOrderService.getAllSellOrdersByInvestorForBean(1,buyOrder.getBeanId()).getFirst();
+        List<SellOrder> sellOrders = sellOrderService.getAllActiveSellOrdersByBean(buyOrder.getBeanId());
+        jbeSellOrder.setPrice(sellOrders.stream().map(s -> s.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(sellOrders.size())));
+        sellOrderService.saveOrUpdate(jbeSellOrder);
         return buyOrder.getBeanId();
     }
 
     @PutMapping
-    public int updateBean(@RequestBody BuyOrder buyOrder){
+    public int updateBuyOrder(@RequestBody BuyOrder buyOrder){
         buyOrderService.saveOrUpdate(buyOrder);
         matchBuyOrder(buyOrder);
         return buyOrder.getBeanId();
