@@ -2,6 +2,7 @@ package com.jbe.client.MenuOptions;
 import java.util.Scanner;
 
 import com.jbe.client.AdminMenu;
+import com.jbe.client.RestApiHandler;
 import com.jbe.client.Models.Investor;
 
 public class ViewInvestorInventory{
@@ -46,31 +47,7 @@ public class ViewInvestorInventory{
             AdminMenu.display();
         }
         Investor investor = viewInvestors.investors.get(choice-1);
-        ViewInventory vi = new ViewInventory(investor.getInvestorId());
-        vi.printInventory();
-
-        while (true) {
-            vi.printInventory();
-            System.out.println("0. Go back to Main Menu");
-            System.out.print("\nEnter your choice: ");
-            
-            int anotherChoice = -1;
-            try {
-                String input = scanner.nextLine().trim();
-                anotherChoice = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-                continue;
-            }
-            switch (anotherChoice) {
-                case 0:
-                    AdminMenu.display();
-                    break;
-                default:
-                    System.out.println("Either you go back or just keep viewing the inventory");
-            }
-    
-        }
+        RestApiHandler.getInventory(investor.getInvestorId(),false);
     }
     }
 

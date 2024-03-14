@@ -26,7 +26,7 @@ public class CurrentInvestor {
     }
     public static void signIn() {
         signedIn = true;
-        id = 1;
+        id = 2;
     }
     public static void signUp() {
         // for now signing up gets you logged in as admin, change this after auth is completed
