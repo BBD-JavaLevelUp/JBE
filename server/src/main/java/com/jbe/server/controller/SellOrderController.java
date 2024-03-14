@@ -1,13 +1,7 @@
 package com.jbe.server.controller;
 
-import com.jbe.server.entity.Bean;
-import com.jbe.server.entity.BuyOrder;
-import com.jbe.server.entity.SellOrder;
-import com.jbe.server.entity.Transaction;
-import com.jbe.server.service.BeanService;
-import com.jbe.server.service.BuyOrderService;
-import com.jbe.server.service.SellOrderService;
-import com.jbe.server.service.TransactionService;
+import com.jbe.server.entity.*;
+import com.jbe.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +20,15 @@ public class SellOrderController {
     private final BuyOrderService buyOrderService;
     private final TransactionService transactionService;
     private final BeanService beanService;
+    private final InventoryService inventoryService;
 
     @Autowired
-    public SellOrderController(SellOrderService sellOrderService, BuyOrderService buyOrderService, TransactionService transactionService, BeanService beanService) {
+    public SellOrderController(SellOrderService sellOrderService, BuyOrderService buyOrderService, TransactionService transactionService, BeanService beanService, InventoryService inventoryService) {
         this.sellOrderService = sellOrderService;
         this.buyOrderService = buyOrderService;
         this.transactionService = transactionService;
         this.beanService = beanService;
+        this.inventoryService = inventoryService;
     }
 
     @GetMapping
@@ -172,10 +168,14 @@ public class SellOrderController {
             buyOrders.sort(Comparator.comparing(BuyOrder::getOrderDate));
             if (!buyOrders.isEmpty()){
                 BuyOrder buyOrder = buyOrders.getFirst();
+                Inventory sellerInventory = inventoryService.getInventoryForUserByBean(sellOrder.getInvestorId(), sellOrder.getBeanId());
+                Inventory buyerInventory = inventoryService.getInventoryForUserByBean(buyOrder.getInvestorId(), buyOrder.getBeanId());
                 long total = min(List.of(sellOrder.getAvailableAmount(), buyOrder.getAvailableAmount()));
                 Transaction transaction = new Transaction(buyOrder.getBuyOrderId(), sellOrder.getSellOrderId(), total);
                 sellOrder.setAvailableAmount(sellOrder.getAvailableAmount()-total);
                 buyOrder.setAvailableAmount(buyOrder.getAvailableAmount()-total);
+                sellerInventory.setAmount(sellerInventory.getAmount()-total);
+                buyerInventory.setAmount(buyerInventory.getAmount()+total);
                 if (buyOrder.getAvailableAmount()==0){
                     List<Transaction> transactions = transactionService.getTransactionByBuyOrderId(buyOrder.getBuyOrderId());
                     buyOrder.setPrice(transactions.stream().map(t -> t.getPrice().multiply(BigDecimal.valueOf(t.getAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add));
@@ -187,6 +187,8 @@ public class SellOrderController {
                 buyOrderService.saveOrUpdate(buyOrder);
                 sellOrderService.saveOrUpdate(sellOrder);
                 transactionService.saveOrUpdate(transaction);
+                inventoryService.saveOrUpdate(sellerInventory);
+                inventoryService.saveOrUpdate(buyerInventory);
             } else {
                 return;
             }
