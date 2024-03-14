@@ -28,8 +28,8 @@ public class InvestorController {
         return investorService.getInvestorById(investorId);
     }
 
-    @GetMapping("id/{id}")
-    public Investor getInvestorsBySAId(@PathVariable("id") int id) {
+    @GetMapping("/id/{id}")
+    public Investor getInvestorsBySAId(@PathVariable("id") String id) {
         return investorService.getInvestorBySAId(id);
     }
 

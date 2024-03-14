@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InvestorRepository extends JpaRepository<Investor, Integer> {
-    public Investor findBySaId(int id);
+    public Investor findBySaId(String id);
 }
