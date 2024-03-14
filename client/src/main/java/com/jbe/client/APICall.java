@@ -4,7 +4,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.net.http.HttpClient;
-import java.io.IOException;
 
 public class APICall {
   public static String url = "http://ec2-34-242-203-156.eu-west-1.compute.amazonaws.com:8080";
@@ -21,13 +20,9 @@ public class APICall {
     {
       response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
-    catch (IOException e)
+    catch (Exception e)
     {
-      e.printStackTrace();
-    }
-    catch (InterruptedException e)
-    {
-      e.printStackTrace();
+      System.out.println(RestApiHandler.ANSI_RED + "An error occured making get request to " + endpoint + RestApiHandler.ANSI_RESET);
     }
 
     return response.body();
@@ -46,13 +41,9 @@ public class APICall {
     {
       response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
-    catch (IOException e)
+    catch (Exception e)
     {
-      e.printStackTrace();
-    }
-    catch (InterruptedException e)
-    {
-      e.printStackTrace();
+      System.out.println(RestApiHandler.ANSI_RED + "An error occured making post request to " + endpoint + RestApiHandler.ANSI_RESET);
     }
 
     return response;
