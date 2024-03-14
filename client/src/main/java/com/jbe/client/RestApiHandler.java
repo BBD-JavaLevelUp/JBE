@@ -467,7 +467,7 @@ public class RestApiHandler {
         jsonData.put("name", name);
         jsonData.put("saId", SAid);
         jsonData.put("email", email);
-        APICall.post("/api/investors/"+jsonData.toString());
+        APICall.post("/api/investors/",jsonData.toString());
         System.out.println(RestApiHandler.ANSI_GREEN + "New investor created!" + RestApiHandler.ANSI_RESET);
     }
     

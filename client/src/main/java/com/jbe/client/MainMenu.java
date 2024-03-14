@@ -1,7 +1,5 @@
 package com.jbe.client;
 
-import java.math.BigDecimal;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.CreateBuyOrder;
@@ -55,8 +53,8 @@ public class MainMenu
                         String name = null;
                         String idNum = null;
                         String email = null;
-                        while (name == null) {
-                            System.out.println("Enter your full name:");
+                        while (true) {
+                            System.out.print("Enter your full name: ");
                             name = scanner.nextLine();
                             if(!name.isEmpty()){
                                 break;
@@ -64,8 +62,8 @@ public class MainMenu
                                 System.out.println(RestApiHandler.ANSI_RED+"Name cannot be empty."+RestApiHandler.ANSI_RESET);
                             }
                         }
-                        while (idNum == null) {
-                            System.out.println("Enter your ID Number:");
+                        while (true) {
+                            System.out.print("Enter your ID Number: ");
                             idNum = scanner.nextLine();
                             if(!idNum.isEmpty()){
                                 if (idNum.length() == 13) {
@@ -77,8 +75,8 @@ public class MainMenu
                                 System.out.println(RestApiHandler.ANSI_RED+"ID number cannot be empty."+RestApiHandler.ANSI_RESET);
                             }
                         }
-                        while (email == null) {
-                            System.out.println("Enter your email:");
+                        while (true) {
+                            System.out.print("Enter your email: ");
                             email = scanner.nextLine();
                             if(!email.isEmpty()){
                                 break;
