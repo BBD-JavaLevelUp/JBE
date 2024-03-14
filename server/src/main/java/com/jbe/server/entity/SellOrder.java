@@ -40,7 +40,7 @@ public class SellOrder {
         this.orderDate = sellOrder.getOrderDate();
         this.isActive = sellOrder.isActive();
     }
-    public SellOrder(int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+    public SellOrder(int sellingInvestorId, int beanId, BigDecimal sellingPrice, long availableAmount, Long totalAmount, boolean isActive){
         this.investorId = sellingInvestorId;
         this.beanId = beanId;
         this.price = sellingPrice;
@@ -50,7 +50,7 @@ public class SellOrder {
         this.isActive = isActive;
     }
 
-    public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+    public SellOrder(int sellOrderId, int sellingInvestorId, int beanId, BigDecimal sellingPrice, long availableAmount, long totalAmount, boolean isActive){
         this.sellOrderId = sellOrderId;
         this.investorId = sellingInvestorId;
         this.beanId = beanId;
@@ -97,6 +97,9 @@ public class SellOrder {
     }
 
     public BigDecimal getPrice() {
+        if (price==null){
+            return BigDecimal.ZERO;
+        }
         return price.setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -104,19 +107,19 @@ public class SellOrder {
         this.price = sellingPrice;
     }
 
-    public Long getAvailableAmount() {
+    public long getAvailableAmount() {
         return availableAmount;
     }
 
-    public void setAvailableAmount(Long availableAmount) {
+    public void setAvailableAmount(long availableAmount) {
         this.availableAmount = availableAmount;
     }
 
-    public Long getTotalAmount() {
+    public long getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Long totalAmount) {
+    public void setTotalAmount(long totalAmount) {
         this.totalAmount = totalAmount;
     }
 

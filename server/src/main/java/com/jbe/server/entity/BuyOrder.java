@@ -97,6 +97,9 @@ public class BuyOrder {
     }
 
     public BigDecimal getPrice() {
+        if (price==null){
+            return BigDecimal.ZERO;
+        }
         return price.setScale(2, RoundingMode.HALF_UP);
     }
 
