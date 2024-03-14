@@ -2,14 +2,8 @@ package com.jbe.client;
 
 import java.util.Scanner;
 
-import com.jbe.client.MenuOptions.BuyBeansFromJBE;
 import com.jbe.client.MenuOptions.CreateBuyOrder;
 import com.jbe.client.MenuOptions.CreateSellOrder;
-import com.jbe.client.MenuOptions.ViewBeans;
-import com.jbe.client.MenuOptions.ViewBuyOrders;
-import com.jbe.client.MenuOptions.ViewInventory;
-import com.jbe.client.MenuOptions.ViewSellOrders;
-import com.jbe.client.MenuOptions.ViewTransactions;
 
 public class MainMenu
 {
