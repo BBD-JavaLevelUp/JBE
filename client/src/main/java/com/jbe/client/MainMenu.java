@@ -1,5 +1,7 @@
 package com.jbe.client;
 
+import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.jbe.client.MenuOptions.CreateBuyOrder;
@@ -50,7 +52,43 @@ public class MainMenu
                 case 1:
                     if (!CurrentInvestor.signedIn)
                     {
-                        CurrentInvestor.signUp();
+                        String name = null;
+                        String idNum = null;
+                        String email = null;
+                        while (name == null) {
+                            System.out.println("Enter your full name:");
+                            name = scanner.nextLine();
+                            if(!name.isEmpty()){
+                                break;
+                            }else{
+                                System.out.println(RestApiHandler.ANSI_RED+"Name cannot be empty."+RestApiHandler.ANSI_RESET);
+                            }
+                        }
+                        while (idNum == null) {
+                            System.out.println("Enter your ID Number:");
+                            idNum = scanner.nextLine();
+                            if(!idNum.isEmpty()){
+                                if (idNum.length() == 13) {
+                                    break;
+                                } else {
+                                    System.out.println(RestApiHandler.ANSI_RED+"ID number should be 13 digits."+RestApiHandler.ANSI_RESET);
+                                }
+                            }else{
+                                System.out.println(RestApiHandler.ANSI_RED+"ID number cannot be empty."+RestApiHandler.ANSI_RESET);
+                            }
+                        }
+                        while (email == null) {
+                            System.out.println("Enter your email:");
+                            email = scanner.nextLine();
+                            if(!email.isEmpty()){
+                                break;
+                            }else{
+                                System.out.println(RestApiHandler.ANSI_RED+"Email cannot be empty."+RestApiHandler.ANSI_RESET);
+                            }
+                        }
+                        if (name != null && idNum != null && email != null) {
+                            CurrentInvestor.signUp(name, idNum, email);
+                        }
                         if(CurrentInvestor.isAdmin)
                         {
                             AdminMenu.display();
@@ -64,7 +102,34 @@ public class MainMenu
                 case 2:
                     if (!CurrentInvestor.signedIn) 
                     {
-                        CurrentInvestor.signIn();
+                        // Ask for selling price
+                        String idNum = null;
+                        String password = null;
+                        while (idNum == null) {
+                            System.out.print("Enter ID number:");
+                            idNum = scanner.nextLine();
+                            if (!idNum.trim().isEmpty()) {
+                                if (idNum.length() == 13) {
+                                    break;
+                                } else {
+                                    System.out.println(RestApiHandler.ANSI_RED+"ID number should be 13 digits."+RestApiHandler.ANSI_RESET);
+                                }
+                            } else {
+                                System.out.println(RestApiHandler.ANSI_RED+"Name cannot be blank. Please enter a valid name."+RestApiHandler.ANSI_RESET);
+                            }
+                        }
+                        while (password == null) {
+                            System.out.println("Enter password:");
+                            password = scanner.nextLine();
+                            if (!password.trim().isEmpty()) {
+                                break;
+                            } else {
+                                System.out.println(RestApiHandler.ANSI_RED+"Password cannot be blank. Please enter a valid password."+RestApiHandler.ANSI_RESET);
+                            }
+                        }
+                        if (idNum != null && password != null) {
+                            CurrentInvestor.signIn(idNum,password);
+                        }
                         if(CurrentInvestor.isAdmin)
                         {
                             AdminMenu.display();
