@@ -1,93 +1,68 @@
 package com.jbe.server.Controller;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import static org.hamcrest.Matchers.hasSize;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jbe.server.controller.BeanController;
 import com.jbe.server.entity.Bean;
-import com.jbe.server.repository.BeanRepository;
 import com.jbe.server.service.BeanService;
+import com.jbe.server.service.InventoryService;
 import com.jbe.server.service.SellOrderService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
-import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
+@RunWith(SpringRunner.class)
 @WebMvcTest(BeanController.class)
-public class BeanControllerTest
-{
-  private static final String requestURI = "/api/beans/20";
+public class BeanControllerTest{
 
   @Autowired
-  private MockMvc mockMvc;
+  private MockMvc mvc;
 
   @MockBean
   private BeanService beanService;
 
   @MockBean
-  private BeanRepository beanRepo;
-
-  @MockBean
   private SellOrderService sellOrderService;
 
-  @Test
-  void testGetAllBeans() throws Exception 
-  {
-    List<Bean> beans = List.of(new Bean("TestBean1", BigDecimal.valueOf(100.00)), new Bean("TestBean2", BigDecimal.valueOf(150.00))); // Create some mock beans
-    when(beanService.getAllBeans()).thenReturn(beans);
+  @MockBean
+  private InventoryService inventoryService;
 
-    mockMvc.perform(get("/api/beans"))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$", hasSize(beans.size()))); // Validate the response
-
-    verify(beanService).getAllBeans(); // Ensure service method was called
-  }
-
-
-  // @Test
-  // public void testGetBeans() throws Exception
-  // {
-  //   Bean bean = new Bean("TestBean22", BigDecimal.valueOf(100.00));
-
-  //   //Mockito.when(beanService.getBeanByName("TestBean")).thenReturn(bean);
-  //   beanRepo.findByName("TestBean22");
-  //   beanRepo.save(bean);
-  //   mockMvc.perform(get(requestURI))
-  //     .andExpect(content().contentType("application/json"))
-  //     .andExpect(status().isOk())
-  //     .andExpect(jsonPath("$.name", is("TestBean")))
-  //     .andDo(print());
-  // }
+  @Autowired
+  private ObjectMapper objectMapper;
 
   @Test
-  void testSaveBean() throws Exception {
-      Bean bean = new Bean("TestBean5", BigDecimal.valueOf(180.00));
-    
-      mockMvc.perform(post("/api/beans")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(new ObjectMapper().writeValueAsString(bean)))
+  public void getAllBeansAPI() throws Exception {
+    Bean bean = new Bean("testBean", new BigDecimal("200.55"));
+    List<Bean> beans = Arrays.asList(bean);
+
+    Mockito.when(beanService.getAllBeans()).thenReturn(beans);
+    mvc.perform(get("/api/beans"))
             .andExpect(status().isOk())
-            .andExpect(content().string(String.valueOf(bean.getBeanId())));
-
-      verify(beanService).saveOrUpdate(any(Bean.class));
+            .andExpect(jsonPath("$[0].name").value(bean.getName()))
+            .andExpect(jsonPath("$[0].defaultPrice").value(bean.getDefaultPrice()));
   }
+
+  @Test
+  public void getOneBeanAPI() throws Exception {
+    Bean bean = new Bean("testBean", new BigDecimal("200.55"));
+
+    Mockito.when(beanService.getBeanById(0)).thenReturn(bean);
+    mvc.perform(get("/api/beans/0"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value(bean.getName()))
+            .andExpect(jsonPath("$.defaultPrice").value(bean.getDefaultPrice()));
+  }
+
 }
