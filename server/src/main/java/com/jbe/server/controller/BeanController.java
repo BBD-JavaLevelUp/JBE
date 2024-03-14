@@ -62,7 +62,7 @@ public class BeanController {
     }
 
     @PostMapping
-    public int saveBean(@RequestBody Bean bean, @RequestBody long amount){
+    public int saveBean(@RequestBody Bean bean, long amount){
         beanService.saveOrUpdate(bean);
         inventoryService.saveOrUpdate(new Inventory(1, bean.getBeanId(), amount));
         sellOrderService.saveOrUpdate(new SellOrder(1, bean.getBeanId(), bean.getDefaultPrice(), amount, amount, true));
@@ -70,7 +70,7 @@ public class BeanController {
     }
 
     @PutMapping
-    public Bean updateBean(@RequestBody Bean bean, @RequestBody long amount){
+    public Bean updateBean(@RequestBody Bean bean, long amount){
         beanService.saveOrUpdate(bean);
         Inventory inventory = inventoryService.getInventoryForUserByBean(1, bean.getBeanId());
         inventoryService.saveOrUpdate(new Inventory(1, bean.getBeanId(), inventory.getAmount()+amount));
