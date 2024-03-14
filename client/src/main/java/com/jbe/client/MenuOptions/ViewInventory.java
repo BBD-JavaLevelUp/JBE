@@ -3,26 +3,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.jbe.client.MainMenu;
-import com.jbe.client.RestApiHandler;
 import com.jbe.client.Models.InventoryItem;
 
 public class ViewInventory {
     private static Scanner scanner = new Scanner(System.in);
     public ArrayList<InventoryItem> inventoryItems;
 
-    public ViewInventory(String string) {
-        inventoryItems = RestApiHandler.getJBEInventory();
-    }
-
     public ViewInventory()
     {
         inventoryItems = new ArrayList<>();
     }
-
-    public ViewInventory(int investorId) {
-        //inventoryItems = RestApiHandler.getInventory(investorId);
-    }
-
 
     public void display() {
         System.out.println("\nInventory:");

@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import com.jbe.client.MenuOptions.ViewSellOrders;
 import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.BuyOrder;
-import com.jbe.client.Models.InventoryItem;
 import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
-import com.jbe.client.Models.TransactionItem;
 
 import org.json.*;
 
@@ -47,9 +45,6 @@ public class RestApiHandler {
         for(Object json : jsonResponse)
         {
             JSONObject bean = (JSONObject) json;
-            //BigDecimal jbePrice = (BigDecimal) bean.get("jbePrice");
-            //BigDecimal marketPrice = !bean.get("marketPrice").equals(null) ? (BigDecimal) bean.get("marketPrice") : BigDecimal.valueOf(0);
-            //BigDecimal lowestPrice = marketPrice.equals(BigDecimal.valueOf(0)) ? jbePrice : jbePrice.min(marketPrice);
             System.out.println(
                 " " +
                 bean.get("name") + " - R" +
@@ -347,8 +342,6 @@ public class RestApiHandler {
     }
 
     //Create Buy Order
-
-    //Create Sell Order
      public static void CreateBuyOrder(BuyOrder buyOrder)
     {
         JSONObject jsonData = new JSONObject();
@@ -367,32 +360,6 @@ public class RestApiHandler {
         scanner.nextLine().trim();
     } 
 
-
-    public static Bean getBean(int beanId) {
-        return null;
-        // ArrayList<Bean> beans = getAllBeans();
-        // for (Bean bean : beans) {
-        //     if (bean.getBeanId() == beanId) {
-        //         return bean;
-        //     }
-        // }
-        // return null; // Bean with given beanId not found
-    }
-
-    public static ArrayList<InventoryItem> getInventory() {
-      // call api using current investor api
-      ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
-      //APICall.makeCall("/api/viewInventory", null);
-      inventoryItems.add(new InventoryItem(1, "Arabica Beans", 100,new BigDecimal("109")));
-      inventoryItems.add(new InventoryItem(2, "Cool beans", 200,new BigDecimal("79")));
-      inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
-      return inventoryItems;
-    }
-
-   
-    public static void deleteSellOrder(int sellOrderId) {
-        System.out.println("Sell order deleted");
-    }
     public static void acceptSellOrder(SellOrder sellOrder, long amount)
     {
         JSONObject jsonData = new JSONObject();
@@ -410,39 +377,7 @@ public class RestApiHandler {
         System.out.print("\nPress enter to continue...");
         scanner.nextLine().trim();
     }
-    
-    public static void BuyBeansFromJBE(int beanId, int amount) {
-        System.out.println("Beans bought!");
-    }
-    public static ArrayList<InventoryItem> getJBEInventory() {
-      ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
-      inventoryItems.add(new InventoryItem(1, "Arabica Beans", 100,new BigDecimal("109")));
-      inventoryItems.add(new InventoryItem(2, "Cool beans", 200,new BigDecimal("79")));
-      inventoryItems.add(new InventoryItem(3, "Senzu beans", 150,new BigDecimal("10.9")));
-      inventoryItems.add(new InventoryItem(4, "Roasted beans", 10,new BigDecimal("302")));
-      inventoryItems.add(new InventoryItem(6, "Energy beans", 3,new BigDecimal("1001")));
-      return inventoryItems;
-    }
-    public static void deleteBuyOrder(int buyOrderId) {
-        System.out.println("Buy order deleted");
-    }
-    public static void acceptBuyOrder(int buyOrderId) {
-        System.out.println("Buy order accepted");
-    }
 
-    public static ArrayList<TransactionItem> getAllTransactions() {
-        ArrayList<TransactionItem> transactions = new ArrayList<>();
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Coffee Beans", 100, new BigDecimal("5.00"), "John", "Alice"));
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Tea Leaves", 50, new BigDecimal("3.50"), "Bob", "Eve"));
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Cocoa Beans", 80, new BigDecimal("7.20"), "Charlie", "JBE"));
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Vanilla Beans", 120, new BigDecimal("8.50"), "David", "Frank"));
-        transactions.add(new TransactionItem(OffsetDateTime.now(), "Cherry Beans", 70, new BigDecimal("6.75"), "Emily", "JBE"));
-        return transactions;
-
-    }
-    public static void editBean(int beanId, String newName, long newAmount, BigDecimal newPrice) {
-        System.out.println("Bean edited!");
-    }
     public static void createBean(String name, long amount, BigDecimal price) {
         JSONObject jsonData = new JSONObject();
         jsonData.put("name", name);
@@ -466,7 +401,6 @@ public class RestApiHandler {
                             ));
         }
         return investors;
-
 
     }
     
