@@ -40,7 +40,7 @@ public class BuyOrder {
         this.isActive = buyOrder.isActive();
     }
 
-    public BuyOrder(int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+    public BuyOrder(int buyingInvestorId, int beanId, BigDecimal buyingPrice, long availableAmount, long totalAmount, boolean isActive){
         this.investorId = buyingInvestorId;
         this.beanId = beanId;
         this.price = buyingPrice;
@@ -50,7 +50,7 @@ public class BuyOrder {
         this.isActive = isActive;
     }
 
-    public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive){
+    public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, long availableAmount, long totalAmount, boolean isActive){
         this.buyOrderId = buyOrderId;
         this.investorId = buyingInvestorId;
         this.beanId = beanId;
@@ -61,7 +61,7 @@ public class BuyOrder {
         this.isActive = isActive;
     }
 
-    public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, Long availableAmount, Long totalAmount, boolean isActive, OffsetDateTime orderDate){
+    public BuyOrder(int buyOrderId, int buyingInvestorId, int beanId, BigDecimal buyingPrice, long availableAmount, long totalAmount, boolean isActive, OffsetDateTime orderDate){
         this.buyOrderId = buyOrderId;
         this.investorId = buyingInvestorId;
         this.beanId = beanId;
