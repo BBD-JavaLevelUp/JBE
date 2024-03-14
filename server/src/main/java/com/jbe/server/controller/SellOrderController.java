@@ -150,9 +150,14 @@ public class SellOrderController {
 
     @PostMapping
     public int saveSellOrder(@RequestBody SellOrder sellOrder){
-        sellOrderService.saveOrUpdate(sellOrder);
-        matchSellOrder(sellOrder);
-        return sellOrder.getSellOrderId();
+        Inventory inventory = inventoryService.getInventoryForUserByBean(sellOrder.getInvestorId(), sellOrder.getBeanId());
+        if (sellOrder.getTotalAmount()<=inventory.getAmount()) {
+            sellOrderService.saveOrUpdate(sellOrder);
+            matchSellOrder(sellOrder);
+            return sellOrder.getSellOrderId();
+        } else {
+            return 0;
+        }
     }
 
     @PutMapping
@@ -196,6 +201,7 @@ public class SellOrderController {
                 inventoryService.saveOrUpdate(sellerInventory);
                 inventoryService.saveOrUpdate(buyerInventory);
             } else {
+                sellOrderService.saveOrUpdate(sellOrder);
                 return;
             }
         }
