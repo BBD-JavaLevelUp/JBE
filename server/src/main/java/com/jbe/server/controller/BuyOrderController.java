@@ -164,20 +164,22 @@ public class BuyOrderController {
                 }
                 long total = min(List.of(sellOrder.getAvailableAmount(), buyOrder.getAvailableAmount()));
                 Transaction transaction = new Transaction(buyOrder.getBuyOrderId(), sellOrder.getSellOrderId(), total);
+                transaction.setPrice(sellOrder.getPrice());
                 sellOrder.setAvailableAmount(sellOrder.getAvailableAmount()-total);
                 buyOrder.setAvailableAmount(buyOrder.getAvailableAmount()-total);
                 sellerInventory.setAmount(sellerInventory.getAmount()-total);
                 buyerInventory.setAmount(buyerInventory.getAmount()+total);
-                transactionService.saveOrUpdate(transaction);
                 if (buyOrder.getAvailableAmount()==0){
 
                     List<Transaction> transactions = transactionService.getTransactionByBuyOrderId(buyOrder.getBuyOrderId());
+                    transactions.add(transaction);
                     buyOrder.setPrice(transactions.stream().map(t -> t.getPrice().multiply(BigDecimal.valueOf(t.getAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(buyOrder.getTotalAmount())));
                     buyOrder.setActive(false);
                 }
                 if (sellOrder.getAvailableAmount()==0){
                     sellOrder.setActive(false);
                 }
+                transactionService.saveOrUpdate(transaction);
                 buyOrderService.saveOrUpdate(buyOrder);
                 sellOrderService.saveOrUpdate(sellOrder);
                 inventoryService.saveOrUpdate(sellerInventory);

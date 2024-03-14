@@ -91,7 +91,7 @@ public class TransactionController {
     public List<Transaction> getTransactionsBySellingInvestor(@PathVariable("investorId") int investorId) {
         return transactionService.getAllTransactions().stream()
                 .filter(transaction -> {
-                    SellOrder currentSellOrder = sellOrderService.getSellOrdersById(transaction.getBuyOrderId());
+                    SellOrder currentSellOrder = sellOrderService.getSellOrdersById(transaction.getSellOrderId());
                     return currentSellOrder.getInvestorId() == investorId;
                 })
                 .collect(Collectors.toList()).stream().map(t ->
