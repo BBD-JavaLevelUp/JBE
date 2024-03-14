@@ -1,5 +1,6 @@
 package com.jbe.client.MenuOptions;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.jbe.client.MainMenu;
@@ -25,12 +26,7 @@ public class ViewSellOrders{
         this.sellOrders = sellOrders;
     }
 
-    public void display() {
-        System.out.println("\nAll sell orders");
-        subMenu();
-    }
-
-    public void subMenu(){
+    public void display(){
         while (true) {
             printSellOrders();
             System.out.println("0. Go back to Main Menu");
@@ -72,12 +68,23 @@ public class ViewSellOrders{
                 MainMenu.display();
             }
             SellOrder sellOrder = sellOrders.get(choice-1);
-            if(viewingOwn){
-                RestApiHandler.deleteSellOrder(sellOrder.getSellOrderId());
+
+            // Ask for amount of beans to buy
+            long amount = -1;
+            while (amount == -1) {
+                try {
+                    System.out.print("Enter amount you want to buy: ");
+                    amount = scanner.nextLong();
+                    if (amount > sellOrder.getAvailableAmount()) {
+                        System.out.println("Amount exceeds available inventory!");
+                        amount = -1; // Reset amount to trigger retry
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid integer.");
+                    scanner.nextLine(); // Consume the invalid input
+                }
             }
-            else{
-                RestApiHandler.acceptSellOrder(sellOrder.getSellOrderId());
-            }
+            RestApiHandler.acceptSellOrder(sellOrder,amount);
             MainMenu.display();
         }
     }

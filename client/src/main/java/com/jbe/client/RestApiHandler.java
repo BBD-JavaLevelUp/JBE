@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.jbe.client.MenuOptions.ViewSellOrders;
 import com.jbe.client.Models.Bean;
@@ -367,8 +368,23 @@ public class RestApiHandler {
     public static void deleteSellOrder(int sellOrderId) {
         System.out.println("Sell order deleted");
     }
-    public static void acceptSellOrder(int sellOrderId) {
-        System.out.println("Sell order accepted");
+    public static void acceptSellOrder(SellOrder sellOrder, long amount) {
+      
+        String body = "{" + 
+        "\"investorId\":" + CurrentInvestor.getId() + ",\n" +
+        "\"beanId\":" + sellOrder.getBeanId() + ",\n" +
+        "\"price\":" + sellOrder.getSellingPrice() + ",\n" +
+        "\"availableAmount\":" + amount + ",\n" +
+        "\"totalAmount\":" + amount + ",\n" +
+        "\"orderDate\":" + "\"" + OffsetDateTime.now() + "\",\n" + 
+        "\"isActive\": true\n" + 
+        "}";
+
+        System.out.println(body);
+        System.out.println(APICall.post("/api/buy-orders", body));
+        System.out.println(ANSI_GREEN + "Buy order placed" + ANSI_RESET);
+        System.out.print("\nPress enter to continue...");
+        scanner.nextLine().trim();
     }
     
     public static void BuyBeansFromJBE(int beanId, int amount) {
