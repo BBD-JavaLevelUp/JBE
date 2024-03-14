@@ -25,6 +25,8 @@ public class InvestorService {
         return investorRepository.findById(investorId).get();
     }
 
+    public Investor getInvestorBySAId(int id) {return investorRepository.findBySaId(id);}
+
     public void saveOrUpdate(Investor investor){
         investorRepository.save(investor);
     }

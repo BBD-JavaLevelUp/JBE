@@ -28,6 +28,11 @@ public class InvestorController {
         return investorService.getInvestorById(investorId);
     }
 
+    @GetMapping("id/{id}")
+    public Investor getInvestorsBySAId(@PathVariable("id") int id) {
+        return investorService.getInvestorBySAId(id);
+    }
+
     @PostMapping
     public int saveInvestor(@RequestBody Investor investor){
         investorService.saveOrUpdate(investor);
