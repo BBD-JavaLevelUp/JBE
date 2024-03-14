@@ -446,7 +446,6 @@ public class RestApiHandler {
         jsonData.put("defaultPrice", price);
         APICall.post("/api/beans/"+amount,jsonData.toString());
         System.out.println(RestApiHandler.ANSI_GREEN + "New bean created!" + RestApiHandler.ANSI_RESET);
-
     }
     public static ArrayList<Investor> getInvestors() {
         ArrayList<Investor> investors = new ArrayList<>();
@@ -454,6 +453,22 @@ public class RestApiHandler {
         investors.add(new Investor(2, "Jane Smith", "0001206603017", "janesmith@example.com"));
         investors.add(new Investor(3, "Alice Johnson", "8912287741625", "alicejohnson@example.com"));
         return investors;
+    }
+    public static Investor getInvestor(String id){
+        //if no response return null
+        String response = APICall.get("/api/investors/id/"+id, null);
+        JSONObject jsonResponse = new JSONObject(response);
+        Investor investor = new Investor((int)jsonResponse.get("investorId"),(String) jsonResponse.get("name"), (String)jsonResponse.get("saId"),(String)jsonResponse.get("email"));
+        return investor;
+    }
+
+    public static void createInvestor(String name, String SAid, String email) {
+        JSONObject jsonData = new JSONObject();
+        jsonData.put("name", name);
+        jsonData.put("saId", SAid);
+        jsonData.put("email", email);
+        APICall.post("/api/investors/"+jsonData.toString());
+        System.out.println(RestApiHandler.ANSI_GREEN + "New investor created!" + RestApiHandler.ANSI_RESET);
     }
     
 }
