@@ -17,8 +17,12 @@ public class ViewSellOrders{
     }
 
     // if an investorID is not provided we get all of the sell orders
-    public ViewSellOrders() {
+/*     public ViewSellOrders() {
         sellOrders = RestApiHandler.getAllSellOrders();
+    } */
+
+    public ViewSellOrders(ArrayList<SellOrder> sellOrders) {
+        this.sellOrders = sellOrders;
     }
 
     public void display() {
@@ -59,8 +63,7 @@ public class ViewSellOrders{
         private void printSellOrders(){
             for (int index = 0; index < sellOrders.size(); index++) {
                 SellOrder sellOrder = sellOrders.get(index);
-                String beanName = RestApiHandler.getBean(sellOrder.getBeanId()).getName();
-                System.out.println(index+1 + ". " + beanName + " - " + sellOrder.getTotalAmount() + " - R" + sellOrder.getSellingPrice() );
+                System.out.println(index+1 + ". " + sellOrder.getBeanName()+ " - " + sellOrder.getAvailableAmount() + " available @ R" + sellOrder.getSellingPrice()+ " each." );
             }
         }
 

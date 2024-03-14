@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
+import com.jbe.client.MenuOptions.ViewSellOrders;
 import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.BuyOrder;
 import com.jbe.client.Models.InventoryItem;
@@ -215,6 +216,7 @@ public class RestApiHandler {
         }
         
         String input = scanner.nextLine().trim();
+        try{
         int choice = Integer.parseInt(input);
 
         if(choice == 0)
@@ -230,22 +232,32 @@ public class RestApiHandler {
             System.out.println("Invalid input");
             return;
         }
+        } catch (NumberFormatException e) {
+            System.out.println("You were suppose to input a number and you chose that. Wow");
+            return;
+        }
 
         jsonResponse = new JSONArray(response);
-
-        System.out.println(ANSI_BLUE + "\nCurrent Listings:" + ANSI_RESET);
+        ArrayList<SellOrder> sellOrders = new ArrayList<>();
         for(Object json : jsonResponse)
         {
-            JSONObject sellOrders = (JSONObject) json;
-            
-            System.out.println(
-                " " +
-                sellOrders.get("beanName") + " - " +
-                sellOrders.get("availableAmount") + " available @ R" + sellOrders.get("price") + " each"
-            );
+            JSONObject sellOrder = (JSONObject) json;
+            sellOrders.add(new SellOrder((int) sellOrder.get("sellOrderId"),
+                                        (int) sellOrder.get("investorId"),
+                                        (int) sellOrder.get("beanId"), 
+                                        (BigDecimal) sellOrder.get("price"),
+                                        (int) sellOrder.get("availableAmount"),
+                                        (int) sellOrder.get("totalAmount"),
+                                        (String) sellOrder.get("orderDate"),
+                                        (boolean) sellOrder.get("active"),
+                                        (String) sellOrder.get("beanName")
+
+                            ));
         }
-        System.out.print("\nPress enter to continue...");
-        scanner.nextLine().trim();
+
+        System.out.println(ANSI_BLUE + "\nCurrent Listings:" + ANSI_RESET);
+        ViewSellOrders vso = new ViewSellOrders(sellOrders);
+        vso.display();
     }
 
     //View All Buy Orders
@@ -322,13 +334,13 @@ public class RestApiHandler {
 
     //Create Buy Order
 
-    public static ArrayList<SellOrder> getAllSellOrders() {
+/*     public static ArrayList<SellOrder> getAllSellOrders() {
         ArrayList<SellOrder> sellOrders = new ArrayList<>();
         sellOrders.add(new SellOrder(1, 101, 1, new BigDecimal("10.50"), 100, 200, OffsetDateTime.now(), true));
         sellOrders.add(new SellOrder(2, 102, 2, new BigDecimal("12.75"), 150, 250, OffsetDateTime.now(), true));
         sellOrders.add(new SellOrder(3, 103, 3, new BigDecimal("9.25"), 80, 180, OffsetDateTime.now(), true));
         return sellOrders;
-    }
+    } */
 
     public static Bean getBean(int beanId) {
         return null;

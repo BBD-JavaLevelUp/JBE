@@ -1,7 +1,6 @@
 package com.jbe.client.Models;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 
 public class SellOrder {
     private int sellOrderId;
@@ -10,11 +9,12 @@ public class SellOrder {
     private BigDecimal sellingPrice;
     private long availableAmount;
     private long totalAmount;
-    private OffsetDateTime sellOrderDate;
+    private String sellOrderDate;
     private boolean isActive;
+    private String beanName;
 
     // Constructor
-    public SellOrder(int sellOrderId, int investorId, int beanId, BigDecimal sellingPrice, int availableAmount, int totalAmount, OffsetDateTime sellOrderDate, boolean isActive) {
+    public SellOrder(int sellOrderId, int investorId, int beanId, BigDecimal sellingPrice, long availableAmount, long totalAmount, String sellOrderDate, boolean isActive, String beanName) {
         this.sellOrderId = sellOrderId;
         this.investorId = investorId;
         this.beanId = beanId;
@@ -23,9 +23,10 @@ public class SellOrder {
         this.totalAmount = totalAmount;
         this.sellOrderDate = sellOrderDate;
         this.isActive = isActive;
+        this.beanName = beanName;
     }
 
-    public SellOrder(int investorId, int beanId, BigDecimal sellingPrice, int availableAmount, int totalAmount, OffsetDateTime sellOrderDate, boolean isActive) {
+    public SellOrder(int investorId, int beanId, BigDecimal sellingPrice, long availableAmount, long totalAmount, String sellOrderDate, boolean isActive, String beanName) {
         this.investorId = investorId;
         this.beanId = beanId;
         this.sellingPrice = sellingPrice;
@@ -33,6 +34,7 @@ public class SellOrder {
         this.totalAmount = totalAmount;
         this.sellOrderDate = sellOrderDate;
         this.isActive = isActive;
+        this.beanName = beanName;
     }
 
     // Getters and Setters
@@ -84,11 +86,11 @@ public class SellOrder {
         this.totalAmount = totalAmount;
     }
 
-    public OffsetDateTime getSellOrderDate() {
+    public String getSellOrderDate() {
         return sellOrderDate;
     }
 
-    public void setSellOrderDate(OffsetDateTime sellOrderDate) {
+    public void setSellOrderDate(String sellOrderDate) {
         this.sellOrderDate = sellOrderDate;
     }
 
@@ -98,5 +100,8 @@ public class SellOrder {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+    public String getBeanName() {
+        return beanName;
     }
 }

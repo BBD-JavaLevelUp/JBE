@@ -96,8 +96,8 @@ public class CreateSellOrder{
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
-            SellOrder newSellOrder = new SellOrder(CurrentInvestor.getId(), inventoryItem.getBeanId(), sellingPrice, amount, amount, OffsetDateTime.now(), true);
-            RestApiHandler.CreateSellOrder(newSellOrder);
+           // SellOrder newSellOrder = new SellOrder(CurrentInvestor.getId(), inventoryItem.getBeanId(), sellingPrice, amount, amount, OffsetDateTime.now(), true);
+            //RestApiHandler.CreateSellOrder(newSellOrder);
             MainMenu.display();
         }
     }
