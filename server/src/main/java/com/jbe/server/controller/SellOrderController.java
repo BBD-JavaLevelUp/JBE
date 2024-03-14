@@ -164,12 +164,16 @@ public class SellOrderController {
 
     public void matchSellOrder(SellOrder sellOrder){
         while (sellOrder.getAvailableAmount()>0){
-            List<BuyOrder> buyOrders = new java.util.ArrayList<>(buyOrderService.getAllActiveBuyOrdersByBean(sellOrder.getBeanId()).stream().filter(b -> b.getPrice().compareTo(sellOrder.getPrice()) > 0).toList());
+            sellOrder.setActive(true);
+            List<BuyOrder> buyOrders = new java.util.ArrayList<>(buyOrderService.getAllActiveBuyOrdersByBean(sellOrder.getBeanId()).stream().filter(b -> b.getPrice().compareTo(sellOrder.getPrice()) >= 0).toList());
             buyOrders.sort(Comparator.comparing(BuyOrder::getOrderDate));
             if (!buyOrders.isEmpty()){
                 BuyOrder buyOrder = buyOrders.getFirst();
                 Inventory sellerInventory = inventoryService.getInventoryForUserByBean(sellOrder.getInvestorId(), sellOrder.getBeanId());
                 Inventory buyerInventory = inventoryService.getInventoryForUserByBean(buyOrder.getInvestorId(), buyOrder.getBeanId());
+                if (buyerInventory==null){
+                    buyerInventory = new Inventory(buyOrder.getInvestorId(), buyOrder.getBeanId(), 0L);
+                }
                 long total = min(List.of(sellOrder.getAvailableAmount(), buyOrder.getAvailableAmount()));
                 Transaction transaction = new Transaction(buyOrder.getBuyOrderId(), sellOrder.getSellOrderId(), total);
                 sellOrder.setAvailableAmount(sellOrder.getAvailableAmount()-total);
@@ -178,7 +182,8 @@ public class SellOrderController {
                 buyerInventory.setAmount(buyerInventory.getAmount()+total);
                 if (buyOrder.getAvailableAmount()==0){
                     List<Transaction> transactions = transactionService.getTransactionByBuyOrderId(buyOrder.getBuyOrderId());
-                    buyOrder.setPrice(transactions.stream().map(t -> t.getPrice().multiply(BigDecimal.valueOf(t.getAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add));
+                    transactions.add(transaction);
+                    buyOrder.setPrice(transactions.stream().map(t -> t.getPrice().multiply(BigDecimal.valueOf(t.getAmount()))).reduce(BigDecimal.ZERO, BigDecimal::add).divide(BigDecimal.valueOf(buyOrder.getTotalAmount())));
                     buyOrder.setActive(false);
                 }
                 if (sellOrder.getAvailableAmount()==0){
