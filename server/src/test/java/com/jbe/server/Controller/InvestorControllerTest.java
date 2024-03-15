@@ -56,32 +56,4 @@ public class InvestorControllerTest {
                 .andExpect(jsonPath("$.saId").value(investor.getSaId()))
                 .andExpect(jsonPath("$.email").value(investor.getEmail()));
     }
-
-//    @Test
-//    public void saveInvestorTest() throws Exception {
-//        Investor investor = new Investor(); // setup your investor
-//
-//        doNothing().when(investorService).saveOrUpdate(any(Investor.class));
-//
-//        mockMvc.perform(post("/api/investors")
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .content(new ObjectMapper().writeValueAsString(investor)))
-//                    .andExpect(status().isOk());
-//
-//        verify(investorService).saveOrUpdate(any(Investor.class));
-//    }
-//
-//    @Test
-//    public void updateInvestorTest() throws Exception {
-//        Investor investor = new Investor(); // setup your investor
-//
-//        doNothing().when(investorService).saveOrUpdate(any(Investor.class));
-//
-//        mockMvc.perform(put("/api/investors")
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .content(new ObjectMapper().writeValueAsString(investor)))
-//                    .andExpect(status().isOk());
-//
-//        verify(investorService).saveOrUpdate(any(Investor.class));
-//    }
 }
