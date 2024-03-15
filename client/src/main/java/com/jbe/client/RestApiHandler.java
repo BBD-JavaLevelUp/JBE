@@ -11,11 +11,16 @@ import java.net.http.HttpResponse;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
 import com.jbe.client.MenuOptions.ViewSellOrders;
 import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.BuyOrder;
 import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
+
+import com.jbe.client.Models.AccessToken;
+import com.jbe.client.Models.DeviceVerification;
+
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
@@ -507,7 +512,7 @@ public class RestApiHandler {
                 //prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
                 ACCESS_TOKEN = accessToken.access_token();
                 authenticated = true;
-                showMainMenu();
+                MainMenu.display();
             } else {
                 System.out.println("Waiting for authentication...");
             }
