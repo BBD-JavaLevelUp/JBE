@@ -1,8 +1,13 @@
 package com.jbe.client;
 
 import java.util.Scanner;
-
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
@@ -11,6 +16,10 @@ import com.jbe.client.Models.Bean;
 import com.jbe.client.Models.BuyOrder;
 import com.jbe.client.Models.Investor;
 import com.jbe.client.Models.SellOrder;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URI;
+import java.net.http.HttpClient;
 
 import org.json.*;
 
@@ -465,4 +474,48 @@ public class RestApiHandler {
         }
 
     }
+    public static void login() {
+    try (HttpClient httpClient = HttpClient.newHttpClient()) {
+        HttpRequest post = HttpRequest.newBuilder()
+                .uri(new URI("https://github.com/login/device/code?client_id=" + CLIENT_ID + "&scope=read:user"))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .header("Accept", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(post, HttpResponse.BodyHandlers.ofString());
+
+        Gson gson = new Gson();
+        DeviceVerification deviceVerification = gson.fromJson(response.body(), DeviceVerification.class);
+
+        System.out.println("Please go to " + deviceVerification.verification_uri() + " and enter the code: " + deviceVerification.user_code());
+
+        boolean success = false;
+        while (!success) {
+            Thread.sleep(5000);
+            HttpRequest postRequest = HttpRequest.newBuilder()
+                    .uri(new URI("https://github.com/login/oauth/access_token?client_id=" + CLIENT_ID + "&device_code=" + deviceVerification.device_code() + "&grant_type=urn:ietf:params:oauth:grant-type:device_code"))
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .header("Accept", "application/json")
+                    .build();
+
+            response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
+            AccessToken accessToken = gson.fromJson(response.body(), AccessToken.class);
+
+            if (accessToken.access_token() != null) {
+                success = true;
+                System.out.println("Successfully authenticated!");
+                //prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
+                ACCESS_TOKEN = accessToken.access_token();
+                authenticated = true;
+                showMainMenu();
+            } else {
+                System.out.println("Waiting for authentication...");
+            }
+        }
+
+    } catch (URISyntaxException | IOException | InterruptedException e) {
+        throw new RuntimeException(e);
+    }
+    System.out.println();
+
 }

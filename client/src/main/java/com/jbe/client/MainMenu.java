@@ -100,38 +100,7 @@ public class MainMenu
                 case 2:
                     if (!CurrentInvestor.signedIn) 
                     {
-                        // Ask for selling price
-                        String idNum = null;
-                        String password = null;
-                        while (true) {
-                            System.out.print("Enter ID number:");
-                            idNum = scanner.nextLine();
-                            if (!idNum.trim().isEmpty()) {
-                                if (idNum.length() == 13) {
-                                    break;
-                                } else {
-                                    System.out.println(RestApiHandler.ANSI_RED+"ID number should be 13 digits."+RestApiHandler.ANSI_RESET);
-                                }
-                            } else {
-                                System.out.println(RestApiHandler.ANSI_RED+"Name cannot be blank. Please enter a valid name."+RestApiHandler.ANSI_RESET);
-                            }
-                        }
-                        while (true) {
-                            System.out.print("Enter password:");
-                            password = scanner.nextLine();
-                            if (!password.trim().isEmpty()) {
-                                break;
-                            } else {
-                                System.out.println(RestApiHandler.ANSI_RED+"Password cannot be blank. Please enter a valid password."+RestApiHandler.ANSI_RESET);
-                            }
-                        }
-                        if (idNum != null && password != null) {
-                            CurrentInvestor.signIn(idNum,password);
-                        }
-                        if(CurrentInvestor.isAdmin)
-                        {
-                            AdminMenu.display();
-                        }
+                        RestApiHandler.login();
                     }
                     else
                     {
