@@ -117,7 +117,7 @@ public class MainMenu
                             }
                         }
                         while (true) {
-                            System.out.println("Enter password:");
+                            System.out.print("Enter password:");
                             password = scanner.nextLine();
                             if (!password.trim().isEmpty()) {
                                 break;
@@ -141,7 +141,7 @@ public class MainMenu
                 case 3:
                     if (!CurrentInvestor.signedIn)
                     {
-                        System.out.println("Exiting...");
+                        System.out.println(RestApiHandler.ANSI_MAGENTA+ "Exiting..." + RestApiHandler.ANSI_RESET);
                         System.exit(0);
                     }
                     else

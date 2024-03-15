@@ -452,10 +452,17 @@ public class RestApiHandler {
         scanner.nextLine().trim();
     }
     public static Investor getInvestor(String id){
-        //if no response return null
+        try{
+                    //if no response return null
         String response = APICall.get("/api/investors/id/"+id, null);
         JSONObject jsonResponse = new JSONObject(response);
         Investor investor = new Investor((int)jsonResponse.get("investorId"),(String) jsonResponse.get("name"), (String)jsonResponse.get("saId"),(String)jsonResponse.get("email"));
         return investor;
+
+        }
+        catch(Exception e){
+            return null;
+        }
+
     }
 }
