@@ -101,22 +101,32 @@ public class CurrentInvestor {
             // Sign up or try again or exit to sign up/sign in menu (easiest)?
         }
     } 
+
     public static void signUp(String sName, String sSAid, String sEmail) {
-        RestApiHandler.createInvestor(sName, sSAid, sEmail);
-        String hashed = hashID(sSAid);
-        if (hashed != null) 
-        {
-            String result = selectAndReverse(hashed);
-            System.out.println("Your password is: " + result+"\nPlease keep it safe. You will not see it again.");
-            signedIn = true;
-            name = sName;
-            sAId = sSAid;
-            email = sEmail;
+        Investor investor = RestApiHandler.getInvestor(sSAid);
+        if(!(investor == null)){
+            System.out.println(RestApiHandler.ANSI_RED+ "Investor exists. Just go and sign in" + RestApiHandler.ANSI_RESET);
+
         }
-        else 
-        {
-            signedIn = false;
-            System.out.println(RestApiHandler.ANSI_RED+"Failed to create user."+RestApiHandler.ANSI_RESET);
+        else{
+            RestApiHandler.createInvestor(sName, sSAid, sEmail);
+            String hashed = hashID(sSAid);
+            if (hashed != null) 
+            {
+                String result = selectAndReverse(hashed);
+                System.out.println("Your password is: " + result+"\nPlease keep it safe. You will not see it again.");
+                signedIn = true;
+                name = sName;
+                sAId = sSAid;
+                email = sEmail;
+            }
+            else 
+            {
+                signedIn = false;
+                System.out.println(RestApiHandler.ANSI_RED+"Failed to create user."+RestApiHandler.ANSI_RESET);
+            }
+
         }
+
     }
 }
