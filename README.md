@@ -34,3 +34,8 @@ Navigate to the client folder:
 4. Copy the client.jar file from client/target/ into the newly created jre folder.
 5. Run the client using: ".\jre\bin\java -jar client.jar"
 
+## Running the Client with Pre Built JRE
+1. Download the latest release
+2. Run the run.bat file, if on Windows
+3. If not on Windows, run the command ".\jre\bin\java" -jar client.jar" in the folder
+
