@@ -37,5 +37,5 @@ Navigate to the client folder:
 ## Running the Client with Pre Built JRE
 1. Download the latest release
 2. Run the run.bat file, if on Windows
-3. If not on Windows, run the command ".\jre\bin\java" -jar client.jar" in the folder
+3. If not on Windows, run the command ".\jre\bin\java -jar client.jar" in the folder
 
